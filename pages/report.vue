@@ -2,7 +2,6 @@
   <a-row
     type="flex"
     justify="start"
-    class="mt-5"
   >
     <a-col
       :md="{ span: 12, offset: 6 }"

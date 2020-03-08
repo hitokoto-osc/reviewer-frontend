@@ -483,6 +483,9 @@ export default {
 }
 
 .poll-item-header {
+  display: flex;
+  align-items: center;
+
   .poll-item-id {
     font-size: 1.6em;
   }

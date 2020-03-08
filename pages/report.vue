@@ -211,6 +211,9 @@ export default {
 }
 
 .report-item-header {
+  display: flex;
+  align-items: center;
+
   .report-item-id {
     font-size: 1.6em;
   }

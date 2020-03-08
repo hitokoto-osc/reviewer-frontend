@@ -219,7 +219,7 @@ export default {
   }
 
   .report-item-operated-at {
-    align-self: flex-end;
+    justify-self: flex-end;
   }
 }
 </style>

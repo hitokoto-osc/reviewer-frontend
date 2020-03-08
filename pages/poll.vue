@@ -492,7 +492,7 @@ export default {
   }
 
   .poll-item-operated-at {
-    align-self: flex-end;
+    justify-self: flex-end;
   }
 }
 

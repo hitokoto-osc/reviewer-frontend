@@ -215,11 +215,12 @@ export default {
   align-items: center;
 
   .report-item-id {
+    flex: 1;
     font-size: 1.6em;
   }
 
   .report-item-operated-at {
-    float: right;
+    align-self: flex-end;
   }
 }
 </style>

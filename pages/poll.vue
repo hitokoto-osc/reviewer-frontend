@@ -24,75 +24,76 @@
               <div class="poll-item-header">
                 <span class="poll-item-id">#{{ item.id }}</span>
                 <span class="poll-item-operated-at">发起于：{{ formatTime(item.created_at) }}</span>
-                <div class="text-wrapper sentence" style="font-size: 1.65em;" v-text="item.pending.hitokoto" />
-                <ul
-                  class="mb-2"
-                  style=" margin: 0; padding: 0; list-style: none;"
+              </div>
+
+              <div class="text-wrapper sentence" style="font-size: 1.65em;" v-text="item.pending.hitokoto" />
+              <ul
+                class="mb-2"
+                style=" margin: 0; padding: 0; list-style: none;"
+              >
+                <li>标识：{{ item.sentence_uuid }} </li>
+                <li>
+                  来源：<span class="text-wrapper">{{ item.pending.from }}</span>
+                </li>
+                <li>
+                  作者：<span class="text-wrapper">{{ item.pending.from_who || '未填写' }}</span>
+                </li>
+                <li>分类：{{ formatType(item.pending.type) }}</li>
+                <li>
+                  提交者：<span class="text-wrapper">{{ item.pending.creator }}</span>
+                </li>
+                <li v-if="item.isPolled[0]">
+                  投票记录：您投了 <b style="color: #1a9e0f;">{{ formatPollType(item.isPolled[2]) }}</b> <i>{{ item.isPolled[1] }}</i> 票
+                </li>
+                <li v-if="user.role === '管理员'">
+                  <b>当前投票：批准 {{ item.accept }} 票，驳回 {{ item.reject }} 票，需要更改 {{ item.need_edited }} 票</b>
+                </li>
+              </ul>
+              <div v-if="!item.isPolled[0]" class="mt-xxs">
+                <h3 style="color: rgb(159, 71, 0);">
+                  在考察此句的内容、情感、结构后，请您对此句做出判断：
+                </h3>
+                <a-textarea
+                  v-model="commentList[index]"
+                  placeholder="请输入您对于此句子的看法或建议，不超过 1000 字。（选填，若选择“需要更改”则为必填）"
+                  :rows="2"
+                  class="mb-xs"
+                />
+                <a-button
+                  type="primary"
+                  :disabled="!!requestPollLock[index]"
+                  :loading="!!requestPollLock[index]"
+                  @click="requestPoll(item.sentence_uuid, 1, index)"
                 >
-                  <li>标识：{{ item.sentence_uuid }} </li>
-                  <li>
-                    来源：<span class="text-wrapper">{{ item.pending.from }}</span>
-                  </li>
-                  <li>
-                    作者：<span class="text-wrapper">{{ item.pending.from_who || '未填写' }}</span>
-                  </li>
-                  <li>分类：{{ formatType(item.pending.type) }}</li>
-                  <li>
-                    提交者：<span class="text-wrapper">{{ item.pending.creator }}</span>
-                  </li>
-                  <li v-if="item.isPolled[0]">
-                    投票记录：您投了 <b style="color: #1a9e0f;">{{ formatPollType(item.isPolled[2]) }}</b> <i>{{ item.isPolled[1] }}</i> 票
-                  </li>
-                  <li v-if="user.role === '管理员'">
-                    <b>当前投票：批准 {{ item.accept }} 票，驳回 {{ item.reject }} 票，需要更改 {{ item.need_edited }} 票</b>
-                  </li>
-                </ul>
-                <div v-if="!item.isPolled[0]" class="mt-xxs">
-                  <h3 style="color: rgb(159, 71, 0);">
-                    在考察此句的内容、情感、结构后，请您对此句做出判断：
-                  </h3>
-                  <a-textarea
-                    v-model="commentList[index]"
-                    placeholder="请输入您对于此句子的看法或建议，不超过 1000 字。（选填，若选择“需要更改”则为必填）"
-                    :rows="2"
-                    class="mb-xs"
-                  />
-                  <a-button
-                    type="primary"
-                    :disabled="!!requestPollLock[index]"
-                    :loading="!!requestPollLock[index]"
-                    @click="requestPoll(item.sentence_uuid, 1, index)"
-                  >
-                    批准
-                  </a-button>
-                  <a-button
-                    :disabled="!!requestPollLock[index]"
-                    :loading="!!requestPollLock[index]"
-                    @click="requestPoll(item.sentence_uuid, 2, index)"
-                  >
-                    驳回
-                  </a-button>
-                  <a-button
-                    :disabled="!!requestPollLock[index]"
-                    :loading="!!requestPollLock[index]"
-                    @click="requestPoll(item.sentence_uuid, 3, index)"
-                  >
-                    需要更改
-                  </a-button>
-                </div>
-                <div v-else class="mt-xxs">
-                  <h3 style="color: rgb(159, 71, 0);" class="mb-xs">
-                    您已对此句做出评判，但您可以：
-                  </h3>
-                  <a-button
-                    type="primary"
-                    :loading="!!requestPollLock[index]"
-                    :disabled="!!requestPollLock[index]"
-                    @click="requestCancel(item.sentence_uuid, index)"
-                  >
-                    撤回意见
-                  </a-button>
-                </div>
+                  批准
+                </a-button>
+                <a-button
+                  :disabled="!!requestPollLock[index]"
+                  :loading="!!requestPollLock[index]"
+                  @click="requestPoll(item.sentence_uuid, 2, index)"
+                >
+                  驳回
+                </a-button>
+                <a-button
+                  :disabled="!!requestPollLock[index]"
+                  :loading="!!requestPollLock[index]"
+                  @click="requestPoll(item.sentence_uuid, 3, index)"
+                >
+                  需要更改
+                </a-button>
+              </div>
+              <div v-else class="mt-xxs">
+                <h3 style="color: rgb(159, 71, 0);" class="mb-xs">
+                  您已对此句做出评判，但您可以：
+                </h3>
+                <a-button
+                  type="primary"
+                  :loading="!!requestPollLock[index]"
+                  :disabled="!!requestPollLock[index]"
+                  @click="requestCancel(item.sentence_uuid, index)"
+                >
+                  撤回意见
+                </a-button>
               </div>
             </template>
           </a-list-item>
@@ -487,11 +488,12 @@ export default {
   align-items: center;
 
   .poll-item-id {
+    flex: 1;
     font-size: 1.6em;
   }
 
   .poll-item-operated-at {
-    float: right;
+    align-self: flex-end;
   }
 }
 

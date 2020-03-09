@@ -230,7 +230,9 @@ export default {
         { value: 8, text: '来源错误或误用', level: 'warning' },
         { value: 9, text: '作者错误或误用', level: 'warning' },
         { value: 10, text: '作者/来源填写有误（位置不对）', level: 'info' },
-        { value: 11, text: '句子存在错误', level: 'danger' }
+        { value: 11, text: '句子存在错误', level: 'danger' },
+        { value: 12, text: '句子信息存疑', level: 'warning' },
+        { value: 13, text: '分类有误', level: 'danger' }
       ],
       // eslint-disable-next-line vue/no-reserved-keys
       _timer () { }

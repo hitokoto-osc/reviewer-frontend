@@ -52,32 +52,47 @@
                 <h3 style="color: rgb(159, 71, 0);">
                   在考察此句的内容、情感、结构后，请您对此句做出判断：
                 </h3>
+                <a-select
+                  v-model="markList[index]"
+                  mode="multiple"
+                  style="width: 100%;"
+                  placeholder="请选择您对此句的看法，部分选项会展示给其他审核员以辅助审核（选填，若选择“需要修改”则为必填）"
+                  class="mb-xxs"
+                >
+                  <a-select-option
+                    v-for="i in pollSelect"
+                    :key="i.value"
+                  >
+                    {{ i.text }}
+                  </a-select-option>
+                </a-select>
                 <a-textarea
+                  v-show="commentListDisplay[index]"
                   v-model="commentList[index]"
                   placeholder="请输入您对于此句子的看法或建议，不超过 1000 字。（选填，若选择“需要更改”则为必填）"
                   :rows="2"
-                  class="mb-xs"
+                  class="mb-xxs"
                 />
 
-                <div class="poll-operator">
+                <div class="poll-operator mt-xxs">
                   <div class="main-operator">
                     <a-button
                       type="primary"
-                      :disabled="!!requestPollLock[index]"
+                      :disabled="!!globalLock || !!requestPollLock[index]"
                       :loading="!!requestPollLock[index]"
                       @click="requestPoll(item.sentence_uuid, 1, index)"
                     >
                       批准
                     </a-button>
                     <a-button
-                      :disabled="!!requestPollLock[index]"
+                      :disabled="!!globalLock || !!requestPollLock[index]"
                       :loading="!!requestPollLock[index]"
                       @click="requestPoll(item.sentence_uuid, 2, index)"
                     >
                       驳回
                     </a-button>
                     <a-button
-                      :disabled="!!requestPollLock[index]"
+                      :disabled="!!globalLock || !!requestPollLock[index]"
                       :loading="!!requestPollLock[index]"
                       @click="requestPoll(item.sentence_uuid, 3, index)"
                     >
@@ -92,6 +107,7 @@
                       <a-button
                         shape="circle"
                         icon="swap"
+                        @click="$set(commentListDisplay, index, !commentListDisplay[index])"
                       />
                     </a-tooltip>
 
@@ -115,7 +131,7 @@
                 <a-button
                   type="primary"
                   :loading="!!requestPollLock[index]"
-                  :disabled="!!requestPollLock[index]"
+                  :disabled="!!globalLock || !!requestPollLock[index]"
                   @click="requestCancel(item.sentence_uuid, index)"
                 >
                   撤回意见
@@ -129,10 +145,20 @@
           type="primary"
           shape="round"
           icon="plus-circle"
-          :disabled="!!requestNewPollLock"
+          :disabled="!!globalLock || !!refreshLock || !!requestNewPollLock"
+          :loading="!!requestNewPollLock"
           @click="requestNewPoll"
         >
           发起新投票
+        </a-button>
+        <a-button
+          shape="round"
+          icon="retweet"
+          :disabled="!!globalLock || !!refreshLock || !!requestNewPollLock"
+          :loading="!!globalLock"
+          @click="updatePollList"
+        >
+          刷新队列
         </a-button>
       </a-card>
     </a-col>
@@ -171,10 +197,27 @@ export default {
   data () {
     return {
       requestNewPollLock: false,
+      refreshLock: false,
+      globalLock: false,
       requestPollLock: [],
       commentList: [],
+      markList: [],
+      commentListDisplay: [],
       searchModal: false,
       searchSentenceText: '',
+      pollSelect: [
+        { value: 1, text: '绝妙好词，字字珠玑。' },
+        { value: 2, text: '不符合社会主义核心价值观' },
+        { value: 3, text: '语言低俗/庸俗/恶劣' },
+        { value: 4, text: '没有修改价值' },
+        { value: 5, text: '句子过长' },
+        { value: 6, text: '存在标点符号缺失/错误使用' },
+        { value: 7, text: '存在换行/空格现象' },
+        { value: 8, text: '来源错误或误用' },
+        { value: 9, text: '作者错误或误用' },
+        { value: 10, text: '作者/来源填写有误（位置不对）' },
+        { value: 11, text: '句子存在错误' }
+      ],
       // eslint-disable-next-line vue/no-reserved-keys
       _timer () { }
     }
@@ -236,7 +279,7 @@ export default {
     async requestPoll (sentenceUUID, method, index) {
       if (this.requestPollLock[index]) { return }
       // 如果投票需要修改，检测是否填写评论
-      if (method === 3 && !this.commentList[index]) {
+      if (method === 3 && (!this.commentList[index] || (this.markList[index].length && this.markList[index].length === 0))) {
         this.$notify({
           type: 'warn',
           group: 'request-result',
@@ -246,12 +289,16 @@ export default {
         return
       }
       this.$set(this.requestPollLock, index, true)
+      this.refreshLock = true
       const token = this.$store.state.token.token
       const formData = new FormData()
       formData.append('sentence_uuid', sentenceUUID)
       formData.append('method', method)
       if (this.commentList[index]) {
         formData.append('comment', this.commentList[index])
+      }
+      if (this.markList[index] && this.markList[index].length > 0) {
+        formData.append('marks', this.markList[index])
       }
       const { data } = await this.$axios.post(`https://poll.hitokoto.cn/v1/poll/${token}`, formData)
       if (data.Code === 403) {
@@ -262,6 +309,7 @@ export default {
           text: '此令牌权限不足以对句子：' + sentenceUUID + ' 进行投票。'
         })
         this.$set(this.requestPollLock, index, false)
+        this.refreshLock = false
         return
       } else if (data.Code === -2) {
         this.$notify({
@@ -271,6 +319,7 @@ export default {
           text: '您已经对句子：' + sentenceUUID + ' 投过票了，请勿重复投票。'
         })
         this.$set(this.requestPollLock, index, false)
+        this.refreshLock = false
         return
       } else if (data.Code === -4) {
         this.$notify({
@@ -280,6 +329,7 @@ export default {
           text: '句子：' + sentenceUUID + ' 还未开放投票。'
         })
         this.$set(this.requestPollLock, index, false)
+        this.refreshLock = false
         return
       } else if (data.Code === -3) {
         this.$notify({
@@ -289,6 +339,7 @@ export default {
           text: '句子：' + sentenceUUID + ' 要求您必须<b>填写理由</b>。'
         })
         this.$set(this.requestPollLock, index, false)
+        this.refreshLock = false
         return
       } else if (data.Code !== 200) {
         this.$notify({
@@ -298,6 +349,7 @@ export default {
           text: '对句子：' + sentenceUUID + ' 发起投票时出现未知错误，建议联系管理员。'
         })
         this.$set(this.requestPollLock, index, false)
+        this.refreshLock = false
         return
       }
       // 成功了
@@ -329,10 +381,12 @@ export default {
         text: '成功对句子：' + sentenceUUID + ' 投票，投票数据已经更新。'
       })
       this.$set(this.requestPollLock, index, false)
+      this.refreshLock = false
     },
     async requestCancel (sentenceUUID, index) {
       if (this.requestPollLock[index]) { return }
       this.$set(this.requestPollLock, index, true)
+      this.refreshLock = true
       const token = this.$store.state.token.token
       const { data } = await this.$axios.get(`https://poll.hitokoto.cn/v1/poll/cancel/${token}?sentence_uuid=${sentenceUUID}`)
       if (data.Code === -3) {
@@ -343,6 +397,7 @@ export default {
           text: '您尚未对此投票发表意见，无需撤回。'
         })
         this.$set(this.requestPollLock, index, false)
+        this.refreshLock = false
         return
       } else if (data.Code === -4) {
         this.$notify({
@@ -352,6 +407,7 @@ export default {
           text: '此投票已结束投票阶段，无法撤回投票。'
         })
         this.$set(this.requestPollLock, index, false)
+        this.refreshLock = false
         return
       } else if (data.Code === -6) {
         this.$notify({
@@ -361,6 +417,7 @@ export default {
           text: '投票不存在。可能是系统问题，建议联系管理员。'
         })
         this.$set(this.requestPollLock, index, false)
+        this.refreshLock = false
         return
       } else if (data.Code !== 200) {
         window.console.log(data)
@@ -371,6 +428,7 @@ export default {
           text: '未知状态码。可能是系统问题，建议联系管理员。'
         })
         this.$set(this.requestPollLock, index, false)
+        this.refreshLock = false
         return
       }
       window.console.log(data)
@@ -405,7 +463,9 @@ export default {
         text: '成功对句子：' + sentenceUUID + ' 撤回投票，投票数据已经更新。'
       })
       this.$set(this.requestPollLock, index, false)
+      this.refreshLock = false
     },
+
     async requestNewPoll () {
       if (this.requestNewPollLock) { return }
       this.requestNewPollLock = true
@@ -463,11 +523,15 @@ export default {
       this._timer = setInterval(this.updatePollList, 1000 * 30)
     },
     updatePollList () {
+      this.refreshLock = true
+      this.globalLock = true
       const _this = this
       const token = this.$store.state.token.token
       this.$axios.get(`https://poll.hitokoto.cn/v1/poll/get/${token}?need_polled_flag=true`)
         .then(({ data }) => {
           if (data.Code !== 200) {
+            _this.refreshLock = false
+            _this.globalLock = false
             throw new Error(`${data.Code}：${data.Message}`)
           }
           // 验证数据
@@ -485,6 +549,8 @@ export default {
             return v
           })
           _this.pollList = result
+          _this.refreshLock = false
+          _this.globalLock = false
           _this.$notify({
             type: 'success',
             group: 'request-result',

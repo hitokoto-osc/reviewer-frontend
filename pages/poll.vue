@@ -150,7 +150,7 @@
 <script>
 import moment from 'moment'
 import _ from 'lodash'
-import SearchModal from '@/components/SearchModal.vue'
+import SearchModal from '../components/SearchModal.vue'
 
 export default {
   components: {

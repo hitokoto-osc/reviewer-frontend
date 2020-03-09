@@ -46,7 +46,22 @@
                   投票记录：您投了 <b style="color: #1a9e0f;">{{ formatPollType(item.type) }}</b> <i>{{ item.point }}</i> 票
                 </li>
                 <li>
-                  您的意见：<span class="poll-comment">{{ item.comment || '未填写' }}</span>
+                  您的标记：<template v-if="Array.isArray(item.marks) && item.marks.length > 0">
+                    <a-tag
+                      v-for="(mark, index) in item.marks"
+                      :key="index"
+                      :color="formatMarkColor(mark)"
+                      class="report-mark"
+                    >
+                      {{ formatMark(mark) }}
+                    </a-tag>
+                  </template>
+                  <template v-else>
+                    未填写
+                  </template>
+                </li>
+                <li>
+                  您的评论（仅管理员可见）：<span class="poll-comment">{{ item.comment || '未填写' }}</span>
                 </li>
                 <li v-if="item.status !== 1 || user.role === '管理员'">
                   <b>投票结果：批准 {{ item.poll.accept }} 票，驳回 {{ item.poll.reject }} 票，需要更改 {{ item.poll.need_edited }} 票</b>
@@ -107,7 +122,20 @@ export default {
   },
   data () {
     return {
-      currentPage: 1
+      currentPage: 1,
+      markList: [
+        { value: 1, text: '绝妙好词，字字珠玑。' },
+        { value: 2, text: '不符合社会主义核心价值观', level: 'danger' },
+        { value: 3, text: '语言低俗/庸俗/恶劣', level: 'danger' },
+        { value: 4, text: '没有修改价值', level: 'warning' },
+        { value: 5, text: '句子过长', level: 'info' },
+        { value: 6, text: '存在标点符号缺失/错误使用', level: 'danger' },
+        { value: 7, text: '存在换行/空格现象', level: 'danger' },
+        { value: 8, text: '来源错误或误用', level: 'warning' },
+        { value: 9, text: '作者错误或误用', level: 'warning' },
+        { value: 10, text: '作者/来源填写有误（位置不对）', level: 'info' },
+        { value: 11, text: '句子存在错误', level: 'danger' }
+      ]
     }
   },
   computed: {
@@ -180,6 +208,24 @@ export default {
         return data.sentence
       }
       return false
+    },
+    formatMark (markId) {
+      return this.markList[markId - 1] ? this.markList[markId - 1].text : '未知标记'
+    },
+    formatMarkColor (markId) {
+      const mark = this.markList[markId - 1]
+      if (mark.level) {
+        if (mark.level === 'danger') {
+          return 'red'
+        } else if (mark.level === 'warning') {
+          return 'orange'
+        } else if (mark.level === 'info') {
+          return 'blue'
+        }
+        return null
+      } else {
+        return null
+      }
     }
   },
   head () {

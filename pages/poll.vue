@@ -41,6 +41,20 @@
                 <li>
                   提交者：<span class="text-wrapper">{{ item.pending.creator }}</span>
                 </li>
+                <li v-if="item.marks">
+                  <b>此句被标记为：</b>
+                  <template v-if="Array.isArray(item.marks) && item.marks.length > 0">
+                    <a-tag
+                      v-for="(mark, i) in item.marks"
+                      v-show="!!formatMarkColor(mark)"
+                      :key="i"
+                      :color="formatMarkColor(mark)"
+                      class="report-mark"
+                    >
+                      {{ formatMark(mark) }}
+                    </a-tag>
+                  </template>
+                </li>
                 <li v-if="item.isPolled[0]">
                   投票记录：您投了 <b style="color: #1a9e0f;">{{ formatPollType(item.isPolled[2]) }}</b> <i>{{ item.isPolled[1] }}</i> 票
                 </li>
@@ -207,16 +221,16 @@ export default {
       searchSentenceText: '',
       pollSelect: [
         { value: 1, text: '绝妙好词，字字珠玑。' },
-        { value: 2, text: '不符合社会主义核心价值观' },
-        { value: 3, text: '语言低俗/庸俗/恶劣' },
-        { value: 4, text: '没有修改价值' },
-        { value: 5, text: '句子过长' },
-        { value: 6, text: '存在标点符号缺失/错误使用' },
-        { value: 7, text: '存在换行/空格现象' },
-        { value: 8, text: '来源错误或误用' },
-        { value: 9, text: '作者错误或误用' },
-        { value: 10, text: '作者/来源填写有误（位置不对）' },
-        { value: 11, text: '句子存在错误' }
+        { value: 2, text: '不符合社会主义核心价值观', level: 'danger' },
+        { value: 3, text: '语言低俗/庸俗/恶劣', level: 'danger' },
+        { value: 4, text: '没有修改价值', level: 'warning' },
+        { value: 5, text: '句子过长', level: 'info' },
+        { value: 6, text: '存在标点符号缺失/错误使用', level: 'danger' },
+        { value: 7, text: '存在换行/空格现象', level: 'danger' },
+        { value: 8, text: '来源错误或误用', level: 'warning' },
+        { value: 9, text: '作者错误或误用', level: 'warning' },
+        { value: 10, text: '作者/来源填写有误（位置不对）', level: 'info' },
+        { value: 11, text: '句子存在错误', level: 'danger' }
       ],
       // eslint-disable-next-line vue/no-reserved-keys
       _timer () { }
@@ -565,6 +579,24 @@ export default {
     },
     changeVisible (val) {
       this.searchModal = val
+    },
+    formatMark (markId) {
+      return this.pollSelect[markId - 1] ? this.pollSelect[markId - 1].text : '未知标记'
+    },
+    formatMarkColor (markId) {
+      const mark = this.pollSelect[markId - 1]
+      if (mark.level) {
+        if (mark.level === 'danger') {
+          return 'red'
+        } else if (mark.level === 'warning') {
+          return 'orange'
+        } else if (mark.level === 'info') {
+          return 'blue'
+        }
+        return null
+      } else {
+        return null
+      }
     }
   },
   head () {

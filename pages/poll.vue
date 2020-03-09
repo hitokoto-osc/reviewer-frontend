@@ -58,28 +58,55 @@
                   :rows="2"
                   class="mb-xs"
                 />
-                <a-button
-                  type="primary"
-                  :disabled="!!requestPollLock[index]"
-                  :loading="!!requestPollLock[index]"
-                  @click="requestPoll(item.sentence_uuid, 1, index)"
-                >
-                  批准
-                </a-button>
-                <a-button
-                  :disabled="!!requestPollLock[index]"
-                  :loading="!!requestPollLock[index]"
-                  @click="requestPoll(item.sentence_uuid, 2, index)"
-                >
-                  驳回
-                </a-button>
-                <a-button
-                  :disabled="!!requestPollLock[index]"
-                  :loading="!!requestPollLock[index]"
-                  @click="requestPoll(item.sentence_uuid, 3, index)"
-                >
-                  需要更改
-                </a-button>
+
+                <div class="poll-operator">
+                  <div class="main-operator">
+                    <a-button
+                      type="primary"
+                      :disabled="!!requestPollLock[index]"
+                      :loading="!!requestPollLock[index]"
+                      @click="requestPoll(item.sentence_uuid, 1, index)"
+                    >
+                      批准
+                    </a-button>
+                    <a-button
+                      :disabled="!!requestPollLock[index]"
+                      :loading="!!requestPollLock[index]"
+                      @click="requestPoll(item.sentence_uuid, 2, index)"
+                    >
+                      驳回
+                    </a-button>
+                    <a-button
+                      :disabled="!!requestPollLock[index]"
+                      :loading="!!requestPollLock[index]"
+                      @click="requestPoll(item.sentence_uuid, 3, index)"
+                    >
+                      需要更改
+                    </a-button>
+                  </div>
+                  <div class="tool-operator">
+                    <a-tooltip placement="bottom">
+                      <template slot="title">
+                        显示/隐藏输入框
+                      </template>
+                      <a-button
+                        shape="circle"
+                        icon="swap"
+                      />
+                    </a-tooltip>
+
+                    <a-tooltip placement="bottom">
+                      <template slot="title">
+                        使用搜索引擎搜索此句
+                      </template>
+                      <a-button
+                        shape="circle"
+                        icon="search"
+                        @click="searchSentence(item.pending.hitokoto)"
+                      />
+                    </a-tooltip>
+                  </div>
+                </div>
               </div>
               <div v-else class="mt-xxs">
                 <h3 style="color: rgb(159, 71, 0);" class="mb-xs">
@@ -117,12 +144,18 @@
       group="top-notification"
       position="top center"
     />
+    <search-modal :visible="searchModal" :sentence="searchSentenceText" @on-change-visible="changeVisible" />
   </a-row>
 </template>
 <script>
 import moment from 'moment'
 import _ from 'lodash'
+import SearchModal from '@/components/SearchModal.vue'
+
 export default {
+  components: {
+    SearchModal
+  },
   async asyncData ({ app, store }) {
     const token = store.state.token.token
     const queue = []
@@ -140,6 +173,8 @@ export default {
       requestNewPollLock: false,
       requestPollLock: [],
       commentList: [],
+      searchModal: false,
+      searchSentenceText: '',
       // eslint-disable-next-line vue/no-reserved-keys
       _timer () { }
     }
@@ -457,6 +492,13 @@ export default {
             text: '已将投票队列数据更新，当前进行中的投票有 ' + data.Data.length + ' 个。'
           })
         })
+    },
+    searchSentence (sentence) {
+      this.searchSentenceText = sentence
+      this.searchModal = true
+    },
+    changeVisible (val) {
+      this.searchModal = val
     }
   },
   head () {
@@ -500,5 +542,25 @@ export default {
   height: 0;
   border: 0;
   border-bottom: 1px solid #e8e8e8;
+}
+
+.search-button {
+  float: right;
+}
+
+.switch-button {
+  float: right;
+}
+
+.poll-operator {
+  display: flex;
+
+  .main-operator {
+    flex: 1;
+  }
+
+  .tool-operator {
+    justify-self: end;
+  }
 }
 </style>

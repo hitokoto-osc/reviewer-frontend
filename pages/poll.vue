@@ -279,7 +279,7 @@ export default {
     async requestPoll (sentenceUUID, method, index) {
       if (this.requestPollLock[index]) { return }
       // 如果投票需要修改，检测是否填写评论
-      if (method === 3 && (!this.commentList[index] || (this.markList[index].length && this.markList[index].length === 0))) {
+      if (method === 3 && !(this.commentList[index] || (this.markList[index].length && this.markList[index].length !== 0))) {
         this.$notify({
           type: 'warn',
           group: 'request-result',

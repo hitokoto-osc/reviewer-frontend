@@ -150,21 +150,6 @@ export default {
 }
 </script>
 <style lang="scss">
-.card-top-avatar {
-  display: block;
-  margin-top: -4em;
-  margin-right: auto;
-  margin-left: auto;
-
-  img {
-    transition: all 1.7s;
-  }
-
-  img:hover {
-    transform: rotate(360deg);
-  }
-}
-
 .list {
   height: 0;
   border: 0;

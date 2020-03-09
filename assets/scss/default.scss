@@ -24,3 +24,18 @@ html,
 body {
   scroll-behavior: smooth;
 }
+
+.card-top-avatar {
+  display: block !important;
+  margin-top: -4em;
+  margin-right: auto;
+  margin-left: auto;
+
+  img {
+    transition: all 1.7s;
+  }
+
+  img:hover {
+    transform: rotate(360deg);
+  }
+}

@@ -41,19 +41,17 @@
                 <li>
                   提交者：<span class="text-wrapper">{{ item.pending.creator }}</span>
                 </li>
-                <li v-if="item.marks">
+                <li v-if="item.marks && Array.isArray(item.marks) && item.marks.length > 0">
                   <b>此句被标记为：</b>
-                  <template v-if="Array.isArray(item.marks) && item.marks.length > 0">
-                    <a-tag
-                      v-for="(mark, i) in item.marks"
-                      v-show="!!formatMarkColor(mark)"
-                      :key="i"
-                      :color="formatMarkColor(mark)"
-                      class="report-mark"
-                    >
-                      {{ formatMark(mark) }}
-                    </a-tag>
-                  </template>
+                  <a-tag
+                    v-for="(mark, i) in item.marks"
+                    v-show="!!formatMarkColor(mark)"
+                    :key="i"
+                    :color="formatMarkColor(mark)"
+                    class="report-mark"
+                  >
+                    {{ formatMark(mark) }}
+                  </a-tag>
                 </li>
                 <li v-if="item.isPolled[0]">
                   投票记录：您投了 <b style="color: #1a9e0f;">{{ formatPollType(item.isPolled[2]) }}</b> <i>{{ item.isPolled[1] }}</i> 票

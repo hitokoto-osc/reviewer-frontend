@@ -199,11 +199,13 @@ export default {
     const queue = []
     const poll = app.$axios.get(`https://poll.hitokoto.cn/v1/poll/get/${token}?need_polled_flag=true`)
     const user = app.$axios.get(`https://poll.hitokoto.cn/v1/user/${token}`)
-    queue.push(poll, user)
+    const mark = app.$axios.get(`https://poll.hitokoto.cn/v1/mark/${token}`)
+    queue.push(poll, user, mark)
     const data = await Promise.all(queue)
     return {
       pollList: data[0].data.Data,
-      user: data[1].data.Data[0]
+      user: data[1].data.Data[0],
+      pollMark: data[2].data.Data
     }
   },
   data () {
@@ -217,21 +219,6 @@ export default {
       commentListDisplay: [],
       searchModal: false,
       searchSentenceText: '',
-      pollSelect: [
-        { value: 1, text: '绝妙好词，字字珠玑。' },
-        { value: 2, text: '不符合社会主义核心价值观', level: 'danger' },
-        { value: 3, text: '语言低俗/庸俗/恶劣', level: 'danger' },
-        { value: 4, text: '没有修改价值', level: 'warning' },
-        { value: 5, text: '句子过长', level: 'info' },
-        { value: 6, text: '存在标点符号缺失/错误使用', level: 'danger' },
-        { value: 7, text: '存在换行/空格现象', level: 'danger' },
-        { value: 8, text: '来源错误或误用', level: 'warning' },
-        { value: 9, text: '作者错误或误用', level: 'warning' },
-        { value: 10, text: '作者/来源填写有误（位置不对）', level: 'info' },
-        { value: 11, text: '句子存在错误', level: 'danger' },
-        { value: 12, text: '句子信息存疑', level: 'warning' },
-        { value: 13, text: '分类有误', level: 'danger' }
-      ],
       // eslint-disable-next-line vue/no-reserved-keys
       _timer () { }
     }
@@ -239,6 +226,14 @@ export default {
   computed: {
     getToken () {
       return this.$store.state.token.token
+    },
+    pollSelect () {
+      const select = JSON.parse(JSON.stringify(this.pollMark))
+      select.map((v) => {
+        v.value = v.id
+        return v
+      })
+      return select
     }
   },
   watch: {

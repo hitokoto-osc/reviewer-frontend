@@ -70,6 +70,7 @@
                   style="width: 100%;"
                   placeholder="请选择您对此句的看法，部分选项会展示给其他审核员以辅助审核（选填，若选择“需要修改”则为必填）"
                   class="mb-xxs"
+                  :filter-option="filterOptions"
                 >
                   <a-select-option
                     v-for="i in pollSelect"
@@ -297,6 +298,15 @@ export default {
         })
         return
       }
+      if (this.pollList[index] && this.pollList[index].pending && this.pollList[index].pending.creator_uid === this.user.id && method === 1) {
+        this.$notify({
+          type: 'warn',
+          group: 'request-result',
+          title: '无法进行投票操作',
+          text: '您不能对自己提交的句子投“赞成票”！'
+        })
+        return
+      }
       this.$set(this.requestPollLock, index, true)
       this.refreshLock = true
       const token = this.$store.state.token.token
@@ -346,6 +356,16 @@ export default {
           group: 'request-result',
           title: '无法进行投票操作',
           text: '句子：' + sentenceUUID + ' 要求您必须<b>填写理由</b>。'
+        })
+        this.$set(this.requestPollLock, index, false)
+        this.refreshLock = false
+        return
+      } else if (data.Code === -5) {
+        this.$notify({
+          type: 'error',
+          group: 'request-result',
+          title: '无法进行投票操作',
+          text: '您不能对自己提交的句子提交“赞成票”'
         })
         this.$set(this.requestPollLock, index, false)
         this.refreshLock = false
@@ -592,6 +612,9 @@ export default {
       } else {
         return null
       }
+    },
+    filterOptions (input, option) {
+      return option.componentOptions.children[0].text.toLowerCase().includes(input.toLowerCase())
     }
   },
   head () {

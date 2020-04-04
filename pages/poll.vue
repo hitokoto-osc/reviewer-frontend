@@ -580,6 +580,10 @@ export default {
           _this.pollList = result
           _this.refreshLock = false
           _this.globalLock = false
+          // 重置
+          _this.commentList = []
+          _this.markList = []
+          _this.commentListDisplay = []
           _this.$notify({
             type: 'success',
             group: 'request-result',

@@ -17,7 +17,7 @@
     "@nuxtjs/dotenv": "^1.4.0",
     "@nuxtjs/google-analytics": "^2.4.0",
     "@nuxtjs/pwa": "^3.0.0-0",
-    "ant-design-vue": "^1.5.0-beta.1",
+    "ant-design-vue": "^1.6.4",
     "cookie-universal-nuxt": "^2.1.2",
     "lodash": "^4.17.19",
     "md5": "^2.2.1",

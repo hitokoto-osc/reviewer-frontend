@@ -30,7 +30,7 @@
     "vue-sticky": "3.3.4"
   },
   "devDependencies": {
-    "@nuxt/typescript-build": "2.0.0",
+    "@nuxt/typescript-build": "2.0.2",
     "@nuxtjs/eslint-config": "2.0.2",
     "@nuxtjs/eslint-config-typescript": "2.0.0",
     "@nuxtjs/eslint-module": "1.1.0",

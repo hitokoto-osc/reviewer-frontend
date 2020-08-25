@@ -2243,10 +2243,10 @@ ansi-styles@^4.0.0, ansi-styles@^4.1.0:
     "@types/color-name" "^1.1.1"
     color-convert "^2.0.1"
 
-ant-design-vue@1.6.4:
-  version "1.6.4"
-  resolved "https://registry.yarnpkg.com/ant-design-vue/-/ant-design-vue-1.6.4.tgz#daba1ce6b357b6688dfe44a825864953a5c6c624"
-  integrity sha512-BQ37Vcw6itMIsa+UFr+ad4I3Tx6ZYAPnComvWXQwWqDuVIW4A0M5X+nY/pTTIaH9cPSxMse8KUSUu0ibuYj3Ag==
+ant-design-vue@1.6.5:
+  version "1.6.5"
+  resolved "https://registry.yarnpkg.com/ant-design-vue/-/ant-design-vue-1.6.5.tgz#82f69846d921c220d04bb9ef9a6c40605e146e6c"
+  integrity sha512-FzLrK+JuJUq+g4vd+UjFFi13ZdSsb11EZFapisFXilJxpc1LxqyunZu5AP4nr9vFLs3J4UX2A6q+Rp/Fi6JrLg==
   dependencies:
     "@ant-design/icons" "^2.1.1"
     "@ant-design/icons-vue" "^2.0.0"

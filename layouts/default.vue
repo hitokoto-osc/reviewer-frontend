@@ -1,12 +1,7 @@
 <template>
-  <a-layout
-    id="layout"
-    class="layout"
-  >
+  <a-layout id="layout" class="layout">
     <a-layout-header class="header">
-      <div class="logo">
-        一言审核员中心（Alpha）
-      </div>
+      <div class="logo">一言审核员中心（Alpha）</div>
     </a-layout-header>
     <a-layout-content>
       <nuxt />

@@ -18,7 +18,7 @@
     </a-layout-footer>
   </a-layout>
 </template>
-<style>
+<style lang="scss">
 #layout {
   min-height: 100vh;
 }

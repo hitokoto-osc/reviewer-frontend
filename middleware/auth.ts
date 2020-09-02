@@ -1,5 +1,6 @@
 import axios from 'axios'
-export default async function ({ app, store, redirect }) {
+import { Context } from '@nuxt/types'
+export default async function ({ app, store, redirect }: Context) {
   let token
   if (process.server) {
     token = app.$cookies.get('token')
@@ -19,6 +20,6 @@ export default async function ({ app, store, redirect }) {
   }
   store.commit('token/set', token)
   app.$cookies.set('token', token, {
-    maxAge: 60 * 60 * 24 * 30
+    maxAge: 60 * 60 * 24 * 30,
   })
 }

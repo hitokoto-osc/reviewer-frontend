@@ -11,62 +11,52 @@
     <p>句子：{{ sentence }}</p>
     <p><strong>单击下方的按钮以使用对应的搜索引擎进行搜索。</strong></p>
     <div class="search-button-group">
-      <a-button
-        @click="openBaidu"
-      >
-        百度
-      </a-button>
-      <a-button
-        @click="openGoogle"
-      >
-        谷歌
-      </a-button>
-      <a-button
-        @click="openBing"
-      >
-        必应
-      </a-button>
-      <a-button
-        @click="openDuckDuckGo"
-      >
-        DuckDuckGo
-      </a-button>
+      <a-button @click="openBaidu"> 百度 </a-button>
+      <a-button @click="openGoogle"> 谷歌 </a-button>
+      <a-button @click="openBing"> 必应 </a-button>
+      <a-button @click="openDuckDuckGo"> DuckDuckGo </a-button>
     </div>
   </a-modal>
 </template>
-<script>
-export default {
-  props: {
-    visible: Boolean,
-    sentence: {
-      type: String,
-      default: ''
-    }
-  },
-  computed: {
-    Visible: {
-      get () {
-        return this.visible
-      },
-      set (val) {
-      // grants_改变由父组件控制
-        this.$emit('on-change-visible', val)
-      }
-    }
-  },
-  methods: {
-    openBaidu () {
-      window.open('https://www.baidu.com/baidu?word=' + encodeURIComponent(this.sentence))
-    },
-    openGoogle () {
-      window.open('http://www.google.com/search?q=' + encodeURIComponent(this.sentence))
-    },
-    openBing () {
-      window.open('https://cn.bing.com/search?q=' + encodeURIComponent(this.sentence))
-    },
-    openDuckDuckGo () {
-      window.open('https://duckduckgo.com/?q=' + encodeURIComponent(this.sentence))
-    }
+<script lang="ts">
+import Vue from 'vue'
+import { Component, Prop } from 'nuxt-property-decorator'
+
+@Component
+export default class SearchModal extends Vue {
+  @Prop({ default: false }) private visible!: boolean
+  @Prop({ default: '' }) private sentence!: string
+  // Compute Visible
+  public get Visible() {
+    return this.visible
+  }
+
+  public set Visible(val) {
+    this.$emit('on-change-visible', val)
+  }
+
+  public openBaidu(): void {
+    window.open(
+      'https://www.baidu.com/baidu?word=' + encodeURIComponent(this.sentence),
+    )
+  }
+
+  public openGoogle(): void {
+    window.open(
+      'http://www.google.com/search?q=' + encodeURIComponent(this.sentence),
+    )
+  }
+
+  public openBing(): void {
+    window.open(
+      'https://cn.bing.com/search?q=' + encodeURIComponent(this.sentence),
+    )
+  }
+
+  public openDuckDuckGo(): void {
+    window.open(
+      'https://duckduckgo.com/?q=' + encodeURIComponent(this.sentence),
+    )
   }
 }
 </script>

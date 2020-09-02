@@ -1,21 +1,29 @@
+import { VuexModule, Module, Mutation } from 'vuex-module-decorators'
 import moment from 'moment'
-export const state = () => ({
-  token: '',
-  expired_at: 0
+
+@Module({
+  name: 'token',
+  stateFactory: true,
+  namespaced: true,
 })
+export default class Token extends VuexModule {
+  token = ''
+  expiredAt = 0
 
-export interface Token {
-  token: string
-  expired_at: number
-}
-
-export const mutations = {
-  set (state: Token, token: string) {
-    state.token = token
-    state.expired_at = moment().add(1, 'months').valueOf()
-  },
-  unset (state: Token) {
-    state.token = ''
-    state.expired_at = 0
+  @Mutation
+  set(token: string) {
+    this.token = token
+    this.expiredAt = moment().add(1, 'months').valueOf()
   }
+
+  @Mutation
+  unset() {
+    this.token = ''
+    this.expiredAt = 0
+  }
+}
+export interface TokenStruct {
+  token: string
+  // eslint-disable-next-line camelcase
+  expiredAt: number
 }

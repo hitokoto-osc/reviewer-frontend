@@ -1,52 +1,58 @@
 <template>
-  <a-row
-    type="flex"
-    justify="start"
-  >
+  <a-row type="flex" justify="start">
     <a-col
       :md="{ span: 12, offset: 6 }"
       :sm="{ span: 20, offset: 2 }"
       :xs="{ span: 22, offset: 1 }"
     >
       <a-back-top />
-      <a-card
-        class="mt-l poll-report"
-      >
+      <a-card class="mt-l poll-report">
         <template v-slot:title>
-          <div class="report-title">
-            您的投票报告
-          </div>
+          <div class="report-title">您的投票报告</div>
         </template>
         <a-list item-layout="vertical" size="large" :data-source="list">
           <a-list-item slot="renderItem" key="index" slot-scope="item">
             <template>
               <div class="report-item-header">
                 <span class="report-item-id">#{{ item.id }}</span>
-                <span class="report-item-operated-at">操作于：{{ formatTime(item.created_at) }}</span>
+                <span class="report-item-operated-at"
+                  >操作于：{{ formatTime(item.created_at) }}</span
+                >
               </div>
-              <ul
-                style="margin: 0; padding: 0; list-style: none;"
-              >
+              <ul style="margin: 0; padding: 0; list-style: none">
                 <template v-if="getPollSentence(item)">
-                  <div class="text-wrapper sentence" v-text="getPollSentence(item).hitokoto" />
-                  <li>标识：{{ item.sentence_uuid }} </li>
+                  <div
+                    class="text-wrapper sentence"
+                    v-text="getPollSentence(item).hitokoto"
+                  />
+                  <li>标识：{{ item.sentence_uuid }}</li>
                   <li>来源：{{ getPollSentence(item).from }}</li>
-                  <li>作者：{{ getPollSentence(item).from_who || '未填写' }}</li>
+                  <li>
+                    作者：{{ getPollSentence(item).from_who || '未填写' }}
+                  </li>
                   <li>分类：{{ formatType(getPollSentence(item).type) }}</li>
                   <li>提交者：{{ getPollSentence(item).creator }}</li>
                 </template>
                 <template v-else>
-                  <li>标识：{{ item.sentence_uuid }} </li>
+                  <li>标识：{{ item.sentence_uuid }}</li>
                   <li><i>句子消失不见啦！</i></li>
                 </template>
                 <li>
-                  投票状态：<em><b style="color: #ef8719;">{{ formatStatus(item.poll.status) }}</b></em>
+                  投票状态：<em
+                    ><b style="color: #ef8719">{{
+                      formatStatus(item.poll.status)
+                    }}</b></em
+                  >
                 </li>
                 <li>
-                  投票记录：您投了 <b style="color: #1a9e0f;">{{ formatPollType(item.type) }}</b> <i>{{ item.point }}</i> 票
+                  投票记录：您投了
+                  <b style="color: #1a9e0f">{{ formatPollType(item.type) }}</b>
+                  <i>{{ item.point }}</i> 票
                 </li>
                 <li>
-                  您的标记：<template v-if="Array.isArray(item.marks) && item.marks.length > 0">
+                  您的标记：<template
+                    v-if="Array.isArray(item.marks) && item.marks.length > 0"
+                  >
                     <a-tag
                       v-for="(mark, index) in item.marks"
                       :key="index"
@@ -56,15 +62,19 @@
                       {{ formatMark(mark) }}
                     </a-tag>
                   </template>
-                  <template v-else>
-                    未填写
-                  </template>
+                  <template v-else> 未填写 </template>
                 </li>
                 <li>
-                  您的评论（仅管理员可见）：<span class="poll-comment">{{ item.comment || '未填写' }}</span>
+                  您的评论（仅管理员可见）：<span class="poll-comment">{{
+                    item.comment || '未填写'
+                  }}</span>
                 </li>
                 <li v-if="item.status !== 1 || user.role === '管理员'">
-                  <b>投票结果：批准 {{ item.poll.accept }} 票，驳回 {{ item.poll.reject }} 票，需要更改 {{ item.poll.need_edited }} 票</b>
+                  <b
+                    >投票结果：批准 {{ item.poll.accept }} 票，驳回
+                    {{ item.poll.reject }} 票，需要更改
+                    {{ item.poll.need_edited }} 票</b
+                  >
                 </li>
               </ul>
             </template>
@@ -72,7 +82,11 @@
         </a-list>
       </a-card>
       <a-row type="flex" justify="center" class="mt-s">
-        <a-pagination v-model="currentPage" :total="total" :page-size.sync="pageSize" />
+        <a-pagination
+          v-model="currentPage"
+          :total="total"
+          :page-size.sync="pageSize"
+        />
       </a-row>
     </a-col>
   </a-row>
@@ -105,11 +119,15 @@ const scrollTopSmooth = function (position) {
 }
 
 export default {
-  async asyncData ({ app, store }) {
+  async asyncData({ app, store }) {
     const pageSize = 15
     const queue = []
     const token = store.state.token.token || app.$cookies.get('token')
-    queue.push(app.$axios.get(`https://poll.hitokoto.cn/v1/user/result/poll/${token}?limit=${pageSize}`)) // 获取投票结果
+    queue.push(
+      app.$axios.get(
+        `https://poll.hitokoto.cn/v1/user/result/poll/${token}?limit=${pageSize}`,
+      ),
+    ) // 获取投票结果
     queue.push(app.$axios.get(`https://poll.hitokoto.cn/v1/user/${token}`))
     queue.push(app.$axios.get(`https://poll.hitokoto.cn/v1/mark/${token}`))
     const result = await Promise.all(queue)
@@ -119,32 +137,34 @@ export default {
       total: result[0].data.Data[0].total,
       list: result[0].data.Data[0].collection,
       pageSize,
-      pollMark: result[2].data.Data
+      pollMark: result[2].data.Data,
     }
   },
-  data () {
+  data() {
     return {
-      currentPage: 1
+      currentPage: 1,
     }
   },
   computed: {
-    token () {
+    token() {
       return this.$store.state.token.token
     },
-    markList () {
+    markList() {
       const select = JSON.parse(JSON.stringify(this.pollMark))
       select.map((v) => {
         v.value = v.id
         return v
       })
       return select
-    }
+    },
   },
   watch: {
-    currentPage (v) {
+    currentPage(v) {
       const offset = (v - 1) * 15
       this.$axios
-        .get(`https://poll.hitokoto.cn/v1/user/result/poll/${this.token}?limit=${this.pageSize}&offset=${offset}`)
+        .get(
+          `https://poll.hitokoto.cn/v1/user/result/poll/${this.token}?limit=${this.pageSize}&offset=${offset}`,
+        )
         .then((response) => {
           scrollTopSmooth(0)
           return response
@@ -153,10 +173,10 @@ export default {
           this.total = data.Data[0].total
           this.list = data.Data[0].collection
         })
-    }
+    },
   },
   methods: {
-    formatStatus (statusNumber) {
+    formatStatus(statusNumber) {
       const desc = []
       desc[1] = '进行中'
       desc[2] = '处理中（停止投票）'
@@ -167,10 +187,10 @@ export default {
       desc[202] = '需要修改'
       return desc[statusNumber]
     },
-    formatTime (input) {
+    formatTime(input) {
       return moment(input).format('YYYY-MM-DD HH:mm')
     },
-    formatPollType (input) {
+    formatPollType(input) {
       const output = []
       output[1] = '批准'
       output[2] = '驳回'
@@ -178,7 +198,7 @@ export default {
       output[4] = '需要用户补充投票'
       return output[input] || '未知操作'
     },
-    formatType (input) {
+    formatType(input) {
       const output = {
         a: '动画',
         b: '漫画',
@@ -191,12 +211,12 @@ export default {
         i: '诗词',
         j: '网易云音乐',
         k: '哲学',
-        l: '抖机灵（笑话，脑筋急转弯，段子等）'
+        l: '抖机灵（笑话，脑筋急转弯，段子等）',
       }
 
       return output[input] || '未知分类'
     },
-    getPollSentence (data) {
+    getPollSentence(data) {
       if (data.pending) {
         return data.pending
       } else if (data.refuse) {
@@ -206,10 +226,12 @@ export default {
       }
       return false
     },
-    formatMark (markId) {
-      return this.markList[markId - 1] ? this.markList[markId - 1].text : '未知标记'
+    formatMark(markId) {
+      return this.markList[markId - 1]
+        ? this.markList[markId - 1].text
+        : '未知标记'
     },
-    formatMarkColor (markId) {
+    formatMarkColor(markId) {
       const mark = this.markList[markId - 1]
       if (mark.level) {
         if (mark.level === 'danger') {
@@ -223,13 +245,13 @@ export default {
       } else {
         return null
       }
+    },
+  },
+  head() {
+    return {
+      title: '结果与记录 | 一言审核员中心',
     }
   },
-  head () {
-    return {
-      title: '结果与记录 | 一言审核员中心'
-    }
-  }
 }
 </script>
 

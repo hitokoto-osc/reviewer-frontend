@@ -21,7 +21,7 @@
     "cookie-universal-nuxt": "2.1.4",
     "lodash": "4.17.20",
     "md5": "2.3.0",
-    "moment": "2.27.0",
+    "moment": "2.29.1",
     "nuxt": "2.14.4",
     "nuxt-vuex-localstorage": "1.2.7",
     "sass": "1.26.10",

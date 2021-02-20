@@ -19,7 +19,7 @@
     "@nuxtjs/pwa": "3.3.5",
     "ant-design-vue": "1.7.3",
     "cookie-universal-nuxt": "2.1.4",
-    "lodash": "4.17.20",
+    "lodash": "4.17.21",
     "md5": "2.3.0",
     "moment": "2.29.1",
     "nuxt": "2.15.1",

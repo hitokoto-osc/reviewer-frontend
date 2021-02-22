@@ -6,7 +6,7 @@
       :xs="{ span: 22, offset: 1 }"
     >
       <a-card :bordered="false">
-        <template v-slot:title>
+        <template #title>
           <div class="auth-title">须要验证您的身份</div>
         </template>
         <p>

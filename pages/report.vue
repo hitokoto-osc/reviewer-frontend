@@ -7,77 +7,73 @@
     >
       <a-back-top />
       <a-card class="mt-l poll-report">
-        <template v-slot:title>
+        <template #title>
           <div class="report-title">您的投票报告</div>
         </template>
         <a-list item-layout="vertical" size="large" :data-source="list">
           <a-list-item slot="renderItem" key="index" slot-scope="item">
-            <template>
-              <div class="report-item-header">
-                <span class="report-item-id">#{{ item.id }}</span>
-                <span class="report-item-operated-at"
-                  >操作于：{{ formatTime(item.created_at) }}</span
+            <div class="report-item-header">
+              <span class="report-item-id">#{{ item.id }}</span>
+              <span class="report-item-operated-at"
+                >操作于：{{ formatTime(item.created_at) }}</span
+              >
+            </div>
+            <ul style="margin: 0; padding: 0; list-style: none">
+              <template v-if="getPollSentence(item)">
+                <div
+                  class="text-wrapper sentence"
+                  v-text="getPollSentence(item).hitokoto"
+                />
+                <li>标识：{{ item.sentence_uuid }}</li>
+                <li>来源：{{ getPollSentence(item).from }}</li>
+                <li>作者：{{ getPollSentence(item).from_who || '未填写' }}</li>
+                <li>分类：{{ formatType(getPollSentence(item).type) }}</li>
+                <li>提交者：{{ getPollSentence(item).creator }}</li>
+              </template>
+              <template v-else>
+                <li>标识：{{ item.sentence_uuid }}</li>
+                <li><i>句子消失不见啦！</i></li>
+              </template>
+              <li>
+                投票状态：<em
+                  ><b style="color: #ef8719">{{
+                    formatStatus(item.poll.status)
+                  }}</b></em
                 >
-              </div>
-              <ul style="margin: 0; padding: 0; list-style: none">
-                <template v-if="getPollSentence(item)">
-                  <div
-                    class="text-wrapper sentence"
-                    v-text="getPollSentence(item).hitokoto"
-                  />
-                  <li>标识：{{ item.sentence_uuid }}</li>
-                  <li>来源：{{ getPollSentence(item).from }}</li>
-                  <li>
-                    作者：{{ getPollSentence(item).from_who || '未填写' }}
-                  </li>
-                  <li>分类：{{ formatType(getPollSentence(item).type) }}</li>
-                  <li>提交者：{{ getPollSentence(item).creator }}</li>
+              </li>
+              <li>
+                投票记录：您投了
+                <b style="color: #1a9e0f">{{ formatPollType(item.type) }}</b>
+                <i>{{ item.point }}</i> 票
+              </li>
+              <li>
+                您的标记：<template
+                  v-if="Array.isArray(item.marks) && item.marks.length > 0"
+                >
+                  <a-tag
+                    v-for="(mark, index) in item.marks"
+                    :key="index"
+                    :color="formatMarkColor(mark)"
+                    class="report-mark"
+                  >
+                    {{ formatMark(mark) }}
+                  </a-tag>
                 </template>
-                <template v-else>
-                  <li>标识：{{ item.sentence_uuid }}</li>
-                  <li><i>句子消失不见啦！</i></li>
-                </template>
-                <li>
-                  投票状态：<em
-                    ><b style="color: #ef8719">{{
-                      formatStatus(item.poll.status)
-                    }}</b></em
-                  >
-                </li>
-                <li>
-                  投票记录：您投了
-                  <b style="color: #1a9e0f">{{ formatPollType(item.type) }}</b>
-                  <i>{{ item.point }}</i> 票
-                </li>
-                <li>
-                  您的标记：<template
-                    v-if="Array.isArray(item.marks) && item.marks.length > 0"
-                  >
-                    <a-tag
-                      v-for="(mark, index) in item.marks"
-                      :key="index"
-                      :color="formatMarkColor(mark)"
-                      class="report-mark"
-                    >
-                      {{ formatMark(mark) }}
-                    </a-tag>
-                  </template>
-                  <template v-else> 未填写 </template>
-                </li>
-                <li>
-                  您的评论（仅管理员可见）：<span class="poll-comment">{{
-                    item.comment || '未填写'
-                  }}</span>
-                </li>
-                <li v-if="item.status !== 1 || user.role === '管理员'">
-                  <b
-                    >投票结果：批准 {{ item.poll.accept }} 票，驳回
-                    {{ item.poll.reject }} 票，需要更改
-                    {{ item.poll.need_edited }} 票</b
-                  >
-                </li>
-              </ul>
-            </template>
+                <template v-else> 未填写 </template>
+              </li>
+              <li>
+                您的评论（仅管理员可见）：<span class="poll-comment">{{
+                  item.comment || '未填写'
+                }}</span>
+              </li>
+              <li v-if="item.status !== 1 || user.role === '管理员'">
+                <b
+                  >投票结果：批准 {{ item.poll.accept }} 票，驳回
+                  {{ item.poll.reject }} 票，需要更改
+                  {{ item.poll.need_edited }} 票</b
+                >
+              </li>
+            </ul>
           </a-list-item>
         </a-list>
       </a-card>
@@ -143,6 +139,11 @@ export default {
   data() {
     return {
       currentPage: 1,
+    }
+  },
+  head() {
+    return {
+      title: '结果与记录 | 一言审核员中心',
     }
   },
   computed: {
@@ -246,11 +247,6 @@ export default {
         return null
       }
     },
-  },
-  head() {
-    return {
-      title: '结果与记录 | 一言审核员中心',
-    }
   },
 }
 </script>

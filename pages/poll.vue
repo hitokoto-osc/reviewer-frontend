@@ -7,163 +7,159 @@
     >
       <a-back-top />
       <a-card class="mt-l poll">
-        <template v-slot:title>
+        <template #title>
           <div class="review-title">正在进行中的投票</div>
         </template>
         <a-list item-layout="vertical" size="large" :data-source="pollList">
           <a-list-item slot="renderItem" key="index" slot-scope="item, index">
-            <template>
-              <div class="poll-item-header">
-                <span class="poll-item-id">#{{ item.id }}</span>
-                <span class="poll-item-operated-at"
-                  >发起于：{{ formatTime(item.created_at) }}</span
-                >
-              </div>
+            <div class="poll-item-header">
+              <span class="poll-item-id">#{{ item.id }}</span>
+              <span class="poll-item-operated-at"
+                >发起于：{{ formatTime(item.created_at) }}</span
+              >
+            </div>
 
-              <div
-                class="text-wrapper sentence"
-                style="font-size: 1.65em"
-                v-text="item.pending.hitokoto"
+            <div
+              class="text-wrapper sentence"
+              style="font-size: 1.65em"
+              v-text="xss(item.pending.hitokoto)"
+            />
+            <ul class="mb-2" style="margin: 0; padding: 0; list-style: none">
+              <li>标识：{{ item.sentence_uuid }}</li>
+              <li>
+                来源：<span class="text-wrapper">{{ item.pending.from }}</span>
+              </li>
+              <li>
+                作者：<span class="text-wrapper">{{
+                  item.pending.from_who || '未填写'
+                }}</span>
+              </li>
+              <li>分类：{{ formatType(item.pending.type) }}</li>
+              <li>
+                提交者：<span class="text-wrapper">{{
+                  item.pending.creator
+                }}</span>
+              </li>
+              <li
+                v-if="
+                  item.marks &&
+                  Array.isArray(item.marks) &&
+                  item.marks.length > 0
+                "
+              >
+                <b>此句被标记为：</b>
+                <a-tag
+                  v-for="(mark, i) in item.marks"
+                  v-show="!!formatMarkColor(mark)"
+                  :key="i"
+                  :color="formatMarkColor(mark)"
+                  class="report-mark"
+                >
+                  {{ formatMark(mark) }}
+                </a-tag>
+              </li>
+              <li v-if="item.isPolled[0]">
+                投票记录：您投了
+                <b style="color: #1a9e0f">{{
+                  formatPollType(item.isPolled[2])
+                }}</b>
+                <i>{{ item.isPolled[1] }}</i> 票
+              </li>
+              <li v-if="user.role === '管理员'">
+                <b
+                  >当前投票：批准 {{ item.accept }} 票，驳回
+                  {{ item.reject }} 票，需要更改 {{ item.need_edited }} 票</b
+                >
+              </li>
+            </ul>
+            <div v-if="!item.isPolled[0]" class="mt-xxs">
+              <h3 style="color: rgb(159, 71, 0)">
+                在考察此句的内容、情感、结构后，请您对此句做出判断：
+              </h3>
+              <a-select
+                v-model="markList[index]"
+                mode="multiple"
+                style="width: 100%"
+                placeholder="请选择您对此句的看法，部分选项会展示给其他审核员以辅助审核（选填，若选择“需要修改”则为必填）"
+                class="mb-xxs"
+              >
+                <a-select-option v-for="i in pollSelect" :key="i.value">
+                  {{ i.text }}
+                </a-select-option>
+              </a-select>
+              <a-textarea
+                v-show="commentListDisplay[index]"
+                v-model="commentList[index]"
+                placeholder="请输入您对于此句子的看法或建议，不超过 1000 字。（选填，若选择“需要更改”则为必填）"
+                :rows="2"
+                class="mb-xxs"
               />
-              <ul class="mb-2" style="margin: 0; padding: 0; list-style: none">
-                <li>标识：{{ item.sentence_uuid }}</li>
-                <li>
-                  来源：<span class="text-wrapper">{{
-                    item.pending.from
-                  }}</span>
-                </li>
-                <li>
-                  作者：<span class="text-wrapper">{{
-                    item.pending.from_who || '未填写'
-                  }}</span>
-                </li>
-                <li>分类：{{ formatType(item.pending.type) }}</li>
-                <li>
-                  提交者：<span class="text-wrapper">{{
-                    item.pending.creator
-                  }}</span>
-                </li>
-                <li
-                  v-if="
-                    item.marks &&
-                    Array.isArray(item.marks) &&
-                    item.marks.length > 0
-                  "
-                >
-                  <b>此句被标记为：</b>
-                  <a-tag
-                    v-for="(mark, i) in item.marks"
-                    v-show="!!formatMarkColor(mark)"
-                    :key="i"
-                    :color="formatMarkColor(mark)"
-                    class="report-mark"
-                  >
-                    {{ formatMark(mark) }}
-                  </a-tag>
-                </li>
-                <li v-if="item.isPolled[0]">
-                  投票记录：您投了
-                  <b style="color: #1a9e0f">{{
-                    formatPollType(item.isPolled[2])
-                  }}</b>
-                  <i>{{ item.isPolled[1] }}</i> 票
-                </li>
-                <li v-if="user.role === '管理员'">
-                  <b
-                    >当前投票：批准 {{ item.accept }} 票，驳回
-                    {{ item.reject }} 票，需要更改 {{ item.need_edited }} 票</b
-                  >
-                </li>
-              </ul>
-              <div v-if="!item.isPolled[0]" class="mt-xxs">
-                <h3 style="color: rgb(159, 71, 0)">
-                  在考察此句的内容、情感、结构后，请您对此句做出判断：
-                </h3>
-                <a-select
-                  v-model="markList[index]"
-                  mode="multiple"
-                  style="width: 100%"
-                  placeholder="请选择您对此句的看法，部分选项会展示给其他审核员以辅助审核（选填，若选择“需要修改”则为必填）"
-                  class="mb-xxs"
-                >
-                  <a-select-option v-for="i in pollSelect" :key="i.value">
-                    {{ i.text }}
-                  </a-select-option>
-                </a-select>
-                <a-textarea
-                  v-show="commentListDisplay[index]"
-                  v-model="commentList[index]"
-                  placeholder="请输入您对于此句子的看法或建议，不超过 1000 字。（选填，若选择“需要更改”则为必填）"
-                  :rows="2"
-                  class="mb-xxs"
-                />
 
-                <div class="poll-operator mt-xxs">
-                  <div class="main-operator">
+              <div class="poll-operator mt-xxs">
+                <div class="main-operator">
+                  <a-button
+                    type="primary"
+                    :disabled="!!globalLock || !!requestPollLock[index]"
+                    :loading="!!requestPollLock[index]"
+                    @click="requestPoll(item.sentence_uuid, 1, index)"
+                  >
+                    批准
+                  </a-button>
+                  <a-button
+                    :disabled="!!globalLock || !!requestPollLock[index]"
+                    :loading="!!requestPollLock[index]"
+                    @click="requestPoll(item.sentence_uuid, 2, index)"
+                  >
+                    驳回
+                  </a-button>
+                  <a-button
+                    :disabled="!!globalLock || !!requestPollLock[index]"
+                    :loading="!!requestPollLock[index]"
+                    @click="requestPoll(item.sentence_uuid, 3, index)"
+                  >
+                    需要更改
+                  </a-button>
+                </div>
+                <div class="tool-operator">
+                  <a-tooltip placement="bottom">
+                    <template slot="title"> 显示/隐藏输入框 </template>
                     <a-button
-                      type="primary"
-                      :disabled="!!globalLock || !!requestPollLock[index]"
-                      :loading="!!requestPollLock[index]"
-                      @click="requestPoll(item.sentence_uuid, 1, index)"
-                    >
-                      批准
-                    </a-button>
-                    <a-button
-                      :disabled="!!globalLock || !!requestPollLock[index]"
-                      :loading="!!requestPollLock[index]"
-                      @click="requestPoll(item.sentence_uuid, 2, index)"
-                    >
-                      驳回
-                    </a-button>
-                    <a-button
-                      :disabled="!!globalLock || !!requestPollLock[index]"
-                      :loading="!!requestPollLock[index]"
-                      @click="requestPoll(item.sentence_uuid, 3, index)"
-                    >
-                      需要更改
-                    </a-button>
-                  </div>
-                  <div class="tool-operator">
-                    <a-tooltip placement="bottom">
-                      <template slot="title"> 显示/隐藏输入框 </template>
-                      <a-button
-                        shape="circle"
-                        icon="swap"
-                        @click="
-                          $set(
-                            commentListDisplay,
-                            index,
-                            !commentListDisplay[index],
-                          )
-                        "
-                      />
-                    </a-tooltip>
+                      shape="circle"
+                      icon="swap"
+                      @click="
+                        $set(
+                          commentListDisplay,
+                          index,
+                          !commentListDisplay[index],
+                        )
+                      "
+                    />
+                  </a-tooltip>
 
-                    <a-tooltip placement="bottom">
-                      <template slot="title"> 使用搜索引擎搜索此句 </template>
-                      <a-button
-                        shape="circle"
-                        icon="search"
-                        @click="searchSentence(item.pending.hitokoto)"
-                      />
-                    </a-tooltip>
-                  </div>
+                  <a-tooltip placement="bottom">
+                    <template slot="title"> 使用搜索引擎搜索此句 </template>
+                    <a-button
+                      shape="circle"
+                      icon="search"
+                      @click="searchSentence(item.pending.hitokoto)"
+                    />
+                  </a-tooltip>
                 </div>
               </div>
-              <div v-else class="mt-xxs">
-                <h3 style="color: rgb(159, 71, 0)" class="mb-xs">
-                  您已对此句做出评判，但您可以：
-                </h3>
-                <a-button
-                  type="primary"
-                  :loading="!!requestPollLock[index]"
-                  :disabled="!!globalLock || !!requestPollLock[index]"
-                  @click="requestCancel(item.sentence_uuid, index)"
-                >
-                  撤回意见
-                </a-button>
-              </div>
-            </template>
+            </div>
+            <div v-else class="mt-xxs">
+              <h3 style="color: rgb(159, 71, 0)" class="mb-xs">
+                您已对此句做出评判，但您可以：
+              </h3>
+              <a-button
+                type="primary"
+                :loading="!!requestPollLock[index]"
+                :disabled="!!globalLock || !!requestPollLock[index]"
+                @click="requestCancel(item.sentence_uuid, index)"
+              >
+                撤回意见
+              </a-button>
+            </div>
           </a-list-item>
         </a-list>
         <hr class="list" style="margin-bottom: 20px" />
@@ -202,8 +198,73 @@
 import { Vue, Component } from 'nuxt-property-decorator'
 import { Context } from '@nuxt/types'
 import _ from 'lodash'
+import xss, { IFilterXSSOptions } from 'xss'
 import SearchModal from '../components/SearchModal.vue'
 import { formatTime, formatPollType, formatType } from '../utils/core'
+interface PollMark {
+  id: number
+  text: string
+  level: string
+  property: number
+  value?: number // extra field, which is generated in runtime
+  updated_at: Date
+  created_at: Date
+}
+declare module PollListAPI {
+  interface Pending {
+    id: number
+    uuid: string
+    poll_status: number
+    hitokoto: string
+    type: string
+    from: string
+    from_who: string
+    creator: string
+    creator_uid: number
+    owner: string
+    reviewer?: any
+    commit_from: string
+    created_at: string
+  }
+  interface Poll {
+    id: number
+    sentence_uuid: string
+    status: number
+    is_expanded_poll: number
+    accept: number
+    reject: number
+    need_edited: number
+    need_user_poll: number
+    pending_id: number
+    created_at: Date
+    updated_at: Date
+    pending: Pending
+    isPolled: any[] // [boolean, point, type]
+    marks: number[]
+  }
+}
+
+declare module UserAPI {
+  export interface Poll {
+    user_id: number
+    points: number
+    accept: number
+    reject: number
+    need_edited: number
+    score: number
+  }
+
+  export interface User {
+    id: number
+    name: string
+    email: string
+    token: string
+    poll: Poll
+    role: string
+    created_at: Date
+    updated_at: Date
+  }
+}
 
 @Component({
   components: {
@@ -597,6 +658,10 @@ export default class Poll extends Vue {
       : '未知标记'
   }
 
+  xss(html: string, options?: IFilterXSSOptions) {
+    return xss(html, options)
+  }
+
   formatMarkColor(markId: number) {
     const mark = this.pollSelect[markId - 1]
     if (mark.level) {
@@ -617,71 +682,6 @@ export default class Poll extends Vue {
     return {
       title: '审核句子 | 一言审核员中心',
     }
-  }
-}
-
-interface PollMark {
-  id: number
-  text: string
-  level: string
-  property: number
-  value?: number // extra field, which is generated in runtime
-  updated_at: Date
-  created_at: Date
-}
-declare module PollListAPI {
-  interface Poll {
-    id: number
-    sentence_uuid: string
-    status: number
-    is_expanded_poll: number
-    accept: number
-    reject: number
-    need_edited: number
-    need_user_poll: number
-    pending_id: number
-    created_at: Date
-    updated_at: Date
-    pending: Pending
-    isPolled: any[] // [boolean, point, type]
-    marks: number[]
-  }
-  interface Pending {
-    id: number
-    uuid: string
-    poll_status: number
-    hitokoto: string
-    type: string
-    from: string
-    from_who: string
-    creator: string
-    creator_uid: number
-    owner: string
-    reviewer?: any
-    commit_from: string
-    created_at: string
-  }
-}
-
-declare module UserAPI {
-  export interface Poll {
-    user_id: number
-    points: number
-    accept: number
-    reject: number
-    need_edited: number
-    score: number
-  }
-
-  export interface User {
-    id: number
-    name: string
-    email: string
-    token: string
-    poll: Poll
-    role: string
-    created_at: Date
-    updated_at: Date
   }
 }
 </script>

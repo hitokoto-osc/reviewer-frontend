@@ -1546,14 +1546,14 @@
     "@types/webpack-hot-middleware" "^2.25.3"
     sass-loader "^10.1.1"
 
-"@nuxt/typescript-build@2.0.4":
-  version "2.0.4"
-  resolved "https://registry.npm.taobao.org/@nuxt/typescript-build/download/@nuxt/typescript-build-2.0.4.tgz#54cdff8ac83340ad45bff6b2262850380fdf3821"
-  integrity sha1-VM3/isgzQK1Fv/ayJihQOA/fOCE=
+"@nuxt/typescript-build@2.0.5":
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/@nuxt/typescript-build/-/typescript-build-2.0.5.tgz#8acc904288777825e3d85596b9591b2864e75c68"
+  integrity sha512-rKL/qhiv60aNpAHZz9+v8mzArop2LBtWIWPoCNNKkfsb/fr0xAHrUDg8K1v1zJss/bcs5p/UPLrKvvYWR6lW/g==
   dependencies:
-    consola "^2.15.0"
+    consola "^2.15.3"
     fork-ts-checker-webpack-plugin "^6.1.0"
-    ts-loader "^8.0.14"
+    ts-loader "^8.0.17"
     typescript "~4.1"
 
 "@nuxt/typescript-runtime@2.0.1":
@@ -11694,7 +11694,7 @@ trough@^1.0.0:
   resolved "https://registry.yarnpkg.com/trough/-/trough-1.0.5.tgz#b8b639cefad7d0bb2abd37d433ff8293efa5f406"
   integrity sha512-rvuRbTarPXmMb79SmzEp8aqXNKcK+y0XaB298IXueQ8I2PsrATcPBCSPyK/dDNa2iWOhKlfNnOjdAOTBU/nkFA==
 
-ts-loader@^8.0.14, ts-loader@^8.0.17:
+ts-loader@^8.0.17:
   version "8.0.17"
   resolved "https://registry.npm.taobao.org/ts-loader/download/ts-loader-8.0.17.tgz?cache=0&sync_timestamp=1612978100071&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fts-loader%2Fdownload%2Fts-loader-8.0.17.tgz#98f2ccff9130074f4079fd89b946b4c637b1f2fc"
   integrity sha1-mPLM/5EwB09Aef2JuUa0xjex8vw=

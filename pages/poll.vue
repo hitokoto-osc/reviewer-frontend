@@ -134,7 +134,7 @@
                         $set(
                           commentListDisplay,
                           index,
-                          !commentListDisplay[index],
+                          !commentListDisplay[index]
                         )
                       "
                     />
@@ -205,13 +205,13 @@ import SearchModal from '../components/SearchModal.vue'
 
 export default {
   components: {
-    SearchModal,
+    SearchModal
   },
   async asyncData({ app, store }) {
     const token = store.state.token.token
     const queue = []
     const poll = app.$axios.get(
-      `https://poll.hitokoto.cn/v1/poll/get/${token}?need_polled_flag=true`,
+      `https://poll.hitokoto.cn/v1/poll/get/${token}?need_polled_flag=true`
     )
     const user = app.$axios.get(`https://poll.hitokoto.cn/v1/user/${token}`)
     const mark = app.$axios.get(`https://poll.hitokoto.cn/v1/mark/${token}`)
@@ -220,7 +220,7 @@ export default {
     return {
       pollList: data[0].data.Data,
       user: data[1].data.Data[0],
-      pollMark: data[2].data.Data,
+      pollMark: data[2].data.Data
     }
   },
   data() {
@@ -235,12 +235,12 @@ export default {
       searchModal: false,
       searchSentenceText: '',
       // eslint-disable-next-line vue/no-reserved-keys
-      _timer() {},
+      _timer() {}
     }
   },
   head() {
     return {
-      title: '审核句子 | 一言审核员中心',
+      title: '审核句子 | 一言审核员中心'
     }
   },
   computed: {
@@ -254,7 +254,7 @@ export default {
         return v
       })
       return select
-    },
+    }
   },
   watch: {},
   mounted() {
@@ -291,7 +291,7 @@ export default {
         i: '诗词',
         j: '网易云音乐',
         k: '哲学',
-        l: '抖机灵（笑话，脑筋急转弯，段子等）',
+        l: '抖机灵（笑话，脑筋急转弯，段子等）'
       }
 
       return output[input] || '未知分类'
@@ -326,7 +326,7 @@ export default {
           text:
             '由于未填写原因，因此您无法对句子：' +
             sentenceUUID +
-            ' 提交“需要修改”意见。',
+            ' 提交“需要修改”意见。'
         })
         return
       }
@@ -340,7 +340,7 @@ export default {
           type: 'warn',
           group: 'request-result',
           title: '无法进行投票操作',
-          text: '您不能对自己提交的句子投“赞成票”！',
+          text: '您不能对自己提交的句子投“赞成票”！'
         })
         return
       }
@@ -358,14 +358,14 @@ export default {
       }
       const { data } = await this.$axios.post(
         `https://poll.hitokoto.cn/v1/poll/${token}`,
-        formData,
+        formData
       )
       if (data.Code === 403) {
         this.$notify({
           type: 'warn',
           group: 'request-result',
           title: '无法进行投票操作',
-          text: '此令牌权限不足以对句子：' + sentenceUUID + ' 进行投票。',
+          text: '此令牌权限不足以对句子：' + sentenceUUID + ' 进行投票。'
         })
         this.$set(this.requestPollLock, index, false)
         this.refreshLock = false
@@ -375,7 +375,7 @@ export default {
           type: 'error',
           group: 'request-result',
           title: '无法进行投票操作',
-          text: '您已经对句子：' + sentenceUUID + ' 投过票了，请勿重复投票。',
+          text: '您已经对句子：' + sentenceUUID + ' 投过票了，请勿重复投票。'
         })
         this.$set(this.requestPollLock, index, false)
         this.refreshLock = false
@@ -385,7 +385,7 @@ export default {
           type: 'error',
           group: 'request-result',
           title: '无法进行投票操作',
-          text: '句子：' + sentenceUUID + ' 还未开放投票。',
+          text: '句子：' + sentenceUUID + ' 还未开放投票。'
         })
         this.$set(this.requestPollLock, index, false)
         this.refreshLock = false
@@ -395,7 +395,7 @@ export default {
           type: 'error',
           group: 'request-result',
           title: '无法进行投票操作',
-          text: '句子：' + sentenceUUID + ' 要求您必须<b>填写理由</b>。',
+          text: '句子：' + sentenceUUID + ' 要求您必须<b>填写理由</b>。'
         })
         this.$set(this.requestPollLock, index, false)
         this.refreshLock = false
@@ -405,7 +405,7 @@ export default {
           type: 'error',
           group: 'request-result',
           title: '无法进行投票操作',
-          text: '您不能对自己提交的句子提交“赞成票”',
+          text: '您不能对自己提交的句子提交“赞成票”'
         })
         this.$set(this.requestPollLock, index, false)
         this.refreshLock = false
@@ -418,7 +418,7 @@ export default {
           text:
             '对句子：' +
             sentenceUUID +
-            ' 发起投票时出现未知错误，建议联系管理员。',
+            ' 发起投票时出现未知错误，建议联系管理员。'
         })
         this.$set(this.requestPollLock, index, false)
         this.refreshLock = false
@@ -452,7 +452,7 @@ export default {
         type: 'success',
         group: 'request-result',
         title: '成功进行投票操作',
-        text: '成功对句子：' + sentenceUUID + ' 投票，投票数据已经更新。',
+        text: '成功对句子：' + sentenceUUID + ' 投票，投票数据已经更新。'
       })
       this.$set(this.requestPollLock, index, false)
       this.refreshLock = false
@@ -465,14 +465,14 @@ export default {
       this.refreshLock = true
       const token = this.$store.state.token.token
       const { data } = await this.$axios.get(
-        `https://poll.hitokoto.cn/v1/poll/cancel/${token}?sentence_uuid=${sentenceUUID}`,
+        `https://poll.hitokoto.cn/v1/poll/cancel/${token}?sentence_uuid=${sentenceUUID}`
       )
       if (data.Code === -3) {
         this.$notify({
           type: 'danger',
           group: 'request-result',
           title: '无法撤回投票',
-          text: '您尚未对此投票发表意见，无需撤回。',
+          text: '您尚未对此投票发表意见，无需撤回。'
         })
         this.$set(this.requestPollLock, index, false)
         this.refreshLock = false
@@ -482,7 +482,7 @@ export default {
           type: 'danger',
           group: 'request-result',
           title: '无法撤回投票',
-          text: '此投票已结束投票阶段，无法撤回投票。',
+          text: '此投票已结束投票阶段，无法撤回投票。'
         })
         this.$set(this.requestPollLock, index, false)
         this.refreshLock = false
@@ -492,7 +492,7 @@ export default {
           type: 'danger',
           group: 'request-result',
           title: '无法撤回投票',
-          text: '投票不存在。可能是系统问题，建议联系管理员。',
+          text: '投票不存在。可能是系统问题，建议联系管理员。'
         })
         this.$set(this.requestPollLock, index, false)
         this.refreshLock = false
@@ -503,7 +503,7 @@ export default {
           type: 'danger',
           group: 'request-result',
           title: '无法撤回投票',
-          text: '未知状态码。可能是系统问题，建议联系管理员。',
+          text: '未知状态码。可能是系统问题，建议联系管理员。'
         })
         this.$set(this.requestPollLock, index, false)
         this.refreshLock = false
@@ -540,7 +540,7 @@ export default {
         type: 'success',
         group: 'request-result',
         title: '成功撤回投票',
-        text: '成功对句子：' + sentenceUUID + ' 撤回投票，投票数据已经更新。',
+        text: '成功对句子：' + sentenceUUID + ' 撤回投票，投票数据已经更新。'
       })
       this.$set(this.requestPollLock, index, false)
       this.refreshLock = false
@@ -553,14 +553,14 @@ export default {
       this.requestNewPollLock = true
       const token = this.$store.state.token.token
       const { data } = await this.$axios.get(
-        `https://poll.hitokoto.cn/v1/poll/new/${token}`,
+        `https://poll.hitokoto.cn/v1/poll/new/${token}`
       )
       if (data.Code === 403) {
         this.$notify({
           type: 'warn',
           group: 'request-result',
           title: '无法发起新投票',
-          text: '此令牌虽然已经证明了您的身份，但是您当前无权发起投票。',
+          text: '此令牌虽然已经证明了您的身份，但是您当前无权发起投票。'
         })
         this.requestNewPollLock = false
         return
@@ -569,7 +569,7 @@ export default {
           type: 'error',
           group: 'request-result',
           title: '无法发起新投票',
-          text: '当前进行中的投票已经到达上限，暂时无法开启新投票。',
+          text: '当前进行中的投票已经到达上限，暂时无法开启新投票。'
         })
         this.requestNewPollLock = false
         return
@@ -579,7 +579,7 @@ export default {
           group: 'request-result',
           title: '无法发起新投票',
           text:
-            '当前没有句子等待投票。十分感谢各位审核员的努力，一言有你才精彩！',
+            '当前没有句子等待投票。十分感谢各位审核员的努力，一言有你才精彩！'
         })
         this.requestNewPollLock = false
         return
@@ -591,7 +591,7 @@ export default {
         text:
           '待投票队列还剩 ' +
           data.Data[0].remain_pending +
-          '个。\n已将新投票添加到投票队列，您现在可以开始投票了。',
+          '个。\n已将新投票添加到投票队列，您现在可以开始投票了。'
       })
       data.Data[0].isPolled = [false] // 手动添加 flag
       if (this.pollList.length === 0) {
@@ -613,7 +613,7 @@ export default {
         text:
           '为了保障数据的及时、有效，每 30 秒我们会更新投票队列。当前有 ' +
           this.pollList.length +
-          ' 个句子正在投票。',
+          ' 个句子正在投票。'
       })
       this._timer = setInterval(this.updatePollList, 1000 * 30)
     },
@@ -624,7 +624,7 @@ export default {
       const token = this.$store.state.token.token
       this.$axios
         .get(
-          `https://poll.hitokoto.cn/v1/poll/get/${token}?need_polled_flag=true`,
+          `https://poll.hitokoto.cn/v1/poll/get/${token}?need_polled_flag=true`
         )
         .then(({ data }) => {
           if (data.Code !== 200) {
@@ -660,7 +660,7 @@ export default {
             text:
               '已将投票队列数据更新，当前进行中的投票有 ' +
               data.Data.length +
-              ' 个。',
+              ' 个。'
           })
         })
     },
@@ -695,8 +695,8 @@ export default {
       return option.componentOptions.children[0].text
         .toLowerCase()
         .includes(input.toLowerCase())
-    },
-  },
+    }
+  }
 }
 </script>
 <style lang="scss">

@@ -123,8 +123,8 @@ export default {
     const token = store.state.token.token || app.$cookies.get('token')
     queue.push(
       app.$axios.get(
-        `https://poll.hitokoto.cn/v1/user/result/poll/${token}?limit=${pageSize}`,
-      ),
+        `https://poll.hitokoto.cn/v1/user/result/poll/${token}?limit=${pageSize}`
+      )
     ) // 获取投票结果
     queue.push(app.$axios.get(`https://poll.hitokoto.cn/v1/user/${token}`))
     queue.push(app.$axios.get(`https://poll.hitokoto.cn/v1/mark/${token}`))
@@ -135,17 +135,17 @@ export default {
       total: result[0].data.Data[0].total,
       list: result[0].data.Data[0].collection,
       pageSize,
-      pollMark: result[2].data.Data,
+      pollMark: result[2].data.Data
     }
   },
   data() {
     return {
-      currentPage: 1,
+      currentPage: 1
     }
   },
   head() {
     return {
-      title: '结果与记录 | 一言审核员中心',
+      title: '结果与记录 | 一言审核员中心'
     }
   },
   computed: {
@@ -159,14 +159,14 @@ export default {
         return v
       })
       return select
-    },
+    }
   },
   watch: {
     currentPage(v) {
       const offset = (v - 1) * 15
       this.$axios
         .get(
-          `https://poll.hitokoto.cn/v1/user/result/poll/${this.token}?limit=${this.pageSize}&offset=${offset}`,
+          `https://poll.hitokoto.cn/v1/user/result/poll/${this.token}?limit=${this.pageSize}&offset=${offset}`
         )
         .then((response) => {
           scrollTopSmooth(0)
@@ -176,7 +176,7 @@ export default {
           this.total = data.Data[0].total
           this.list = data.Data[0].collection
         })
-    },
+    }
   },
   methods: {
     xss(html, options) {
@@ -217,7 +217,7 @@ export default {
         i: '诗词',
         j: '网易云音乐',
         k: '哲学',
-        l: '抖机灵（笑话，脑筋急转弯，段子等）',
+        l: '抖机灵（笑话，脑筋急转弯，段子等）'
       }
 
       return output[input] || '未知分类'
@@ -251,8 +251,8 @@ export default {
       } else {
         return null
       }
-    },
-  },
+    }
+  }
 }
 </script>
 

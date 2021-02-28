@@ -100,7 +100,7 @@ export default {
     queue.push(user)
     const data = await Promise.all(queue)
     return {
-      user: data[0].data.Data[0],
+      user: data[0].data.Data[0]
     }
   },
   data() {
@@ -108,13 +108,13 @@ export default {
   },
   head() {
     return {
-      title: '控制中心 | 一言审核员中心',
+      title: '控制中心 | 一言审核员中心'
     }
   },
   computed: {
     getToken() {
       return this.$store.state.token.token || this.$cookies.get('token')
-    },
+    }
   },
   methods: {
     formatTime(input) {
@@ -134,8 +134,8 @@ export default {
     },
     getGravatarURLByHash(hash) {
       return 'https://fdn.geekzu.org/avatar/' + hash + '?d=mm&s=640'
-    },
-  },
+    }
+  }
 }
 </script>
 <style lang="scss">

@@ -22,7 +22,7 @@
             <div
               class="text-wrapper sentence"
               :style="{ 'font-size': '1.65em' }"
-              v-text="item.pending.hitokoto"
+              v-text="xss(item.pending.hitokoto)"
             />
             <ul
               class="mb-2"
@@ -200,6 +200,7 @@
 <script>
 import moment from 'moment'
 import _ from 'lodash'
+import xss from 'xss'
 import SearchModal from '../components/SearchModal.vue'
 
 export default {
@@ -263,6 +264,9 @@ export default {
     clearInterval(this._timer)
   },
   methods: {
+    xss(html, options) {
+      return xss(html, options)
+    },
     formatTime(input) {
       return moment(input).format('YYYY-MM-DD HH:mm')
     },

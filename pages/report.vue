@@ -22,7 +22,7 @@
               <template v-if="getPollSentence(item)">
                 <div
                   class="text-wrapper sentence"
-                  v-text="getPollSentence(item).hitokoto"
+                  v-text="xss(getPollSentence(item).hitokoto)"
                 />
                 <li>标识：{{ item.sentence_uuid }}</li>
                 <li>来源：{{ getPollSentence(item).from }}</li>
@@ -92,7 +92,7 @@
 
 <script>
 import moment from 'moment'
-
+import xss from 'xss'
 const scrollTopSmooth = function (position) {
   // 不存在原生`requestAnimationFrame`，用`setTimeout`模拟替代
   if (!window.requestAnimationFrame) {
@@ -179,6 +179,9 @@ export default {
     },
   },
   methods: {
+    xss(html, options) {
+      return xss(html, options)
+    },
     formatStatus(statusNumber) {
       const desc = []
       desc[1] = '进行中'

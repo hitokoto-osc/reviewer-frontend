@@ -1,12 +1,7 @@
 <template>
-  <a-layout
-    id="layout"
-    class="layout"
-  >
+  <a-layout id="layout" class="layout">
     <a-layout-header class="header">
-      <div class="logo">
-        一言审核员中心（Alpha）
-      </div>
+      <div class="logo">一言审核员中心（Alpha）</div>
     </a-layout-header>
     <a-layout-content>
       <nuxt />
@@ -19,10 +14,20 @@
         <div class="di-color-d" />
         <div class="di-color-e" />
       </div>
-      MoeTeam ©2020 All Rights Reserved. Powered by ThinkJS & Nuxt.
+      MoeTeam ©{{ year }} All Rights Reserved. Powered by ThinkJS & Nuxt.
     </a-layout-footer>
   </a-layout>
 </template>
+<script>
+import moment from 'moment'
+export default {
+  data() {
+    return {
+      year: moment().format('YYYY')
+    }
+  }
+}
+</script>
 <style>
 #layout {
   min-height: 100vh;

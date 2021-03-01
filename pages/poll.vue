@@ -139,7 +139,14 @@
                       "
                     />
                   </a-tooltip>
-
+                  <a-tooltip placement="bottom">
+                    <template slot="title"> 查看此句在库内是否重复 </template>
+                    <a-button
+                      shape="circle"
+                      icon="select"
+                      @click="checkSentenceRepeat(item.pending.hitokoto)"
+                    />
+                  </a-tooltip>
                   <a-tooltip placement="bottom">
                     <template slot="title"> 使用搜索引擎搜索此句 </template>
                     <a-button
@@ -152,7 +159,7 @@
               </div>
             </div>
             <div v-else class="mt-xxs">
-              <h3 :style="{ color: rgb(159, 71, 0) }" class="mb-xs">
+              <h3 :style="{ color: 'rgb(159, 71, 0)' }" class="mb-xs">
                 您已对此句做出评判，但您可以：
               </h3>
               <a-button
@@ -195,6 +202,12 @@
       :sentence="searchSentenceText"
       @on-change-visible="changeVisible"
     />
+    <sentence-repeat-check-modal
+      :visible="sentenceRepeatCheckModal"
+      :sentence="sentenceRepeatCheckText"
+      @on-change-visible="changeSentenceRepeatCheckModaVisible"
+      @on-error="handleError"
+    />
   </a-row>
 </template>
 <script>
@@ -202,10 +215,12 @@ import moment from 'moment'
 import _ from 'lodash'
 import xss from 'xss'
 import SearchModal from '../components/SearchModal.vue'
+import SentenceRepeatCheckModal from '../components/SentenceRepeatCheckModal.vue'
 
 export default {
   components: {
-    SearchModal
+    SearchModal,
+    SentenceRepeatCheckModal
   },
   async asyncData({ app, store }) {
     const token = store.state.token.token
@@ -234,6 +249,8 @@ export default {
       commentListDisplay: [],
       searchModal: false,
       searchSentenceText: '',
+      sentenceRepeatCheckModal: false,
+      sentenceRepeatCheckText: '',
       // eslint-disable-next-line vue/no-reserved-keys
       _timer() {}
     }
@@ -668,8 +685,24 @@ export default {
       this.searchSentenceText = sentence
       this.searchModal = true
     },
+    checkSentenceRepeat(sentence) {
+      this.sentenceRepeatCheckText = sentence
+      this.sentenceRepeatCheckModal = true
+    },
     changeVisible(val) {
       this.searchModal = val
+    },
+    changeSentenceRepeatCheckModaVisible(val) {
+      this.sentenceRepeatCheckModal = val
+    },
+    handleError(err) {
+      console.error(err)
+      this.$notify({
+        type: 'error',
+        group: 'request-result',
+        title: '请求过程中出现错误',
+        text: `错误信息：${err.message}。详细内容请查看控制台。`
+      })
     },
     formatMark(markId) {
       return this.pollSelect[markId - 1]

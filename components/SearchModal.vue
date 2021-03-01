@@ -8,7 +8,11 @@
     @ok="Visible = false"
     @cancel="Visible = false"
   >
-    <p>句子：{{ sentence }}</p>
+    <p>
+      句子：<span :style="{ 'font-family': `'Noto Serif SC', serif` }">{{
+        sentence
+      }}</span>
+    </p>
     <p><strong>单击下方的按钮以使用对应的搜索引擎进行搜索。</strong></p>
     <div class="search-button-group">
       <a-button @click="openBaidu"> 百度 </a-button>

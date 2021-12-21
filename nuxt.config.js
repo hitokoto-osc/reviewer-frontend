@@ -1,6 +1,7 @@
+import { defineNuxtConfig } from '@nuxt/bridge'
+
 /* eslint-disable @typescript-eslint/no-unused-vars */
-export default {
-  mode: 'universal',
+export default defineNuxtConfig ({
   /*
    ** Headers of the page
    */
@@ -52,7 +53,6 @@ export default {
     '@nuxtjs/eslint-module',
     // Doc: https://github.com/nuxt-community/stylelint-module
     '@nuxtjs/stylelint-module',
-    '@nuxt/typescript-build',
     [
       '@nuxtjs/google-analytics',
       {
@@ -121,4 +121,4 @@ export default {
     },
     resourceHints: false,
   },
-}
+})

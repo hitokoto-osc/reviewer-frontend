@@ -2,11 +2,14 @@
 definePageMeta({
   layout: 'auth'
 })
+const username = ref('')
+const password = ref('')
 </script>
 <template>
   <div class="form-container">
     <div class="input-group">
       <AuthInput
+        v-model="username"
         icon-class="i-solar-user-circle-linear"
         type="text"
         name="username"
@@ -15,6 +18,7 @@ definePageMeta({
     </div>
     <div class="input-group">
       <AuthInput
+        v-model="password"
         icon-class="i-solar-lock-password-linear"
         type="password"
         name="password"
@@ -36,6 +40,6 @@ definePageMeta({
 }
 
 .button {
-  @apply: border-0 block w-full rounded-2 py-4 bg-purple-600 hover:bg-purple-500 hover:cursor-pointer text-white transition-all duration-300 ease-in-out;
+  @apply border-0 block w-full rounded-2 py-4 bg-purple-600 hover:bg-purple-500 hover:cursor-pointer text-white transition-all duration-300 ease-in-out;
 }
 </style>

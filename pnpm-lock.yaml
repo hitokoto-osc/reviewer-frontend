@@ -8,6 +8,9 @@ devDependencies:
   '@ant-design-vue/nuxt':
     specifier: ^1.1.0
     version: 1.1.0(rollup@2.79.1)(vue@3.3.4)
+  '@ant-design/icons-vue':
+    specifier: ^6.1.0
+    version: 6.1.0(vue@3.3.4)
   '@iconify/json':
     specifier: ^2.2.103
     version: 2.2.103
@@ -6212,7 +6215,7 @@ packages:
     dev: true
 
   /get-stream@2.3.1:
-    resolution: {integrity: sha1-Xzj5PzRgCWZu4BUKBUFn+Rvdld4=}
+    resolution: {integrity: sha512-AUGhbbemXxrZJRD5cDvKtQxLuYaIbNtDTK8YqupCI393Q2KSTreEsLUN3ZxAWFGiKTzL6nKuzfcIvieflUX9qA==}
     engines: {node: '>=0.10.0'}
     dependencies:
       object-assign: 4.1.1

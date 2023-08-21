@@ -11,6 +11,7 @@
   },
   "devDependencies": {
     "@ant-design-vue/nuxt": "^1.1.0",
+    "@ant-design/icons-vue": "^6.1.0",
     "@iconify/json": "^2.2.103",
     "@nuxt/devtools": "latest",
     "@nuxtjs/eslint-module": "^4.1.0",

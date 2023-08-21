@@ -18,16 +18,20 @@ export default defineNuxtConfig({
           // Google Fonts
           rel: 'stylesheet',
           href: 'https://fonts.googleapis.com/css?family=Noto+Serif+SC:600&display=swap'
-        },
-        {
-          rel: 'stylesheet',
-          href: 'https://fastly.jsdelivr.net/npm/css-spaces@latest/dist/spaces.min.css'
         }
+        // {
+        //   rel: 'stylesheet',
+        //   href: 'https://fastly.jsdelivr.net/npm/css-spaces@latest/dist/spaces.min.css'
+        // }
       ]
     }
   },
-
+  css: [
+    '~/node_modules/modern-normalize/modern-normalize.css', // CSS reset
+    '~/assets/scss/main.scss'
+  ],
   modules: [
+    '@unocss/nuxt',
     // Doc: https://github.com/nuxt-community/eslint-module
     '@nuxtjs/eslint-module',
     // Doc: https://github.com/nuxt-community/stylelint-module
@@ -37,8 +41,7 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@pinia-plugin-persistedstate/nuxt',
     'nuxt-gtag',
-    '@ant-design-vue/nuxt',
-    '@unocss/nuxt'
+    '@ant-design-vue/nuxt'
   ],
   antd: {},
   gtag: {

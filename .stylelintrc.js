@@ -9,5 +9,11 @@ module.exports = {
     'stylelint-order',
     'stylelint-declaration-block-no-ignored-properties'
   ],
-  ignoreFiles: ['node_modules/**/*', 'dist/**/*', '**/typings/**/*']
+  ignoreFiles: ['node_modules/**/*', 'dist/**/*', '**/typings/**/*'],
+  overrides: [
+    {
+      files: ['**/*.scss', '*.scss'],
+      customSyntax: require('postcss-scss')
+    }
+  ]
 }

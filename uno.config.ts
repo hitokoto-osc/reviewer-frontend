@@ -11,6 +11,20 @@ export default defineConfig({
         '--un-gradient': 'var(--un-gradient-shape), var(--un-gradient-stops);',
         'background-image': 'linear-gradient(var(--un-gradient));'
       })
+    ],
+    [
+      /^-bg-gradient-(\d+)$/,
+      ([, d]) => ({
+        '--un-gradient-shape': `-${d}deg;`,
+        '--un-gradient': 'var(--un-gradient-shape), var(--un-gradient-stops);',
+        'background-image': 'linear-gradient(var(--un-gradient));'
+      })
+    ],
+    [
+      'font-noto-serif',
+      {
+        'font-family': 'Noto Serif SC, serif'
+      }
     ]
   ],
   transformers: [transformerCompileClass(), transformerDirectives()]

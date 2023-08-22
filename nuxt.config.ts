@@ -3,7 +3,6 @@ export default defineNuxtConfig({
   ssr: process.env.NODE_ENV !== 'development',
   app: {
     head: {
-      title: process.env.npm_package_name || '',
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -58,5 +57,11 @@ export default defineNuxtConfig({
   },
 
   devtools: { enabled: true },
-  components: true
+  components: true,
+  runtimeConfig: {
+    endpoint: {
+      commonAPI: process.env.HITOKOTO_COMMON_API_ENDPOINT,
+      userAPI: process.env.HITOKOTO_USER_API_ENDPOINT
+    }
+  }
 })

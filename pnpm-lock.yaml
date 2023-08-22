@@ -173,6 +173,9 @@ devDependencies:
   vite:
     specifier: ^4.4.9
     version: 4.4.9(@types/node@20.5.1)(sass@1.66.1)
+  xss:
+    specifier: ^1.0.14
+    version: 1.0.14
 
 packages:
 
@@ -6215,7 +6218,7 @@ packages:
     dev: true
 
   /get-stream@2.3.1:
-    resolution: {integrity: sha512-AUGhbbemXxrZJRD5cDvKtQxLuYaIbNtDTK8YqupCI393Q2KSTreEsLUN3ZxAWFGiKTzL6nKuzfcIvieflUX9qA==}
+    resolution: {integrity: sha1-Xzj5PzRgCWZu4BUKBUFn+Rvdld4=}
     engines: {node: '>=0.10.0'}
     dependencies:
       object-assign: 4.1.1
@@ -11476,6 +11479,15 @@ packages:
     engines: {node: '>=12'}
     dev: true
 
+  /xss@1.0.14:
+    resolution: {integrity: sha512-og7TEJhXvn1a7kzZGQ7ETjdQVS2UfZyTlsEdDOqvQF7GoxNfY+0YLCzBy1kPdsDDx4QuNAonQPddpsn6Xl/7sw==}
+    engines: {node: '>= 0.10.0'}
+    hasBin: true
+    dependencies:
+      commander: 2.20.3
+      cssfilter: mirrors.tencent.com/cssfilter@0.0.10
+    dev: true
+
   /xtend@4.0.2:
     resolution: {integrity: sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==}
     engines: {node: '>=0.4'}
@@ -11557,6 +11569,12 @@ packages:
     resolution: {integrity: sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=, registry: https://mirrors.cloud.tencent.com/npm/, tarball: https://mirrors.tencent.com/npm/concat-map/-/concat-map-0.0.1.tgz}
     name: concat-map
     version: 0.0.1
+    dev: true
+
+  mirrors.tencent.com/cssfilter@0.0.10:
+    resolution: {integrity: sha1-xtJnJjKi5cg+AT5oZKQs6N79IK4=, registry: https://mirrors.cloud.tencent.com/npm/, tarball: https://mirrors.tencent.com/npm/cssfilter/-/cssfilter-0.0.10.tgz}
+    name: cssfilter
+    version: 0.0.10
     dev: true
 
   mirrors.tencent.com/ee-first@1.1.1:

@@ -65,19 +65,18 @@ const items: ItemType[] = reactive([
 ])
 
 const selectedKeys = ref<string[]>(['1'])
-const openKeys = ref<string[]>(['sub1'])
+const openKeys = ref<string[]>(['messages'])
 
 const handleClick: MenuProps['onClick'] = (e) => {
   console.log('click', e)
 }
 
-watch(openKeys, (val) => {
-  console.log('openKeys', val)
-})
+// watch(openKeys, (val) => {
+//   console.log('openKeys', val)
+// })
 </script>
 <template>
   <a-menu
-    id="dddddd"
     v-model:openKeys="openKeys"
     v-model:selectedKeys="selectedKeys"
     class="menu"

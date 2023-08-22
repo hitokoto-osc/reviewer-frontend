@@ -1,11 +1,19 @@
+import { UserInfoRes } from 'composables/api'
 import dayjs from 'dayjs'
 
-export const useTokenStore = defineStore('token', {
+export interface UserState {
+  user?: UserInfoRes
+  token: string
+  expiredAt: number
+}
+
+export const useUserStore = defineStore('user', {
   state: () => {
     return {
+      user: {},
       token: '',
       expiredAt: 0
-    }
+    } as UserState
   },
   getters: {
     isExpired: (state) => {

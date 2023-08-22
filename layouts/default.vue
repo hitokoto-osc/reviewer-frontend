@@ -25,7 +25,7 @@
 }
 
 .main {
-  @apply mt-3 md:mt-15 mx-auto w-full md:w-80% lg:w-70% flex-1 flex bg-white md:rounded-t-4 border-2 shadow-sm;
+  @apply mt-3 md:mt-15 mx-auto w-full md:w-80% lg:w-70% flex-1 flex bg-white md:rounded-t-4 border-2 shadow-sm shadow-slate-100;
 
   .sidebar {
     @apply h-full w-0 display-none md:block md:w-1/4 lg:w-1/5 rounded-l-4;

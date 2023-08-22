@@ -66,7 +66,7 @@
       @apply pl-5 flex-1 display-none md:flex h-full items-center;
 
       .menu-item {
-        @apply text-md mx-3 py-3 px-5 cursor-pointer hover:bg-gray-100 rounded-2 select-none;
+        @apply text-sm mx-3 py-3 px-5 cursor-pointer hover:bg-gray-100 rounded-2 select-none;
       }
     }
 
@@ -77,7 +77,7 @@
         @apply flex w-fit items-center px-3 py-1 hover:bg-gray-100 rounded-2;
 
         .username {
-          @apply text-md mr-3;
+          @apply text-sm mr-3;
         }
 
         .avatar-wrapper {

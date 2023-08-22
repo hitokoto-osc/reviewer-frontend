@@ -1,63 +1,28 @@
-# Nuxt 3 Minimal Starter
+# 审核员中心
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+此为审核员模块的前段部分。
 
-## Setup
+## 技术栈
 
-Make sure to install the dependencies:
+* Vue 3
+* Nuxt 3
+* UnoCSS
+* Ant Design Vue
+* TypeScript
+* PNPM
+
+## 常用指令
 
 ```bash
-# npm
-npm install
-
-# pnpm
+# 安装依赖
 pnpm install
 
-# yarn
-yarn install
+# 启动开发服务器
+pnpm dev
+
+# 构建
+pnpm build
+
+# 预览
+pnpm preview
 ```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm run dev
-
-# yarn
-yarn dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.

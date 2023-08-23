@@ -1,9 +1,8 @@
-import type { AuthLoginReq, AuthLoginRes } from '../../../composables/api'
+import type { AuthLoginReq, AuthLoginRes } from '@/composables/api'
 import queryString from 'query-string'
 export default defineEventHandler(async (event) => {
   try {
     const body = await readBody<AuthLoginReq>(event)
-    console.log(body)
     const config = useRuntimeConfig()
     const baseURL = config.public.endpoint.commonAPI
     const data = await $fetch<AuthLoginRes>('/auth/login', {

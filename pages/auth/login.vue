@@ -44,10 +44,10 @@ const doLogin = async () => {
     }
     // 登录成功
     userStore.setToken(data.value?.data[0].token)
-    navigateTo('/dashboard')
   } finally {
     pending.value = false
   }
+  navigateTo('/dashboard')
 }
 onMounted(() => {
   if (!userStore.isExpired) {
@@ -82,8 +82,9 @@ onMounted(() => {
       />
     </div>
     <div class="mt-15">
-      <button class="button" :disabled="disabled" @click="doLogin">
+      <button class="button" :disabled="pending || disabled" @click="doLogin">
         登 录
+        <div v-show="pending" class="loading"></div>
       </button>
     </div>
   </div>
@@ -105,5 +106,9 @@ onMounted(() => {
   @apply border-0 block w-full rounded-2 py-4 bg-purple-600 text-white transition-all duration-300 ease-in-out;
   @apply hover:bg-purple-500 hover:cursor-pointer;
   @apply disabled:hover:bg-purple-600 disabled:opacity-50 disabled:cursor-not-allowed;
+
+  .loading {
+    @apply inline-block ml-2 i-line-md-loading-loop;
+  }
 }
 </style>

@@ -40,7 +40,7 @@ const isExpandCommentInput = ref(false)
           <a-button> 驳回 </a-button>
           <a-button> 需要更改 </a-button>
         </div>
-        <div class="flex-1"></div>
+        <div class="md:flex-1"></div>
         <div class="tool-actions">
           <a-tooltip placement="bottom">
             <template #title> 显示/隐藏输入框 </template>
@@ -81,19 +81,21 @@ const isExpandCommentInput = ref(false)
   }
 
   .actions {
-    @apply flex mt-2;
+    @apply block md:flex mt-2;
 
     .main-actions {
+      @apply flex justify-between md:block;
+
       button.ant-btn {
-        @apply mr-2 mb-2;
+        @apply mr-2 my-1;
       }
     }
 
     .tool-actions {
-      @apply flex items-center;
+      @apply flex justify-end md:block;
 
       button.ant-btn {
-        @apply mx-1;
+        @apply mt-3  mx-1 md:my-1;
       }
     }
   }

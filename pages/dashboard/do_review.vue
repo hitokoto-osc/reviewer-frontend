@@ -18,7 +18,7 @@ const cardData = reactive([
       approve: 30,
       reject: 123,
       needModify: 123,
-      createdAt: Date.now()
+      createdAt: new Date().toISOString()
     },
     sentence: {
       uuid: '80d3bb1f-3c35-4261-8ae6-56a5bfcdb940',
@@ -36,12 +36,26 @@ const cardData = reactive([
 <template>
   <div class="do-review">
     <a-page-header title="句子审核" />
-    <div class="toolbar flex">
+    <div class="toolbar">
       <a-segmented v-model:value="segmentedValue" :options="segmentOptions" />
       <div class="flex-1" />
-      <a-button type="primary" shape="round" :icon="h(PlusCircleOutlined)">
-        发起新投票
-      </a-button>
+      <div class="button-group">
+        <div class="pc">
+          <a-button type="primary" shape="round">
+            <template #icon>
+              <PlusCircleOutlined />
+            </template>
+            发起新投票
+          </a-button>
+        </div>
+        <div class="mobile">
+          <a-button type="primary">
+            <template #icon>
+              <PlusCircleOutlined />
+            </template>
+          </a-button>
+        </div>
+      </div>
     </div>
 
     <div class="content">
@@ -58,7 +72,7 @@ const cardData = reactive([
       </a-row>
     </div>
     <!-- 分页器 -->
-    <div class="flex justify-center">
+    <div class="pagination">
       <a-pagination
         v-model:current="current"
         show-quick-jumper
@@ -79,8 +93,26 @@ const cardData = reactive([
     @apply mx-0 px-0;
   }
 
+  .toolbar {
+    @apply flex;
+
+    .button-group {
+      .pc {
+        @apply display-none md:block;
+      }
+
+      .mobile {
+        @apply display-block md:display-none;
+      }
+    }
+  }
+
   .content {
     @apply flex-1 mt-8;
+  }
+
+  .pagination {
+    @apply flex justify-center mt-5;
   }
 }
 </style>

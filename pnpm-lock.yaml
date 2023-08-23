@@ -62,6 +62,9 @@ devDependencies:
   '@unocss/transformer-variant-group':
     specifier: ^0.55.2
     version: 0.55.2
+  '@vant/nuxt':
+    specifier: ^1.0.2
+    version: 1.0.2(rollup@2.79.1)(vant@4.6.6)
   '@vite-pwa/nuxt':
     specifier: ^0.1.0
     version: 0.1.0(@nuxt/kit@3.6.5)(vite-plugin-pwa@0.16.4)
@@ -188,6 +191,9 @@ devDependencies:
   unplugin-icons:
     specifier: ^0.16.5
     version: 0.16.5
+  vant:
+    specifier: ^4.6.6
+    version: 4.6.6(vue@3.3.4)
   vite:
     specifier: ^4.4.9
     version: 4.4.9(@types/node@20.5.1)(sass@1.66.1)
@@ -3590,6 +3596,32 @@ packages:
       - rollup
     dev: true
 
+  /@vant/nuxt@1.0.2(rollup@2.79.1)(vant@4.6.6):
+    resolution: {integrity: sha512-h6Pp8Dq/Cy7HMKYzuz5oouGVnYdN2Z9iVOuD+FFMNHRyvXZU0Ny7Asx3l+qW93L2rbB073CdQdczJnb1BtWHAQ==}
+    peerDependencies:
+      vant: '>=4'
+    dependencies:
+      '@nuxt/kit': 3.6.5(rollup@2.79.1)
+      magic-string: 0.29.0
+      unplugin: 1.4.0
+      vant: 4.6.6(vue@3.3.4)
+    transitivePeerDependencies:
+      - rollup
+      - supports-color
+    dev: true
+
+  /@vant/popperjs@1.3.0:
+    resolution: {integrity: sha512-hB+czUG+aHtjhaEmCJDuXOep0YTZjdlRR+4MSmIFnkCQIxJaXLQdSsR90XWvAI2yvKUI7TCGqR8pQg2RtvkMHw==}
+    dev: true
+
+  /@vant/use@1.5.2(vue@3.3.4):
+    resolution: {integrity: sha512-CBK61iT568dCHUwFFsErGbW6/5tmrPnZJKGtcSy7Tjcrmws8Ku+YZo7IUFD9Xkj9MfSJ4pfhQ7pU2KouP5Cojg==}
+    peerDependencies:
+      vue: ^3.0.0
+    dependencies:
+      vue: 3.3.4
+    dev: true
+
   /@vercel/nft@0.22.6:
     resolution: {integrity: sha512-gTsFnnT4mGxodr4AUlW3/urY+8JKKB452LwF3m477RFUJTAaDmcz2JqFuInzvdybYIeyIv1sSONEJxsxnbQ5JQ==}
     engines: {node: '>=14'}
@@ -6305,7 +6337,7 @@ packages:
     dev: true
 
   /get-stream@2.3.1:
-    resolution: {integrity: sha512-AUGhbbemXxrZJRD5cDvKtQxLuYaIbNtDTK8YqupCI393Q2KSTreEsLUN3ZxAWFGiKTzL6nKuzfcIvieflUX9qA==}
+    resolution: {integrity: sha1-Xzj5PzRgCWZu4BUKBUFn+Rvdld4=}
     engines: {node: '>=0.10.0'}
     dependencies:
       object-assign: 4.1.1
@@ -7558,6 +7590,13 @@ packages:
 
   /magic-string@0.27.0:
     resolution: {integrity: sha512-8UnnX2PeRAPZuN12svgR9j7M1uWMovg/CEnIwIG0LFkXSJJe4PdfUGiTGl8V9bsBHFUtfVINcSyYxd7q+kx9fA==}
+    engines: {node: '>=12'}
+    dependencies:
+      '@jridgewell/sourcemap-codec': 1.4.15
+    dev: true
+
+  /magic-string@0.29.0:
+    resolution: {integrity: sha512-WcfidHrDjMY+eLjlU+8OvwREqHwpgCeKVBUpQ3OhYYuvfaYCUgcbuBzappNzZvg/v8onU3oQj+BYpkOJe9Iw4Q==}
     engines: {node: '>=12'}
     dependencies:
       '@jridgewell/sourcemap-codec': 1.4.15
@@ -10913,6 +10952,17 @@ packages:
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
     dependencies:
       builtins: 5.0.1
+    dev: true
+
+  /vant@4.6.6(vue@3.3.4):
+    resolution: {integrity: sha512-UgBfz4d1Ej483WAp6T3HrFZQNKpRW0PoT9mDXqw8JFUuiHgpdeAMyAwuRaYdQiUy4cFTVZ25a/+xyGCTMdvYaA==}
+    peerDependencies:
+      vue: ^3.0.0
+    dependencies:
+      '@vant/popperjs': 1.3.0
+      '@vant/use': 1.5.2(vue@3.3.4)
+      '@vue/shared': 3.3.4
+      vue: 3.3.4
     dev: true
 
   /vite-node@0.33.0(@types/node@20.5.1)(sass@1.66.1):

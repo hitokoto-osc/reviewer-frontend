@@ -42,6 +42,7 @@ export default defineNuxtConfig({
     '@pinia-plugin-persistedstate/nuxt',
     'nuxt-gtag',
     '@ant-design-vue/nuxt',
+    '@vant/nuxt', // 偷一点 Vant 的组件，改善移动端体验
     [
       'unplugin-icons/nuxt',
       {

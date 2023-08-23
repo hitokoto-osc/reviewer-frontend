@@ -7,6 +7,12 @@ export interface UserState {
   expiredAt: number
 }
 
+const userRoleFormatter: Record<string, string> = {
+  admin: '管理员',
+  reviewer: '审核员',
+  user: '普通用户'
+}
+
 export const useUserStore = defineStore('user', {
   state: () => {
     return {
@@ -22,6 +28,11 @@ export const useUserStore = defineStore('user', {
         state.token.length !== 40 ||
         dayjs().isAfter(dayjs(state.expiredAt))
       )
+    },
+    role: (state) => {
+      return state.user?.role
+        ? userRoleFormatter[state.user.role] || state.user.role
+        : '游客'
     }
   },
   actions: {

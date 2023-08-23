@@ -1,41 +1,70 @@
+<script lang="ts" setup>
+const userStore = useUserStore()
+const [messageAPI] = message.useMessage()
+const doLogout = () => {
+  userStore.clear()
+  messageAPI.info('您已登出，即将跳转到首页')
+  setTimeout(() => {
+    navigateTo('/')
+  }, 3000)
+}
+</script>
 <template>
   <header class="header-container">
     <div class="header">
-      <div class="logo-container">
+      <div class="logo-container" @click="navigateTo('/')">
         <img src="~assets/img/logo.svg" draggable="false" class="logo" />
         <span class="name"> 审核员中心 </span>
       </div>
       <div class="menu">
-        <div class="menu-item">主站</div>
-        <div class="menu-item">反馈</div>
-        <div class="menu-item">Github</div>
+        <div class="menu-item">
+          <a href="https://hitokoto.cn" target="_blank">主站</a>
+        </div>
+        <div class="menu-item">
+          <a href="https://support.qq.com/products/120638/" target="_blank">
+            反馈
+          </a>
+        </div>
+        <div class="menu-item">
+          <a href="https://github.com/hitokoto-osc" target="_blank"> Github </a>
+        </div>
       </div>
       <div class="account-container">
-        <ClientOnly>
-          <a-dropdown>
-            <div class="account">
-              <span class="username"> a632079 </span>
-              <div class="avatar-wrapper">
-                <img
-                  src="https://cravatar.cn/avatar/eccf8110b225c1ee784ba603e11213b5?d=mm&s=500"
-                  draggable="false"
-                  class="avatar"
-                />
+        <template v-if="userStore.user && !userStore.isExpired">
+          <ClientOnly>
+            <a-dropdown>
+              <div class="account">
+                <span class="username"> {{ userStore.user?.name }} </span>
+                <div class="avatar-wrapper">
+                  <img
+                    :src="getAvatarURL(userStore.user?.email || '')"
+                    draggable="false"
+                    class="avatar"
+                  />
+                </div>
               </div>
-            </div>
 
-            <template #overlay>
-              <a-menu>
-                <a-menu-item>
-                  <a href="javascript:;">设置</a>
-                </a-menu-item>
-                <a-menu-item>
-                  <a href="javascript:;">登出</a>
-                </a-menu-item>
-              </a-menu>
-            </template>
-          </a-dropdown>
-        </ClientOnly>
+              <template #overlay>
+                <a-menu>
+                  <a-menu-item>
+                    <a
+                      href="https://hitokoto.cn/dashboard/#/user/settings"
+                      target="_blank"
+                    >
+                      设置
+                    </a>
+                  </a-menu-item>
+                  <a-menu-item>
+                    <a @click="doLogout">登出</a>
+                  </a-menu-item>
+                </a-menu>
+              </template>
+            </a-dropdown>
+          </ClientOnly>
+        </template>
+        <div v-else class="menu-item">
+          <NuxtLink to="/auth/login">登录</NuxtLink>
+        </div>
       </div>
     </div>
   </header>
@@ -64,9 +93,13 @@
 
     .menu {
       @apply pl-5 flex-1 display-none md:flex h-full items-center;
+    }
 
-      .menu-item {
-        @apply text-sm mx-3 py-3 px-5 cursor-pointer hover:bg-gray-100 rounded-2 select-none;
+    .menu-item {
+      @apply text-sm mx-3;
+
+      a {
+        @apply no-underline text-current py-3 px-5 cursor-pointer hover:bg-gray-100 rounded-2 select-none;
       }
     }
 

@@ -41,7 +41,14 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@pinia-plugin-persistedstate/nuxt',
     'nuxt-gtag',
-    '@ant-design-vue/nuxt'
+    '@ant-design-vue/nuxt',
+    [
+      'unplugin-icons/nuxt',
+      {
+        /* options */
+      }
+    ],
+    '@vueuse/nuxt'
   ],
   antd: {},
   gtag: {
@@ -59,9 +66,12 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   components: true,
   runtimeConfig: {
-    endpoint: {
-      commonAPI: process.env.HITOKOTO_COMMON_API_ENDPOINT,
-      userAPI: process.env.HITOKOTO_USER_API_ENDPOINT
+    public: {
+      endpoint: {
+        commonAPI: process.env.HITOKOTO_COMMON_API_ENDPOINT || '',
+        reviewerAPI: process.env.HITOKOTO_REVIEWER_API_ENDPOINT || '',
+        searchAPI: process.env.HITOKOTO_SEARCH_API_ENDPOINT || ''
+      }
     }
   }
 })

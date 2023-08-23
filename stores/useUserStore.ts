@@ -25,6 +25,9 @@ export const useUserStore = defineStore('user', {
     }
   },
   actions: {
+    setUser(user: UserInfoRes) {
+      this.user = user
+    },
     setToken(token: string) {
       this.token = token
       this.expiredAt = dayjs().add(1, 'month').valueOf()

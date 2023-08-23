@@ -1,3 +1,5 @@
+import { useHTTP } from './useHTTP'
+
 export interface UserInfoRes {
   id: number
   name: string
@@ -41,4 +43,8 @@ export interface UserInfoRes {
   }>
   created_at: string
   updated_at: string
+}
+
+export function useUserInfoReq() {
+  return useHTTP.get<UserInfoRes>(`/user`)
 }

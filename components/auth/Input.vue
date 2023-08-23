@@ -9,6 +9,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   'update:modelValue': [value: string]
+  blur: [event: FocusEvent]
 }>()
 
 const classNames = computed(() => {
@@ -27,7 +28,10 @@ const classNames = computed(() => {
       class="input"
       :type="props.type"
       :placeholder="props.placeholder"
-      @input="emit('update:modelValue', $event.target.value)"
+      @input="
+        emit('update:modelValue', ($event.target as HTMLInputElement)?.value)
+      "
+      @blur="emit('blur', $event)"
     />
     <label class="input-border" />
   </div>

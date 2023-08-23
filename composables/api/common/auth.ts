@@ -12,15 +12,12 @@ export interface AuthLoginRes {
   ts: number
 }
 
-export function useLoginReq(req: AuthLoginReq) {
-  const config = useRuntimeConfig()
-  const formData = new FormData()
-  formData.append('account', req.email)
-  formData.append('password', req.password)
-  return useFetch<AuthLoginRes>('/api/auth/login', {
-    lazy: true,
-    method: 'POST',
-    body: req,
-    baseURL: config.endpoint.commonAPI
-  })
+export function doLoginReq(req: AuthLoginReq) {
+  return useFetch<AuthLoginRes>(
+    '/api/auth/login', // 使用 Nuxt 代理的登录 API
+    {
+      method: 'POST',
+      body: req
+    }
+  )
 }

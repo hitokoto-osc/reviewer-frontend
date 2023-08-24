@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { VueElement } from 'vue'
-import type { ItemType, MenuProps } from 'ant-design-vue/es'
+import type { ItemType } from 'ant-design-vue/es'
 import {
   MailOutlined,
   ContainerOutlined,
@@ -69,10 +69,10 @@ const openKeys = ref<string[]>(['messages'])
 
 // 路由部分
 const route = useRoute()
-const keyRouteMap = new Map()
+const keyRouteMap = new Map<string, string>()
 keyRouteMap.set('dashboard', '/dashboard')
 keyRouteMap.set('do_review', '/dashboard/do_review')
-keyRouteMap.set('review_rules', '/dashboard/review_rules')
+keyRouteMap.set('review_rules', 'https://www.yuque.com/freejishu/rfoxeq/xz3u2x')
 keyRouteMap.set('messages', '/dashboard/messages')
 keyRouteMap.set('notifications', '/dashboard/messages/notifications')
 keyRouteMap.set('poll_records', '/dashboard/messages/poll_records')
@@ -84,17 +84,25 @@ const getKeyByRoute = (route: string) => {
   }
   return ''
 }
-onMounted(() => {
-  console.log('route', route)
+watchEffect(() => {
   const key = getKeyByRoute(route.path)
   if (key) {
     selectedKeys.value = [key]
   }
 })
-
-const handleClick: MenuProps['onClick'] = (e) => {
-  e.key && navigateTo(keyRouteMap.get(e.key) || '')
-}
+watch(selectedKeys, (val, old) => {
+  const key = val[0]
+  if (key) {
+    const route = keyRouteMap.get(key)
+    if (route && route.startsWith('/')) {
+      navigateTo(route)
+    } else {
+      // reset selectedKeys
+      selectedKeys.value = old
+      window.open(route, '_blank')
+    }
+  }
+})
 
 // watch(openKeys, (val) => {
 //   console.log('openKeys', val)
@@ -107,7 +115,6 @@ const handleClick: MenuProps['onClick'] = (e) => {
     class="menu"
     mode="inline"
     :items="items"
-    @click="handleClick"
   ></a-menu>
 </template>
 

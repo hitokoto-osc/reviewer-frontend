@@ -24,7 +24,9 @@ export default defineNuxtConfig({
         //   href: 'https://fastly.jsdelivr.net/npm/css-spaces@latest/dist/spaces.min.css'
         // }
       ]
-    }
+    },
+    pageTransition: { name: 'page', mode: 'out-in' },
+    layoutTransition: { name: 'layout', mode: 'out-in' }
   },
   css: [
     '~/node_modules/modern-normalize/modern-normalize.css', // CSS reset

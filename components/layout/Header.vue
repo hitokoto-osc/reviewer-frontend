@@ -1,9 +1,12 @@
 <script lang="ts" setup>
 const mobileMenuDrawerShow = ref(false)
+const userStore = useUserStore()
 </script>
 <template>
   <header class="header-container">
+    <!-- TODO: 先禁止未登录用户使用汉堡包菜单吧，之后改成抽屉内切换 -->
     <MobileMenuHamburgerButton
+      v-if="!userStore.isExpired"
       @switch-drawer="mobileMenuDrawerShow = !mobileMenuDrawerShow"
     />
     <div class="header">

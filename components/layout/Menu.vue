@@ -67,8 +67,33 @@ const items: ItemType[] = reactive([
 const selectedKeys = ref<string[]>(['1'])
 const openKeys = ref<string[]>(['messages'])
 
+// 路由部分
+const route = useRoute()
+const keyRouteMap = new Map()
+keyRouteMap.set('dashboard', '/dashboard')
+keyRouteMap.set('do_review', '/dashboard/do_review')
+keyRouteMap.set('review_rules', '/dashboard/review_rules')
+keyRouteMap.set('messages', '/dashboard/messages')
+keyRouteMap.set('notifications', '/dashboard/messages/notifications')
+keyRouteMap.set('poll_records', '/dashboard/messages/poll_records')
+keyRouteMap.set('score_records', '/dashboard/messages/score_records')
+keyRouteMap.set('apply_reviewer', '/dashboard/apply_reviewer')
+const getKeyByRoute = (route: string) => {
+  for (const [key, value] of keyRouteMap) {
+    if (value === route) return key
+  }
+  return ''
+}
+onMounted(() => {
+  console.log('route', route)
+  const key = getKeyByRoute(route.path)
+  if (key) {
+    selectedKeys.value = [key]
+  }
+})
+
 const handleClick: MenuProps['onClick'] = (e) => {
-  console.log('click', e)
+  e.key && navigateTo(keyRouteMap.get(e.key) || '')
 }
 
 // watch(openKeys, (val) => {

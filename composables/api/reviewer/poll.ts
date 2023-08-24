@@ -135,4 +135,3 @@ export type PollDetailRes = PollListCollectionElement
 export function usePollDetail(pollID: number, req: PollDetailReq = {}) {
   return useHTTP.get<PollListRes>(`/poll/${pollID}`, req)
 }
-

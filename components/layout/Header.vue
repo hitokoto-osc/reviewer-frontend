@@ -29,8 +29,8 @@ const userStore = useUserStore()
       </div>
       <LayoutHeaderAccountContainer />
     </div>
+    <MobileMenuDrawer v-model:show="mobileMenuDrawerShow" />
   </header>
-  <MobileMenuDrawer v-model:show="mobileMenuDrawerShow" />
 </template>
 
 <style lang="scss" scoped>

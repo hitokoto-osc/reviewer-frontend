@@ -5,18 +5,24 @@ const props = defineProps<{
 }>()
 </script>
 <template>
-  <a-menu>
-    <a-menu-item v-for="item in props.items" :key="item.text" :icon="item.icon">
-      <a
-        v-if="item.href || item.onClick"
-        :href="item.href || 'javascript:void(0)'"
-        @click="item.onClick"
+  <div class="pc-menu-wrapper">
+    <a-menu>
+      <a-menu-item
+        v-for="item in props.items"
+        :key="item.text"
+        :icon="item.icon"
       >
-        {{ item.text }}
-      </a>
-      <NuxtLink v-else :to="item.to">
-        {{ item.text }}
-      </NuxtLink>
-    </a-menu-item>
-  </a-menu>
+        <a
+          v-if="item.href || item.onClick"
+          :href="item.href || 'javascript:void(0)'"
+          @click="item.onClick"
+        >
+          {{ item.text }}
+        </a>
+        <NuxtLink v-else :to="item.to">
+          {{ item.text }}
+        </NuxtLink>
+      </a-menu-item>
+    </a-menu>
+  </div>
 </template>

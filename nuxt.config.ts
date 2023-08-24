@@ -39,7 +39,7 @@ export default defineNuxtConfig({
     // Doc: https://github.com/nuxt-community/stylelint-module
     '@nuxtjs/stylelint-module',
     // PWA
-    '@vite-pwa/nuxt',
+    // '@vite-pwa/nuxt',
     '@pinia/nuxt',
     '@pinia-plugin-persistedstate/nuxt',
     'nuxt-gtag',
@@ -50,8 +50,8 @@ export default defineNuxtConfig({
       {
         /* options */
       }
-    ],
-    '@vueuse/nuxt'
+    ]
+    // '@vueuse/nuxt'
   ],
   antd: {},
   gtag: {
@@ -66,7 +66,13 @@ export default defineNuxtConfig({
     autoImports: ['defineStore', 'acceptHMRUpdate']
   },
 
-  devtools: { enabled: true },
+  devtools: {
+    enabled: true,
+
+    timeline: {
+      enabled: true
+    }
+  },
   components: true,
   runtimeConfig: {
     public: {

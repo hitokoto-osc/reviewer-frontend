@@ -1,13 +1,14 @@
 <script setup lang="ts">
 // 登出部分
 const userStore = useUserStore()
-const [messageAPI] = message.useMessage()
+// TODO: 使用组合式 API 的 Message 接口
+// const [messageAPI, ContextHolder] = message.useMessage()
 const doLogout = () => {
+  message.info('您已登出，即将跳转到首页')
   userStore.clear()
-  messageAPI.info('您已登出，即将跳转到首页')
   setTimeout(() => {
     navigateTo('/')
-  }, 3000)
+  }, 1500)
 }
 
 // 账户设置菜单

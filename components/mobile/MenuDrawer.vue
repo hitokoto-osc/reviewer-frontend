@@ -10,27 +10,29 @@ const emits = defineEmits<{
 const userStore = useUserStore()
 </script>
 <template>
-  <van-popup
-    :show="props.show"
-    position="left"
-    class="mobile-hamburger-drawer"
-    @update:show="emits('update:show', $event)"
-  >
-    <div class="drawer-container">
-      <div class="account-container">
-        <img
-          :src="getAvatarURL(userStore.user?.email || '')"
-          draggable="false"
-          class="avatar"
-        />
-        <div class="main">
-          <span class="name"> {{ userStore.user?.name || '游客' }} </span>
-          <span class="role"> {{ userStore.role }} </span>
+  <div class="menu-drawer-wrapper">
+    <van-popup
+      :show="props.show"
+      position="left"
+      class="mobile-hamburger-drawer"
+      @update:show="emits('update:show', $event)"
+    >
+      <div class="drawer-container">
+        <div class="account-container">
+          <img
+            :src="getAvatarURL(userStore.user?.email || '')"
+            draggable="false"
+            class="avatar"
+          />
+          <div class="main">
+            <span class="name"> {{ userStore.user?.name || '游客' }} </span>
+            <span class="role"> {{ userStore.role }} </span>
+          </div>
         </div>
+        <LayoutMenu />
       </div>
-      <LayoutMenu />
-    </div>
-  </van-popup>
+    </van-popup>
+  </div>
 </template>
 
 <style lang="scss">

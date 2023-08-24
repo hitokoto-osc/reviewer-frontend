@@ -1,11 +1,37 @@
 <script setup lang="ts">
 import { PlusCircleOutlined } from '@ant-design/icons-vue'
+useHead({
+  title: '句子审核'
+})
+const route = useRoute()
+
 // 分页部分
-const current = ref(1)
-const onChange = (page: number, pageSize: number) => {
-  console.log(page, pageSize)
-}
+const page = ref<number>(
+  route.query.page && typeof route.query.page === 'string'
+    ? Number.parseInt(route.query.page) ?? 1
+    : 1
+)
+
 const pageSizeOptions = ref<string[]>(['10', '20', '30'])
+const pageSize = ref<number>(
+  route.query.pageSize &&
+    typeof route.query.pageSize === 'string' &&
+    pageSizeOptions.value.includes(route.query.pageSize)
+    ? Number.parseInt(route.query.pageSize) ?? 10
+    : 10
+)
+
+const onChange = async (newPage: number, newPageSize: number) => {
+  page.value = newPage
+  pageSize.value = newPageSize
+  navigateTo({
+    path: route.path,
+    query: {
+      page: newPage.toString(),
+      pageSize: newPageSize.toString()
+    }
+  })
+}
 // 分段器部分
 const segmentOptions = reactive<string[]>(['全部', '待审核', '已审核'])
 const segmentedValue = ref(segmentOptions[0])
@@ -74,7 +100,8 @@ const cardData = reactive([
     <!-- 分页器 -->
     <div class="pagination">
       <a-pagination
-        v-model:current="current"
+        :current="page"
+        :page-size="pageSize"
         show-quick-jumper
         show-less-items
         :page-size-options="pageSizeOptions"

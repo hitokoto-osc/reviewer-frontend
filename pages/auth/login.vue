@@ -1,6 +1,8 @@
 <script setup lang="ts">
 definePageMeta({
-  layout: 'auth',
+  layout: 'auth'
+})
+useHead({
   title: '登录'
 })
 const email = ref('')
@@ -57,35 +59,40 @@ onMounted(() => {
 })
 </script>
 <template>
-  <p :style="{ visibility: !!isTips ? 'visible' : 'hidden' }" class="feedback">
-    {{ tips }}
-  </p>
-  <div class="form-container">
-    <div class="input-group">
-      <AuthInput
-        v-model="email"
-        icon-class="i-solar-user-circle-linear"
-        type="text"
-        name="email"
-        placeholder="邮箱"
-        @blur="isTips = doValidate()"
-      />
-    </div>
-    <div class="input-group">
-      <AuthInput
-        v-model="password"
-        icon-class="i-solar-lock-password-linear"
-        type="password"
-        name="password"
-        placeholder="密码"
-        @blur="isTips = doValidate()"
-      />
-    </div>
-    <div class="mt-15">
-      <button class="button" :disabled="pending || disabled" @click="doLogin">
-        登 录
-        <div v-show="pending" class="loading"></div>
-      </button>
+  <div class="login">
+    <p
+      :style="{ visibility: !!isTips ? 'visible' : 'hidden' }"
+      class="feedback"
+    >
+      {{ tips }}
+    </p>
+    <div class="form-container">
+      <div class="input-group">
+        <AuthInput
+          v-model="email"
+          icon-class="i-solar-user-circle-linear"
+          type="text"
+          name="email"
+          placeholder="邮箱"
+          @blur="isTips = doValidate()"
+        />
+      </div>
+      <div class="input-group">
+        <AuthInput
+          v-model="password"
+          icon-class="i-solar-lock-password-linear"
+          type="password"
+          name="password"
+          placeholder="密码"
+          @blur="isTips = doValidate()"
+        />
+      </div>
+      <div class="mt-15">
+        <button class="button" :disabled="pending || disabled" @click="doLogin">
+          登 录
+          <div v-show="pending" class="loading"></div>
+        </button>
+      </div>
     </div>
   </div>
 </template>

@@ -1,4 +1,7 @@
 <script setup lang="ts">
+useHead({
+  title: '控制台'
+})
 import dayjs from 'dayjs'
 // const score = ref(0)
 // useCountTo(score, 10012300, 0.1)

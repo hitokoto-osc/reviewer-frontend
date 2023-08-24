@@ -28,16 +28,18 @@ const onSelect = (item: PopoverAction) => {
 }
 </script>
 <template>
-  <van-popover
-    :actions="actions"
-    placement="bottom-end"
-    :offset="[-5, 10]"
-    @select="onSelect"
-  >
-    <template #reference>
-      <LayoutHeaderAccountInfo class="account-mobile-menu" />
-    </template>
-  </van-popover>
+  <div class="mobile-menu-wrapper">
+    <van-popover
+      :actions="actions"
+      placement="bottom-end"
+      :offset="[-5, 10]"
+      @select="onSelect"
+    >
+      <template #reference>
+        <LayoutHeaderAccountInfo class="account-mobile-menu" />
+      </template>
+    </van-popover>
+  </div>
 </template>
 
 <style lang="scss">

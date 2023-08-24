@@ -109,13 +109,15 @@ watch(selectedKeys, (val, old) => {
 // })
 </script>
 <template>
-  <a-menu
-    v-model:openKeys="openKeys"
-    v-model:selectedKeys="selectedKeys"
-    class="menu"
-    mode="inline"
-    :items="items"
-  ></a-menu>
+  <div class="menu-wrapper">
+    <a-menu
+      v-model:openKeys="openKeys"
+      v-model:selectedKeys="selectedKeys"
+      class="menu"
+      mode="inline"
+      :items="items"
+    ></a-menu>
+  </div>
 </template>
 
 <style lang="scss" scoped>

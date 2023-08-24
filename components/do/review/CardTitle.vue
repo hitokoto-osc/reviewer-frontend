@@ -6,15 +6,17 @@ const props = defineProps<{
 </script>
 
 <template>
-  <a-tooltip placement="topLeft">
-    <template #title>
-      <div class="tooltip">
-        <span>发起于：{{ props.pollCreatedAt }}</span>
-        <span class="title"> UUID：{{ props.title }} </span>
-      </div>
-    </template>
-    <span class="title">{{ props.title }}</span>
-  </a-tooltip>
+  <div class="tooltip-wrapper">
+    <a-tooltip placement="topLeft">
+      <template #title>
+        <div class="tooltip">
+          <span>发起于：{{ props.pollCreatedAt }}</span>
+          <span class="title"> UUID：{{ props.title }} </span>
+        </div>
+      </template>
+      <span class="title">{{ props.title }}</span>
+    </a-tooltip>
+  </div>
 </template>
 
 <style lang="scss" scoped>

@@ -1,7 +1,9 @@
 <script setup lang="ts">
 definePageMeta({
-  title: '一言审核员中心',
   layout: 'index'
+})
+useHead({
+  title: '一言审核员中心'
 })
 </script>
 <template>

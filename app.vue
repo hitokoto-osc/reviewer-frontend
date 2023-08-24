@@ -15,15 +15,21 @@ useHead({
 </script>
 
 <template>
-  <a-config-provider :locale="zhCN">
-    <NuxtLayout>
-      <NuxtLoadingIndicator />
-      <NuxtPage />
-    </NuxtLayout>
-  </a-config-provider>
+  <div class="app">
+    <a-config-provider :locale="zhCN">
+      <NuxtLayout>
+        <NuxtLoadingIndicator />
+        <NuxtPage />
+      </NuxtLayout>
+    </a-config-provider>
+  </div>
 </template>
 
 <style lang="scss">
+.app {
+  @apply w-full h-full;
+}
+
 .page-enter-active,
 .page-leave-active {
   transition: all 0.4s;

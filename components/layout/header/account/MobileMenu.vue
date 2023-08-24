@@ -28,7 +28,12 @@ const onSelect = (item: PopoverAction) => {
 }
 </script>
 <template>
-  <van-popover :actions="actions" placement="bottom-end" @select="onSelect">
+  <van-popover
+    :actions="actions"
+    placement="bottom-end"
+    :offset="[-5, 10]"
+    @select="onSelect"
+  >
     <template #reference>
       <LayoutHeaderAccountInfo class="account-mobile-menu" />
     </template>
@@ -37,6 +42,6 @@ const onSelect = (item: PopoverAction) => {
 
 <style lang="scss">
 .account-mobile-menu {
-  @apply flex md:hidden;
+  @apply flex md:hidden mr-2;
 }
 </style>

@@ -1,10 +1,12 @@
 import { useHTTP } from './useHTTP'
-
+import type { UserRole } from '@/enums/user'
+import type { HitokotoStatus, HitokotoType } from '@/enums/hitokoto'
+import type { PollStatus, PollMethod } from '@/enums/poll'
 export interface UserInfoRes {
   id: number
   name: string
   email: string
-  role: string
+  role: UserRole
   poll: {
     points: {
       total: number
@@ -22,7 +24,7 @@ export interface UserInfoRes {
     poll_id: number
     point: number
     sentence_uuid: string
-    type: number
+    type: PollMethod
     comment: string
     created_at: string
     updated_at: string
@@ -30,14 +32,14 @@ export interface UserInfoRes {
       id: number
       uuid: string
       hitokoto: string
-      type: string
+      type: HitokotoType
       from: string
       from_who?: string
       creator: string
       creator_uid: number
       reviewer: number
-      status: string
-      poll_status: number
+      status: HitokotoStatus
+      poll_status: PollStatus
       created_at: string
     }
   }>

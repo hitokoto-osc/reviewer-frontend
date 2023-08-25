@@ -93,13 +93,13 @@ watchEffect(() => {
 watch(selectedKeys, (val, old) => {
   const key = val[0]
   if (key) {
-    const route = keyRouteMap.get(key)
-    if (route && route.startsWith('/')) {
-      navigateTo(route)
+    const target = keyRouteMap.get(key)
+    if (target && target.startsWith('/')) {
+      if (target !== route.path) navigateTo(target)
     } else {
       // reset selectedKeys
       selectedKeys.value = old
-      window.open(route, '_blank')
+      window.open(target, '_blank')
     }
   }
 })

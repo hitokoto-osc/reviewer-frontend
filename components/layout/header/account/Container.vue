@@ -21,6 +21,10 @@ export interface AccountMenuItem {
 }
 const items: AccountMenuItem[] = [
   {
+    text: '控制台',
+    to: '/dashboard'
+  },
+  {
     text: '设置',
     href: 'https://hitokoto.cn/dashboard/#/user/settings'
   },

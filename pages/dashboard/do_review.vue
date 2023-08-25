@@ -3,7 +3,20 @@ import { PlusCircleOutlined } from '@ant-design/icons-vue'
 useHead({
   title: '句子审核'
 })
+// TODO: 临时修复 Masonry 路由切换后绘制错误的问题
+const redrawVueMasonry = inject<(id: string) => void>('redrawVueMasonry')
+onMounted(() => {
+  if (!redrawVueMasonry) return
+  setTimeout(() => {
+    redrawVueMasonry('32')
+  }, 600)
+})
+
 const route = useRoute()
+watch(
+  () => route.query,
+  (val) => console.log(val, route)
+)
 
 // 分页部分
 const page = ref<number>(
@@ -24,13 +37,18 @@ const pageSize = ref<number>(
 const onChange = async (newPage: number, newPageSize: number) => {
   page.value = newPage
   pageSize.value = newPageSize
-  navigateTo({
-    path: route.path,
-    query: {
-      page: newPage.toString(),
-      pageSize: newPageSize.toString()
+  navigateTo(
+    {
+      name: route.name || undefined,
+      query: {
+        page: newPage.toString(),
+        pageSize: newPageSize.toString()
+      }
+    },
+    {
+      replace: true
     }
-  })
+  )
 }
 // 分段器部分
 const segmentOptions = reactive<string[]>(['全部', '待审核', '已审核'])
@@ -145,22 +163,24 @@ const cardData = reactive([
 
     <div class="content">
       <!-- TODO: 抽象成组件 -->
-      <div
-        v-masonry="32"
-        class="grid"
-        transition-duration="0.3s"
-        item-selector=".grid-item"
-      >
-        <template v-for="card in cardData" :key="card.poll.id">
-          <div v-masonry-tile class="grid-item">
-            <DoReviewCard
-              :poll="card.poll"
-              :sentence="card.sentence"
-              :marks="card.marks"
-            />
-          </div>
-        </template>
-      </div>
+      <ClientOnly>
+        <div
+          v-masonry="32"
+          class="grid"
+          transition-duration="0.3s"
+          item-selector=".grid-item"
+        >
+          <template v-for="card in cardData" :key="card.poll.id">
+            <div v-masonry-tile class="grid-item">
+              <DoReviewCard
+                :poll="card.poll"
+                :sentence="card.sentence"
+                :marks="card.marks"
+              />
+            </div>
+          </template>
+        </div>
+      </ClientOnly>
     </div>
     <!-- 分页器 -->
     <div class="pagination">

@@ -48,6 +48,65 @@ const cardData = reactive([
     },
     sentence: {
       uuid: '80d3bb1f-3c35-4261-8ae6-56a5bfcdb940',
+      hitokoto:
+        '听风雪喧嚷，看流星在飞翔； 我的心向我呼唤：去动荡的远方……听风雪喧嚷，看流星在飞翔； 我的心向我呼唤：去动荡的远方……听风雪喧嚷，看流星在飞翔； 我的心向我呼唤：去动荡的远方……听风雪喧嚷，看流星在飞翔； 我的心向我呼唤：去动荡的远方……听风雪喧嚷，看流星在飞翔； 我的心向我呼唤：去动荡的远方……',
+      type: 'i',
+      fromWho: '亚历山德拉·尼·巴赫慕托娃',
+      from: '歌唱动荡的青春',
+      creator: 'SomeyaMako',
+      createdAt: '1606403131'
+    },
+    marks: [1, 2, 3]
+  },
+  {
+    poll: {
+      id: 123,
+      approve: 30,
+      reject: 123,
+      needModify: 123,
+      createdAt: new Date().toISOString()
+    },
+    sentence: {
+      uuid: '80d3bb1f-3c35-4261-8ae6-56a5bfcdb940',
+      hitokoto:
+        '听风雪喧嚷，看流星在飞翔； 我的心向我呼唤：去动荡的远方……听风雪喧嚷，看流星在飞翔； 我的心向我呼唤：去动荡的远方……',
+      type: 'i',
+      fromWho: '亚历山德拉·尼·巴赫慕托娃',
+      from: '歌唱动荡的青春',
+      creator: 'SomeyaMako',
+      createdAt: '1606403131'
+    },
+    marks: [1, 2, 3]
+  },
+  {
+    poll: {
+      id: 123,
+      approve: 30,
+      reject: 123,
+      needModify: 123,
+      createdAt: new Date().toISOString()
+    },
+    sentence: {
+      uuid: '80d3bb1f-3c35-4261-8ae6-56a5bfcdb940',
+      hitokoto: '听风雪喧嚷，看流星在飞翔； 我的心向我呼唤：去动荡的远方……',
+      type: 'i',
+      fromWho: '亚历山德拉·尼·巴赫慕托娃',
+      from: '歌唱动荡的青春',
+      creator: 'SomeyaMako',
+      createdAt: '1606403131'
+    },
+    marks: [1, 2, 3]
+  },
+  {
+    poll: {
+      id: 123,
+      approve: 30,
+      reject: 123,
+      needModify: 123,
+      createdAt: new Date().toISOString()
+    },
+    sentence: {
+      uuid: '80d3bb1f-3c35-4261-8ae6-56a5bfcdb940',
       hitokoto: '听风雪喧嚷，看流星在飞翔； 我的心向我呼唤：去动荡的远方……',
       type: 'i',
       fromWho: '亚历山德拉·尼·巴赫慕托娃',
@@ -85,17 +144,23 @@ const cardData = reactive([
     </div>
 
     <div class="content">
-      <a-row :span="24">
+      <!-- TODO: 抽象成组件 -->
+      <div
+        v-masonry="32"
+        class="grid"
+        transition-duration="0.3s"
+        item-selector=".grid-item"
+      >
         <template v-for="card in cardData" :key="card.poll.id">
-          <a-col :xs="24" :md="12">
+          <div v-masonry-tile class="grid-item">
             <DoReviewCard
               :poll="card.poll"
               :sentence="card.sentence"
               :marks="card.marks"
             />
-          </a-col>
+          </div>
         </template>
-      </a-row>
+      </div>
     </div>
     <!-- 分页器 -->
     <div class="pagination">
@@ -113,6 +178,10 @@ const cardData = reactive([
 </template>
 
 <style lang="scss" scoped>
+.grid-item {
+  @apply w-full md:w-1/2 px-2 py-2;
+}
+
 .do-review {
   @apply h-full w-full flex flex-col;
 

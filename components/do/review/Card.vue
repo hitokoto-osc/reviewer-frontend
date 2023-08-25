@@ -3,6 +3,7 @@ import xss from 'xss'
 import dayjs from 'dayjs'
 import type { PollMethod } from '@/enums/poll'
 
+// Props 定义
 export type CardPropsPoll = {
   id: number
   approve: number
@@ -31,6 +32,19 @@ const props = defineProps<{
   sentence: CardPropsSentence
   marks?: number[]
   polledRecord?: CardPropsPolledRecord
+}>()
+
+// Emits 定义
+export interface SearchParams {
+  sentence: string
+  from: string
+  fromWho?: string
+}
+
+const emit = defineEmits<{
+  doWebSearch: [sentence: SearchParams]
+  doLocalSearch: [sentence: SearchParams]
+  onSwitchComment: [] // 传递此事件只是为了让父组件重绘制
 }>()
 
 const userStore = useUserStore()
@@ -74,7 +88,24 @@ const userStore = useUserStore()
         {{ props.poll.reject }} 票，需要更改 {{ props.poll.needModify }} 票。
       </span>
     </div>
-    <DoReviewCardActionsContainer :is-polled="!!props.polledRecord" />
+    <DoReviewCardActionsContainer
+      :is-polled="!!props.polledRecord"
+      @do-web-search="
+        emit('doWebSearch', {
+          sentence: props.sentence.hitokoto,
+          from: props.sentence.from,
+          fromWho: props.sentence.fromWho
+        })
+      "
+      @do-local-search="
+        emit('doLocalSearch', {
+          sentence: props.sentence.hitokoto,
+          from: props.sentence.from,
+          fromWho: props.sentence.fromWho
+        })
+      "
+      @on-switch-comment="emit('onSwitchComment')"
+    />
   </a-card>
 </template>
 

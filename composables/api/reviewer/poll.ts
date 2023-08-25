@@ -1,4 +1,4 @@
-import { useHTTP } from './useHTTP'
+import { HTTPOption, useHTTP } from './useHTTP'
 import type { HitokotoStatus, HitokotoType } from '@/enums/hitokoto'
 import type { PollMethod, PollStatus } from '@/enums/poll'
 
@@ -11,8 +11,8 @@ export type PollMarkRes = {
   created_at: string
 }[]
 
-export function usePollMarks() {
-  return useHTTP.get<PollMarkRes>('/poll/mark')
+export function usePollMarks(options: HTTPOption<PollMarkRes> = {}) {
+  return useHTTP.get<PollMarkRes>('/poll/mark', {}, options)
 }
 
 export interface PollListReq {
@@ -71,8 +71,11 @@ export type PollListRes = {
   page_size: number
 }
 
-export function usePollList(req: PollListReq) {
-  return useHTTP.get<PollListRes>('/poll', req)
+export function usePollList(
+  req: PollListReq,
+  options: HTTPOption<PollListRes> = {}
+) {
+  return useHTTP.get<PollListRes>('/poll', req, options)
 }
 
 export type CreatePollRes = {
@@ -104,8 +107,8 @@ export type CreatePollRes = {
   remain_pending: number
 }
 
-export function doCreatePoll() {
-  return useHTTP.post<CreatePollRes>('/poll')
+export function doCreatePoll(options: HTTPOption<CreatePollRes> = {}) {
+  return useHTTP.post<CreatePollRes>('/poll', {}, options)
 }
 
 export type PollReq = {
@@ -116,14 +119,21 @@ export type PollReq = {
 
 export interface PollRes {}
 
-export function doPoll(pollID: number, req: PollListReq) {
-  return useHTTP.put<PollRes>(`/poll/${pollID}`, req)
+export function doPoll(
+  pollID: number,
+  req: PollListReq,
+  options: HTTPOption<PollRes> = {}
+) {
+  return useHTTP.put<PollRes>(`/poll/${pollID}`, req, options)
 }
 
 export interface PollCancelRes {}
 
-export function doCancelPoll(pollID: number) {
-  return useHTTP.delete<PollCancelRes>(`/poll/${pollID}/cancel`)
+export function doCancelPoll(
+  pollID: number,
+  options: HTTPOption<PollCancelRes> = {}
+) {
+  return useHTTP.delete<PollCancelRes>(`/poll/${pollID}/cancel`, {}, options)
 }
 
 export type PollDetailReq = {
@@ -132,6 +142,10 @@ export type PollDetailReq = {
 
 export type PollDetailRes = PollListCollectionElement
 
-export function usePollDetail(pollID: number, req: PollDetailReq = {}) {
-  return useHTTP.get<PollListRes>(`/poll/${pollID}`, req)
+export function usePollDetail(
+  pollID: number,
+  req: PollDetailReq = {},
+  options: HTTPOption<PollDetailRes> = {}
+) {
+  return useHTTP.get<PollDetailRes>(`/poll/${pollID}`, req, options)
 }

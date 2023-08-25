@@ -18,7 +18,7 @@ type UrlType =
   | Ref<string | Request>
   | (() => string | Request)
 
-export type HttpOption<T> = UseFetchOptions<R<T>>
+export type HTTPOption<T> = UseFetchOptions<R<T>>
 
 const handleError = <T>(
   response: FetchResponse<R<T>> & FetchResponse<ResponseType>
@@ -104,32 +104,32 @@ const fetch = <T>(url: UrlType, option: UseFetchOptions<R<T>>) => {
 export const useHTTP = {
   get: <T>(
     url: UrlType,
-    params?: HttpOption<T>['params'],
-    option?: HttpOption<T>
+    params?: HTTPOption<T>['params'],
+    option?: HTTPOption<T>
   ) => {
     return fetch<T>(url, { method: 'get', params, ...option })
   },
 
   post: <T>(
     url: UrlType,
-    body?: HttpOption<T>['body'],
-    option?: HttpOption<T>
+    body?: HTTPOption<T>['body'],
+    option?: HTTPOption<T>
   ) => {
     return fetch<T>(url, { method: 'post', body, ...option })
   },
 
   put: <T>(
     url: UrlType,
-    body?: HttpOption<T>['body'],
-    option?: HttpOption<T>
+    body?: HTTPOption<T>['body'],
+    option?: HTTPOption<T>
   ) => {
     return fetch<T>(url, { method: 'put', body, ...option })
   },
 
   delete: <T>(
     url: UrlType,
-    body?: HttpOption<T>['body'],
-    option?: HttpOption<T>
+    body?: HTTPOption<T>['body'],
+    option?: HTTPOption<T>
   ) => {
     return fetch<T>(url, { method: 'delete', body, ...option })
   }

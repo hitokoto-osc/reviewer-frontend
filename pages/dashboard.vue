@@ -11,6 +11,6 @@ definePageMeta({
 </template>
 <style lang="scss" scoped>
 .dashboard {
-  @apply w-full h-full;
+  @apply w-full min-h-full flex;
 }
 </style>

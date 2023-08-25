@@ -47,14 +47,21 @@ const segmentOptions = reactive<string[]>(['全部', '待审核', '已审核'])
 const segmentedValue = ref(segmentOptions[0])
 
 // 获取投票列表
-const { pending, data, error, refresh } = await usePollList({
-  status_start: PollStatus.Open,
-  status_end: PollStatus.Open,
-  with_records: true,
-  page: page.value,
-  page_size: pageSize.value
-})
-console.log(error)
+const {
+  pending,
+  data: pollListData,
+  error,
+  refresh
+} = usePollList(
+  {
+    status_start: PollStatus.Open,
+    status_end: PollStatus.Open,
+    with_records: true,
+    page: page.value,
+    page_size: pageSize.value
+  },
+  { lazy: true }
+)
 watch(
   () => route.query,
   () => refresh()
@@ -62,8 +69,8 @@ watch(
 
 // 卡片部分
 const cardData = computed(() => {
-  if (!data.value) return []
-  return data.value.data.collection.map((item) => {
+  if (!pollListData.value) return []
+  return pollListData.value.data.collection.map((item) => {
     return {
       poll: {
         id: item.id,
@@ -91,6 +98,33 @@ const cardData = computed(() => {
     }
   })
 })
+
+// 获取新投票
+const getNewPollLoading = ref(false)
+const getNewPoll = async () => {
+  getNewPollLoading.value = true
+  try {
+    const { data, error } = await doCreatePoll()
+    if (error.value != null) throw error.value // 正常错误应该被拦截器处理了，此处不处理
+    message.info(
+      '发起新投票成功！当前待审队列还有 ' +
+        data.value?.data.remain_pending +
+        ' 条句子。'
+    )
+    // 如果当前页面是最后一页且不足 pageSize 条，刷新页面
+    if (
+      !pollListData.value?.data?.total ||
+      (page.value * pageSize.value < pollListData.value?.data?.total &&
+        cardData.value.length < pageSize.value)
+    ) {
+      refresh()
+    }
+  } catch (e) {
+    console.error(e)
+  } finally {
+    getNewPollLoading.value = false
+  }
+}
 </script>
 <template>
   <div class="do-review">
@@ -100,7 +134,13 @@ const cardData = computed(() => {
       <div class="flex-1" />
       <div class="button-group">
         <div class="pc">
-          <a-button type="primary" shape="round">
+          <a-button
+            type="primary"
+            shape="round"
+            :loading="getNewPollLoading"
+            :disabled="getNewPollLoading"
+            @click="getNewPoll"
+          >
             <template #icon>
               <PlusCircleOutlined />
             </template>
@@ -134,11 +174,14 @@ const cardData = computed(() => {
                 :sentence="card.sentence"
                 :marks="card.marks"
                 :polled-record="card.polledRecord"
+                @on-switch-comment="
+                  nextTick(() => redrawVueMasonry && redrawVueMasonry('32'))
+                "
               />
             </div>
           </template>
         </div>
-        <div v-else-if="cardData.length === 0" class="h-full">
+        <div v-else-if="cardData.length === 0" class="flex-1">
           <a-empty class="mt-10" />
         </div>
         <a-result
@@ -157,7 +200,7 @@ const cardData = computed(() => {
         show-quick-jumper
         show-less-items
         :page-size-options="pageSizeOptions"
-        :total="data?.data?.total || 0"
+        :total="pollListData?.data?.total || 0"
         @change="onChange"
       />
     </div>
@@ -191,7 +234,7 @@ const cardData = computed(() => {
   }
 
   .content {
-    @apply flex-1 mt-8;
+    @apply flex-1 mt-8 flex flex-col;
   }
 
   .pagination {

@@ -26,8 +26,9 @@ useHead({
 </template>
 
 <style lang="scss">
+/* stylelint-disable-next-line selector-id-pattern */
 .app {
-  @apply w-full h-full;
+  @apply w-full min-h-100vh;
 }
 
 .page-enter-active,

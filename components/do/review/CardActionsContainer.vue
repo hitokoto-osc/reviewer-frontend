@@ -12,6 +12,17 @@ const props = defineProps<{
 const marksStore = useMarksStore()
 
 const isExpandCommentInput = ref(false)
+
+const emit = defineEmits<{
+  onSwitchComment: [] // 此事件完全只是为了让父组件重绘制
+  doWebSearch: []
+  doLocalSearch: []
+}>()
+
+const onSwitchComment = () => {
+  isExpandCommentInput.value = !isExpandCommentInput.value
+  emit('onSwitchComment')
+}
 </script>
 <template>
   <div class="actions-container">
@@ -47,16 +58,24 @@ const isExpandCommentInput = ref(false)
             <a-button
               shape="circle"
               :icon="h(SwapOutlined)"
-              @click="isExpandCommentInput = !isExpandCommentInput"
+              @click="onSwitchComment"
             />
           </a-tooltip>
           <a-tooltip placement="bottom">
             <template #title> 查看此句在库内是否重复 </template>
-            <a-button shape="circle" :icon="h(SelectOutlined)" />
+            <a-button
+              shape="circle"
+              :icon="h(SelectOutlined)"
+              @click="emit('doLocalSearch')"
+            />
           </a-tooltip>
           <a-tooltip placement="bottom">
             <template #title> 使用搜索引擎搜索此句 </template>
-            <a-button shape="circle" :icon="h(SearchOutlined)" />
+            <a-button
+              shape="circle"
+              :icon="h(SearchOutlined)"
+              @click="emit('doWebSearch')"
+            />
           </a-tooltip>
         </div>
       </div>

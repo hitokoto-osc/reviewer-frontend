@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { PlusCircleOutlined } from '@ant-design/icons-vue'
 import { PollStatus } from '@/enums/poll'
+import type { SearchParams } from '@/components/do/review/Card.vue'
 useHead({
   title: '句子审核'
 })
@@ -125,9 +126,22 @@ const getNewPoll = async () => {
     getNewPollLoading.value = false
   }
 }
+
+// WEB 搜索
+const open = ref(false)
+const searchParams = ref<SearchParams>({
+  sentence: '',
+  from: '',
+  fromWho: ''
+})
+const doWebSearch = (sentence: SearchParams) => {
+  searchParams.value = sentence
+  open.value = true
+}
 </script>
 <template>
   <div class="do-review">
+    <DoReviewWebSearchModal v-model:open="open" :search-params="searchParams" />
     <a-page-header title="句子审核" />
     <div class="toolbar">
       <a-segmented v-model:value="segmentedValue" :options="segmentOptions" />
@@ -177,6 +191,7 @@ const getNewPoll = async () => {
                 @on-switch-comment="
                   nextTick(() => redrawVueMasonry && redrawVueMasonry('32'))
                 "
+                @do-web-search="doWebSearch"
               />
             </div>
           </template>

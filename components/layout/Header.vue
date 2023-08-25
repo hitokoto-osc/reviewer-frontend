@@ -35,7 +35,7 @@ const userStore = useUserStore()
 
 <style lang="scss" scoped>
 .header-container {
-  @apply h-16 w-full bg-white flex justify-center border-b-1 shadow-sm shadow-slate-200 relative;
+  @apply h-16 w-full bg-white flex justify-center border-b-1 shadow-sm shadow-slate-200 relative shrink-0;
 
   .header {
     @apply flex h-full w-full md:w-80% lg:w-70%;

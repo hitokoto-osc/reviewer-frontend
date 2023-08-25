@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import xss from 'xss'
 import dayjs from 'dayjs'
+import type { PollMethod } from '@/enums/poll'
 
 export type CardPropsPoll = {
   id: number
@@ -22,7 +23,7 @@ export type CardPropsSentence = {
 
 export type CardPropsPolledRecord = {
   point: number
-  type: number
+  method: PollMethod
 }
 
 const props = defineProps<{
@@ -65,7 +66,7 @@ const userStore = useUserStore()
     <DoReviewCardMarksContainer v-if="props.marks" :marks="props.marks" />
     <div v-if="props.polledRecord" class="review-record">
       <span>
-        您投了 <b>{{ convertPollMethod(props.polledRecord.type) }}</b>
+        您投了 <b>{{ convertPollMethod(props.polledRecord.method) }}</b>
         <i>{{ props.polledRecord.point }}</i> 票。
       </span>
       <span v-if="userStore.user?.role == 'admin'">

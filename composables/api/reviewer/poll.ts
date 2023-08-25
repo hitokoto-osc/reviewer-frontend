@@ -50,7 +50,7 @@ export type PollListCollectionElement = {
   marks: number[]
   polled_data?: {
     point: number
-    method: number
+    method: PollMethod
     created_at: string
     updated_at: string
   }

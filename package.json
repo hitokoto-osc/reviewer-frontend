@@ -7,11 +7,16 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "prepare": "husky install",
+    "lint:js": "eslint --ext \".js,.ts,.tsx,.jsx,.vue\" --ignore-path .gitignore .",
+    "lint:style": "stylelint \"**/*.{vue,htm,html,css,sss,less,scss,sass}\" --config .stylelintrc.js --ignore-path .gitignore",
+    "lint": "pnpm lint:js && pnpm lint:style",
     "postinstall": "nuxt prepare && sh -c 'if [ command -v ./node_modules/.bin/husky ]; then ./node_modules/.bin/husky install; fi;'"
   },
   "devDependencies": {
     "@ant-design-vue/nuxt": "^1.1.1",
     "@ant-design/icons-vue": "^6.1.0",
+    "@commitlint/cli": "^17.7.1",
+    "@commitlint/config-conventional": "^17.7.0",
     "@iconify/json": "^2.2.106",
     "@nuxt/devtools": "latest",
     "@nuxtjs/eslint-module": "^4.1.0",

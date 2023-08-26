@@ -6,7 +6,7 @@ const props = defineProps<{
 </script>
 <template>
   <div class="pc-menu-wrapper">
-    <a-menu>
+    <a-menu :selectable="false">
       <a-menu-item
         v-for="item in props.items"
         :key="item.text"

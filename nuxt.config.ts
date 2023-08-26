@@ -80,6 +80,9 @@ export default defineNuxtConfig({
         commonAPI: process.env.HITOKOTO_COMMON_API_ENDPOINT || '',
         reviewerAPI: process.env.HITOKOTO_REVIEWER_API_ENDPOINT || '',
         searchAPI: process.env.HITOKOTO_SEARCH_API_ENDPOINT || ''
+      },
+      pubkey: {
+        searchAPI: process.env.HITOKOTO_SEARCH_API_PUBKEY || ''
       }
     }
   }

@@ -1,3 +1,4 @@
+import { HitokotoType } from '@/enums/hitokoto'
 const hitokotoTypeMap = {
   a: '动画',
   b: '漫画',
@@ -13,7 +14,7 @@ const hitokotoTypeMap = {
   l: '抖机灵（笑话，脑筋急转弯，段子等）'
 } as Record<string, string>
 
-export function convertHitokotoType(input: string): string {
+export function convertHitokotoType(input: string | HitokotoType): string {
   return hitokotoTypeMap[input] || '未知分类'
 }
 

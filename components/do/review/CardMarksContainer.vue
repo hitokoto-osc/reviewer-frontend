@@ -7,7 +7,9 @@ const marksStore = useMarksStore()
 
 <template>
   <div class="marks-container">
-    <span class="tips">此句被标记为：</span>
+    <span v-show="props.marks && props.marks.length" class="tips">
+      此句被标记为：
+    </span>
     <a-tag
       v-for="mark in props.marks"
       :key="mark"

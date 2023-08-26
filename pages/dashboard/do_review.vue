@@ -127,7 +127,7 @@ const getNewPoll = async () => {
 }
 
 // WEB 搜索
-const open = ref(false)
+const webSearchModal = ref(false)
 const searchParams = ref<SearchParams>({
   sentence: '',
   from: '',
@@ -135,7 +135,14 @@ const searchParams = ref<SearchParams>({
 })
 const doWebSearch = (sentence: SearchParams) => {
   searchParams.value = sentence
-  open.value = true
+  webSearchModal.value = true
+}
+
+// 本地搜索
+const localSearchModal = ref(false)
+const doLocalSearch = (sentence: SearchParams) => {
+  searchParams.value = sentence
+  localSearchModal.value = true
 }
 
 // 当完成投票/撤销操作后，刷新卡片内容
@@ -166,7 +173,14 @@ onMounted(() => {
 </script>
 <template>
   <div class="do-review">
-    <DoReviewWebSearchModal v-model:open="open" :search-params="searchParams" />
+    <DoReviewLocalSearchModal
+      v-model:open="localSearchModal"
+      :search-params="searchParams"
+    />
+    <DoReviewWebSearchModal
+      v-model:open="webSearchModal"
+      :search-params="searchParams"
+    />
     <a-page-header title="句子审核" />
     <div class="toolbar">
       <a-segmented v-model:value="segmentedValue" :options="segmentOptions" />
@@ -216,6 +230,7 @@ onMounted(() => {
                 :index="cardIndex"
                 @do-masonry-repaint="nextTick(redrawMasonary)"
                 @do-web-search="doWebSearch"
+                @do-local-search="doLocalSearch"
                 @opeartion-done="onOperationDone"
               />
             </div>

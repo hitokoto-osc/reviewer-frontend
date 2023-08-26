@@ -35,4 +35,4 @@ jobs:
           push: true
           tags: hitokoto/reviewer-frontend:latest
           file: ./Dockerfile
-          context: ./
+          context: .

@@ -1,15 +1,15 @@
 import type { PollMarkRes } from '~/composables/api/reviewer/poll'
+import { PollMarkColor, PollMarkLevel } from '@/enums/poll'
 export interface MarkMap {
   [key: number]: {
     text: string
     property: number
-    color: string
+    color: PollMarkColor
   }
 }
 
 interface MarksState {
   marks: PollMarkRes
-  markColorMap: MarkMap
   lastUpdated: number
 }
 
@@ -17,11 +17,36 @@ export const useMarksStore = defineStore('marks', {
   state: () => {
     return {
       marks: [],
-      markColorMap: {},
       lastUpdated: 0
     } as MarksState
   },
-  getters: {},
-  actions: {},
+  getters: {
+    markColorMap(state) {
+      const map: MarkMap = {}
+      state.marks.forEach((mark) => {
+        map[mark.id] = {
+          text: mark.text,
+          property: mark.property,
+          color:
+            mark.level == PollMarkLevel.Info
+              ? PollMarkColor.Info
+              : mark.level == PollMarkLevel.Danger
+              ? PollMarkColor.Danger
+              : PollMarkColor.Warning
+        }
+      })
+      return map
+    }
+  },
+  actions: {
+    /**
+     * @description: 获取标记列表
+     */
+    async refresh() {
+      const { data, error } = await usePollMarks()
+      if (error.value) throw error.value
+      if (data.value) this.marks = data.value.data
+    }
+  },
   persist: true
 })

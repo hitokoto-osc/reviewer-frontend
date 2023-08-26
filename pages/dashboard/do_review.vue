@@ -7,11 +7,10 @@ useHead({
 })
 // TODO: 临时修复 Masonry 路由切换后绘制错误的问题
 const redrawVueMasonry = inject<(id: string) => void>('redrawVueMasonry')
+const redrawMasonary = () => redrawVueMasonry && redrawVueMasonry('32')
 onMounted(() => {
   if (!redrawVueMasonry) return
-  setTimeout(() => {
-    redrawVueMasonry('32')
-  }, 600)
+  setTimeout(redrawMasonary, 600)
 })
 
 const route = useRoute()
@@ -138,6 +137,32 @@ const doWebSearch = (sentence: SearchParams) => {
   searchParams.value = sentence
   open.value = true
 }
+
+// 当完成投票/撤销操作后，刷新卡片内容
+const refreshPollItem = async (index: number, pollID: number) => {
+  const { data, error } = await usePollDetail(pollID, {
+    with_polled_data: true
+  })
+  if (error.value != null) {
+    message.error(`刷新投票 ${pollID} 失败`)
+    return
+  }
+  if (pollListData.value && data.value)
+    pollListData.value.data.collection[index] = data.value.data
+  else
+    message.error(`刷新投票 ${pollID} 失败，投票数据为空。请刷新页面后重试。`)
+
+  nextTick(redrawMasonary)
+}
+const onOperationDone = (event: 'submit' | 'cancel', index: number) => {
+  // console.log(event, index)
+  refreshPollItem(index, cardData.value[index].poll.id)
+}
+
+// 刷新 Mark 列表
+onMounted(() => {
+  useMarksStore().refresh()
+})
 </script>
 <template>
   <div class="do-review">
@@ -181,17 +206,17 @@ const doWebSearch = (sentence: SearchParams) => {
           transition-duration="0.3s"
           item-selector=".grid-item"
         >
-          <template v-for="card in cardData" :key="card.poll.id">
+          <template v-for="(card, cardIndex) in cardData" :key="card.poll.id">
             <div v-masonry-tile class="grid-item">
               <DoReviewCard
                 :poll="card.poll"
                 :sentence="card.sentence"
                 :marks="card.marks"
                 :polled-record="card.polledRecord"
-                @on-switch-comment="
-                  nextTick(() => redrawVueMasonry && redrawVueMasonry('32'))
-                "
+                :index="cardIndex"
+                @do-masonry-repaint="nextTick(redrawMasonary)"
                 @do-web-search="doWebSearch"
+                @opeartion-done="onOperationDone"
               />
             </div>
           </template>
@@ -213,7 +238,7 @@ const doWebSearch = (sentence: SearchParams) => {
         :current="page"
         :page-size="pageSize"
         show-quick-jumper
-        show-less-items
+        show-size-changer
         :page-size-options="pageSizeOptions"
         :total="pollListData?.data?.total || 0"
         @change="onChange"

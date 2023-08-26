@@ -32,6 +32,7 @@ const props = defineProps<{
   sentence: CardPropsSentence
   marks?: number[]
   polledRecord?: CardPropsPolledRecord
+  index: number // Item 在列表中的索引
 }>()
 
 // Emits 定义
@@ -44,8 +45,14 @@ export interface SearchParams {
 const emit = defineEmits<{
   doWebSearch: [sentence: SearchParams]
   doLocalSearch: [sentence: SearchParams]
-  onSwitchComment: [] // 传递此事件只是为了让父组件重绘制
+  doMasonryRepaint: [] // 传递此事件只是为了让父组件重绘制
+  opeartionDone: [event: 'submit' | 'cancel', index: number]
 }>()
+
+const onOperationDone = (event: 'submit' | 'cancel') => {
+  // console.log(event)
+  emit('opeartionDone', event, props.index)
+}
 
 const userStore = useUserStore()
 </script>
@@ -58,6 +65,7 @@ const userStore = useUserStore()
         :poll-created-at="
           dayjs(props.poll.createdAt).format('YYYY-MM-DD HH:mm:ss')
         "
+        :poll-id="props.poll.id"
       />
     </template>
     <!-- eslint-disable-next-line vue/no-v-html -->
@@ -90,6 +98,7 @@ const userStore = useUserStore()
     </div>
     <DoReviewCardActionsContainer
       :is-polled="!!props.polledRecord"
+      :poll-id="props.poll.id"
       @do-web-search="
         emit('doWebSearch', {
           sentence: props.sentence.hitokoto,
@@ -104,7 +113,8 @@ const userStore = useUserStore()
           fromWho: props.sentence.fromWho
         })
       "
-      @on-switch-comment="emit('onSwitchComment')"
+      @do-masonry-repaint="emit('doMasonryRepaint')"
+      @operation-done="onOperationDone"
     />
   </a-card>
 </template>

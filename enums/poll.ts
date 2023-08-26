@@ -17,3 +17,15 @@ export enum PollStatus {
   Rejected = 201,
   NeedModify = 202
 }
+
+export enum PollMarkLevel {
+  Info = 'info',
+  Danger = 'danger',
+  Warning = 'warning'
+}
+
+export enum PollMarkColor {
+  Info = 'blue',
+  Danger = 'red',
+  Warning = 'orange'
+}

@@ -25,8 +25,13 @@ const handleError = <T>(
 ) => {
   const err = (text: string) => {
     message.error({
-      content: response?._data?.message ?? text,
-      icon: () => h(IconEmoticonDead)
+      content: response?._data?.message
+        ? `${response?._data?.code}: ${response?._data?.message}`
+        : text,
+      icon: () =>
+        h(IconEmoticonDead, {
+          style: 'color: #ff4d4f; margin-right: 0.25rem'
+        })
     })
   }
   if (!response._data) {

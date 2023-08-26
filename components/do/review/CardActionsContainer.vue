@@ -4,24 +4,78 @@ import {
   SearchOutlined,
   SelectOutlined
 } from '@ant-design/icons-vue'
-
+import { PollMethod } from '@/enums/poll'
+import type { PollReq } from '@/composables/api'
 const props = defineProps<{
   isPolled: boolean
+  pollId: number // 为了照顾 Vue 的转换规则，因此这里使用 Id 而不是 ID
 }>()
-
-const marksStore = useMarksStore()
-
-const isExpandCommentInput = ref(false)
 
 const emit = defineEmits<{
-  onSwitchComment: [] // 此事件完全只是为了让父组件重绘制
+  doMasonryRepaint: [] // 此事件完全只是为了让父组件重绘制
   doWebSearch: []
   doLocalSearch: []
+  operationDone: [event: 'submit' | 'cancel']
 }>()
+
+// 标记列表
+const marksStore = useMarksStore()
+const marksSelectedValues = ref<number[]>([])
+watch(
+  () => marksSelectedValues.value,
+  () => nextTick(() => emit('doMasonryRepaint'))
+)
+
+// 评论框
+const isExpandCommentInput = ref(false)
+const comment = ref('')
 
 const onSwitchComment = () => {
   isExpandCommentInput.value = !isExpandCommentInput.value
-  emit('onSwitchComment')
+  emit('doMasonryRepaint')
+}
+
+// 提交投票
+const onSubmitLoading = ref(false)
+const onSubmitPoll = async (method: PollMethod) => {
+  onSubmitLoading.value = true
+  try {
+    const req: PollReq = {
+      method
+    }
+    if (marksSelectedValues.value.length > 0) {
+      req.mark_ids = marksSelectedValues.value
+    }
+    if (comment.value) {
+      req.comment = comment.value
+    }
+    const { data, error } = await doPoll(props.pollId, req)
+    if (error.value) throw error.value
+    if (data.value?.code === 0) {
+      message.success(`提交投票 ${props.pollId} 成功！`)
+      emit('operationDone', 'submit')
+    }
+  } catch (e) {
+    console.error(e)
+  } finally {
+    onSubmitLoading.value = false
+  }
+}
+// 取消投票
+const onCancelPoll = async () => {
+  onSubmitLoading.value = true
+  try {
+    const { data, error } = await doCancelPoll(props.pollId)
+    if (error.value) throw error.value
+    if (data.value?.code === 0) {
+      message.success(`撤回投票 ${props.pollId} 成功！`)
+      emit('operationDone', 'cancel')
+    }
+  } catch (e) {
+    console.error(e)
+  } finally {
+    onSubmitLoading.value = false
+  }
 }
 </script>
 <template>
@@ -30,6 +84,7 @@ const onSwitchComment = () => {
       <p class="tips">在考察此句的内容、情感、结构后，请您对此句做出判断：</p>
       <!-- 标记选择框 -->
       <a-select
+        v-model:value="marksSelectedValues"
         mode="multiple"
         :style="{ width: '100%' }"
         placeholder="请选择您对此句的看法，部分选项会展示给其他审核员以辅助审核（选填，若选择“需要修改”则为必填）"
@@ -41,15 +96,35 @@ const onSwitchComment = () => {
       <!-- 评论框 -->
       <a-textarea
         v-show="isExpandCommentInput"
+        v-model:value="comment"
         placeholder="请输入您对于此句子的看法或建议，不超过 1000 字。（选填，若选择“需要更改”则为必填）"
         :rows="2"
         class="mb-xxs"
       />
       <div class="actions">
         <div class="main-actions">
-          <a-button type="primary"> 批准 </a-button>
-          <a-button> 驳回 </a-button>
-          <a-button> 需要更改 </a-button>
+          <a-button
+            type="primary"
+            :loading="onSubmitLoading"
+            :disabled="onSubmitLoading"
+            @click="onSubmitPoll(PollMethod.Approve)"
+          >
+            批准
+          </a-button>
+          <a-button
+            :loading="onSubmitLoading"
+            :disabled="onSubmitLoading"
+            @click="onSubmitPoll(PollMethod.Reject)"
+          >
+            驳回
+          </a-button>
+          <a-button
+            :loading="onSubmitLoading"
+            :disabled="onSubmitLoading"
+            @click="onSubmitPoll(PollMethod.NeedModify)"
+          >
+            需要更改
+          </a-button>
         </div>
         <div class="md:flex-1"></div>
         <div class="tool-actions">
@@ -82,7 +157,14 @@ const onSwitchComment = () => {
     </template>
     <template v-else>
       <p class="tips">您已对此句做出评判，但您可以：</p>
-      <a-button type="primary"> 撤回意见 </a-button>
+      <a-button
+        type="primary"
+        :loading="onSubmitLoading"
+        :disabled="onSubmitLoading"
+        @click="onCancelPoll"
+      >
+        撤回意见
+      </a-button>
     </template>
   </div>
 </template>

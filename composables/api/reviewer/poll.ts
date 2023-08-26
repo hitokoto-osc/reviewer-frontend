@@ -1,11 +1,11 @@
 import { HTTPOption, useHTTP } from './useHTTP'
 import type { HitokotoStatus, HitokotoType } from '@/enums/hitokoto'
-import type { PollMethod, PollStatus } from '@/enums/poll'
+import type { PollMethod, PollStatus, PollMarkLevel } from '@/enums/poll'
 
 export type PollMarkRes = {
   id: number
   text: string
-  level: string
+  level: PollMarkLevel
   property: number
   updated_at: string
   created_at: string
@@ -121,7 +121,7 @@ export interface PollRes {}
 
 export function doPoll(
   pollID: number,
-  req: PollListReq,
+  req: PollReq,
   options: HTTPOption<PollRes> = {}
 ) {
   return useHTTP.put<PollRes>(`/poll/${pollID}`, req, options)

@@ -13,7 +13,7 @@ watchEffect(() => {
 </script>
 <template>
   <div
-    class="w-full h-full flex"
+    class="w-full h-100vh flex"
     :class="{
       'bg-slate-50': pending || error
     }"

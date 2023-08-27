@@ -15,7 +15,8 @@ const emit = defineEmits<{
 
 const total = ref(0)
 const currentPage = ref(1)
-const limit = ref(10)
+const paegSizeOptions = ref([5, 10, 20])
+const limit = ref(5)
 const offset = computed(() => (currentPage.value - 1) * limit.value)
 
 const status = ref<'ok' | 'error' | 'empty' | 'pending'>('ok')
@@ -29,6 +30,7 @@ const records = ref<Hits<SearchHitokotoResElement>>([])
 const doLocalSearch = async () => {
   status.value = 'pending'
   try {
+    // console.log(offset.value, limit.value, currentPage.value)
     const result = await useSearchHitokoto({
       sentence: props.searchParams.sentence,
       offset: offset.value,
@@ -45,18 +47,21 @@ const doLocalSearch = async () => {
   }
 }
 
-const resetStatus = () => {
+const resetStatus = (all: boolean) => {
   status.value = 'pending'
-  total.value = 0
-  currentPage.value = 1
-  records.value = []
+
+  if (all) {
+    total.value = 0
+    currentPage.value = 1
+    records.value = []
+  }
 }
 
 watch(
   () => [props.open, limit.value, currentPage.value],
-  (val) => {
+  (val, oldVal) => {
     if (typeof val[0] === 'boolean' && !val[0]) return
-    resetStatus()
+    resetStatus(val[0] !== oldVal[0])
     doLocalSearch()
   }
 )
@@ -95,9 +100,10 @@ watch(
       <a-divider :style="{ marginTop: 0 }" />
       <a-row type="flex" justify="center" class="mt-s">
         <a-pagination
-          v-model="currentPage"
+          v-model:current="currentPage"
           v-model:page-size="limit"
           :total="total"
+          :page-size-options="paegSizeOptions"
           show-less-items
         />
       </a-row>

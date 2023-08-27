@@ -1,4 +1,4 @@
-import { UserInfoRes } from 'composables/api'
+import type { UserInfoRes } from '@/composables/api'
 import dayjs from 'dayjs'
 
 export interface UserState {
@@ -53,5 +53,7 @@ export const useUserStore = defineStore('user', {
       this.expiredAt = dayjs().add(1, 'month').valueOf()
     }
   },
-  persist: true
+  persist: {
+    storage: sessionStorage
+  }
 })

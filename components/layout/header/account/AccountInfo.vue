@@ -27,7 +27,7 @@ const userStore = useUserStore()
   }
 
   .avatar-wrapper {
-    @apply h-11 h-11 p-0.5 flex items-center justify-center rounded-full border-gray-200 border-1 border-solid;
+    @apply h-11 w-11 p-0.5 flex items-center justify-center rounded-full border-gray-200 border-1 border-solid;
 
     .avatar {
       @apply h-full w-full rounded-full;

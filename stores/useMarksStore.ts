@@ -42,12 +42,15 @@ export const useMarksStore = defineStore('marks', {
     /**
      * @description: 获取标记列表
      */
-    async refresh() {
+    async $refresh() {
       const { data, error } = await usePollMarks({
         lazy: true
       })
       if (error.value) throw error.value
       if (data.value) this.marks = data.value.data
+    },
+    $setMarks(marks: PollMarkRes) {
+      this.marks = marks
     }
   },
   persist: true

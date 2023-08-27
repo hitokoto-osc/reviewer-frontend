@@ -61,7 +61,7 @@ const {
   data: pollListData,
   error,
   refresh
-} = usePollList(pollListParams, { lazy: true })
+} = await usePollList(pollListParams, { lazy: true })
 watch(
   () => [page.value, pageSize.value],
   () => refresh()
@@ -167,9 +167,7 @@ const onOperationDone = (event: 'submit' | 'cancel', index: number) => {
 }
 
 // 刷新 Mark 列表
-onMounted(() => {
-  useMarksStore().refresh()
-})
+useMarksStore().refresh()
 </script>
 <template>
   <div class="do-review">

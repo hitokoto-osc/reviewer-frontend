@@ -2,11 +2,7 @@ FROM node:20-alpine
 
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
-COPY . .
-
-RUN npm install -g pnpm
-RUN pnpm install
-RUN pnpm build
+COPY .output .output
 
 ENV NUXT_HOST=0.0.0.0
 ENV NUXT_PORT=3000

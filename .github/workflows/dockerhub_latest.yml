@@ -7,6 +7,9 @@ on:
 jobs:
   latest:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20.x]
     steps:
       -
         name: Set up QEMU
@@ -20,8 +23,29 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - uses: actions/cache@v3
+        name: Setup pnpm cache
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
       - name: Checkout code
         uses: actions/checkout@v3
+      - name: Install dependencies
+        run: pnpm install
       - name: Create .env file
         uses: SpicyPizza/create-envfile@v2.0
         with:
@@ -30,6 +54,8 @@ jobs:
           envkey_HITOKOTO_REVIEWER_API_ENDPOINT: ${{ secrets.HITOKOTO_REVIEWER_API_ENDPOINT }}
           envkey_HITOKOTO_SEARCH_API_ENDPOINT: ${{ secrets.HITOKOTO_SEARCH_API_ENDPOINT }}
           envkey_HITOKOTO_SEARCH_API_PUBKEY: ${{ secrets.HITOKOTO_SEARCH_API_PUBKEY }}
+      - name: Build project
+        run: pnpm build
       -
         name: Build and push
         uses: docker/build-push-action@v4

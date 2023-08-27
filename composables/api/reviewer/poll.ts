@@ -72,7 +72,7 @@ export type PollListRes = {
 }
 
 export function usePollList(
-  req: PollListReq,
+  req: PollListReq | Ref<PollListReq>,
   options: HTTPOption<PollListRes> = {}
 ) {
   return useHTTP.get<PollListRes>('/poll', req, options)

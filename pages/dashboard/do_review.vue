@@ -47,23 +47,23 @@ const segmentOptions = reactive<string[]>(['全部', '待审核', '已审核'])
 const segmentedValue = ref(segmentOptions[0])
 
 // 获取投票列表
-const {
-  pending,
-  data: pollListData,
-  error,
-  refresh
-} = usePollList(
-  {
+const pollListParams = computed(() => {
+  return {
     status_start: PollStatus.Open,
     status_end: PollStatus.Open,
     with_records: true,
     page: page.value,
     page_size: pageSize.value
-  },
-  { lazy: true }
-)
+  }
+})
+const {
+  pending,
+  data: pollListData,
+  error,
+  refresh
+} = usePollList(pollListParams, { lazy: true })
 watch(
-  () => route.query,
+  () => [page.value, pageSize.value],
   () => refresh()
 )
 
@@ -114,7 +114,7 @@ const getNewPoll = async () => {
     // 如果当前页面是最后一页且不足 pageSize 条，刷新页面
     if (
       !pollListData.value?.data?.total ||
-      (page.value * pageSize.value < pollListData.value?.data?.total &&
+      (page.value * pageSize.value > pollListData.value?.data?.total &&
         cardData.value.length < pageSize.value)
     ) {
       refresh()
@@ -201,7 +201,12 @@ onMounted(() => {
           </a-button>
         </div>
         <div class="mobile">
-          <a-button type="primary">
+          <a-button
+            type="primary"
+            :loading="getNewPollLoading"
+            :disabled="getNewPollLoading"
+            @click="getNewPoll"
+          >
             <template #icon>
               <PlusCircleOutlined />
             </template>

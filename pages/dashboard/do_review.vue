@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { PlusCircleOutlined } from '@ant-design/icons-vue'
-import { PollStatus } from '@/enums/poll'
+import { PollStatus, PolledFilter } from '@/enums/poll'
 import type { SearchParams } from '@/components/do/review/Card.vue'
+import type { SegmentedOption } from 'ant-design-vue/es/segmented/src/segmented' // TODO: Antdv 的类型定义有问题，这里需要手动指定路径
+
 useHead({
   title: '句子审核'
 })
@@ -28,23 +30,46 @@ const pageSize = computed(() => {
     : pageSize
 })
 
-const onChange = async (newPage: number, newPageSize: number) => {
-  navigateTo(
-    {
-      name: route.name || undefined,
-      query: {
-        page: (newPage || 1).toString(),
-        pageSize: newPageSize.toString()
-      }
-    },
-    {
-      replace: true
+const onPagniationChange = async (newPage: number, newPageSize: number) => {
+  navigateTo({
+    name: route.name || undefined,
+    query: {
+      page: (newPage || 1).toString(),
+      pageSize: newPageSize.toString(),
+      polledFilter:
+        segmentedValue.value.toString() || PolledFilter.All.toString()
     }
-  )
+  })
 }
 // 分段器部分
-const segmentOptions = reactive<string[]>(['全部', '待审核', '已审核'])
-const segmentedValue = ref(segmentOptions[0])
+const segmentOptions = reactive<SegmentedOption[]>([
+  {
+    title: '全部',
+    value: PolledFilter.All
+  },
+  {
+    title: '待审核',
+    value: PolledFilter.Unreviewed
+  },
+  {
+    title: '已审核',
+    value: PolledFilter.Reviewed
+  }
+])
+const segmentedValue: Ref<PolledFilter> = computed(() => {
+  const value = Number(route.query.polledFilter)
+  return isNaN(value) ? PolledFilter.All : value
+})
+const onSegmentChange = (value: number | string) => {
+  navigateTo({
+    name: route.name || undefined,
+    query: {
+      page: page.value.toString(),
+      pageSize: pageSize.value.toString(),
+      polledFilter: value.toString()
+    }
+  })
+}
 
 // 获取投票列表
 const pollListParams = computed(() => {
@@ -53,7 +78,8 @@ const pollListParams = computed(() => {
     status_end: PollStatus.Open,
     with_records: true,
     page: page.value,
-    page_size: pageSize.value
+    page_size: pageSize.value,
+    polled_filter: segmentedValue.value
   }
 })
 const {
@@ -63,7 +89,7 @@ const {
   refresh
 } = await usePollList(pollListParams, { lazy: true })
 watch(
-  () => [page.value, pageSize.value],
+  () => [page.value, pageSize.value, segmentedValue.value],
   () => refresh()
 )
 
@@ -126,7 +152,8 @@ const getNewPoll = async () => {
         status_end: PollStatus.Open,
         with_records: true,
         page: 1,
-        page_size: 1
+        page_size: 1,
+        polled_filter: segmentedValue.value
       })
       if (e.value != null) throw e.value
       pollListData.value.data.total = pollList.value?.data?.total || 0
@@ -206,7 +233,15 @@ watch(
     />
     <a-page-header title="句子审核" />
     <div class="toolbar">
-      <a-segmented v-model:value="segmentedValue" :options="segmentOptions" />
+      <a-segmented
+        v-model:value="segmentedValue"
+        :options="segmentOptions"
+        @change="onSegmentChange"
+      >
+        <template #label="props">
+          <span>{{ props.title }}</span>
+        </template>
+      </a-segmented>
       <div class="flex-1" />
       <div class="button-group">
         <div class="pc">
@@ -284,7 +319,7 @@ watch(
         show-size-changer
         :page-size-options="pageSizeOptions"
         :total="pollListData?.data?.total || 0"
-        @change="onChange"
+        @change="onPagniationChange"
       />
     </div>
   </div>

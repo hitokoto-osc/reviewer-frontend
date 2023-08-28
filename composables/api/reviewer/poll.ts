@@ -1,6 +1,11 @@
 import { HTTPOption, useHTTP } from './useHTTP'
 import type { HitokotoStatus, HitokotoType } from '@/enums/hitokoto'
-import type { PollMethod, PollStatus, PollMarkLevel } from '@/enums/poll'
+import type {
+  PollMethod,
+  PollStatus,
+  PollMarkLevel,
+  PolledFilter
+} from '@/enums/poll'
 
 export type PollMarkRes = {
   id: number
@@ -21,6 +26,7 @@ export interface PollListReq {
   with_records: boolean
   page: number
   page_size: number
+  polled_filter: PolledFilter
 }
 
 export type PollListCollectionElement = {

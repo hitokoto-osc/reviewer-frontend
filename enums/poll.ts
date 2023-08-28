@@ -6,6 +6,12 @@ export enum PollMethod {
   NeedCommonUserPoll
 }
 
+export enum PolledFilter {
+  All = 0,
+  Reviewed,
+  Unreviewed
+}
+
 export enum PollStatus {
   NotOpen = 0,
   Open = 1,

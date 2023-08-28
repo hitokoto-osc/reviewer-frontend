@@ -53,7 +53,5 @@ export const useUserStore = defineStore('user', {
       this.expiredAt = dayjs().add(1, 'month').valueOf()
     }
   },
-  persist: {
-    storage: sessionStorage
-  }
+  persist: true
 })

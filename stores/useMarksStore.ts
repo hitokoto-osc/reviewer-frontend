@@ -54,6 +54,6 @@ export const useMarksStore = defineStore('marks', {
     }
   },
   persist: {
-    storage: sessionStorage
+    storage: persistedState.sessionStorage
   }
 })

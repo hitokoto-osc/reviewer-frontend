@@ -118,6 +118,18 @@ const getNewPoll = async () => {
         cardData.value.length < pageSize.value)
     ) {
       refresh()
+    } else {
+      // 否则只是更新 total
+      if (!pollListData.value) return
+      const { data: pollList, error: e } = usePollList({
+        status_start: PollStatus.Open,
+        status_end: PollStatus.Open,
+        with_records: true,
+        page: 1,
+        page_size: 1
+      })
+      if (e.value != null) throw e.value
+      pollListData.value.data.total = pollList.value?.data?.total || 0
     }
   } catch (e) {
     console.error(e)

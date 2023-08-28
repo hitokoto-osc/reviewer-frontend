@@ -64,7 +64,7 @@ const onSegmentChange = (value: number | string) => {
   navigateTo({
     name: route.name || undefined,
     query: {
-      page: page.value.toString(),
+      page: 1, // 切换分段器时，重置页码
       pageSize: pageSize.value.toString(),
       polledFilter: value.toString()
     }

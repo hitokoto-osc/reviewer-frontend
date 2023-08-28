@@ -1,4 +1,4 @@
-import { useHTTP } from './useHTTP'
+import { HTTPOption, useHTTP } from './useHTTP'
 import type { UserRole } from '@/enums/user'
 import type { HitokotoStatus, HitokotoType } from '@/enums/hitokoto'
 import type { PollStatus, PollMethod } from '@/enums/poll'
@@ -47,6 +47,20 @@ export interface UserInfoRes {
   updated_at: string
 }
 
-export function useUserInfoReq() {
-  return useHTTP.get<UserInfoRes>(`/user`)
+export function useUserInfoReq(options: HTTPOption<UserInfoRes> = {}) {
+  return useHTTP.get<UserInfoRes>(`/user`, {}, options)
+}
+
+export type UserUnreviewedCountRes = {
+  count: number
+}
+
+export function useUserUnreviewedCount(
+  options: HTTPOption<UserUnreviewedCountRes> = {}
+) {
+  return useHTTP.get<UserUnreviewedCountRes>(
+    `/user/poll/unreviewed`,
+    {},
+    options
+  )
 }

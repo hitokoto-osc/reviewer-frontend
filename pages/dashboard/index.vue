@@ -1,12 +1,29 @@
 <script setup lang="ts">
+import dayjs from 'dayjs'
+import { UserRole } from '@/enums/user'
 useHead({
   title: '控制台'
 })
-import dayjs from 'dayjs'
+
 // const score = ref(0)
 // useCountTo(score, 10012300, 0.1)
 const now = dayjs()
 const userStore = useUserStore()
+
+const userUnreviewedCount = ref(0)
+
+if (
+  userStore.user?.role === UserRole.Reviewer ||
+  userStore.user?.role === UserRole.Admin
+) {
+  const { data: userUnreviewedCountData, error: userUnreviewedError } =
+    await useUserUnreviewedCount()
+  if (userUnreviewedError.value) {
+    console.error(userUnreviewedError.value)
+  } else {
+    userUnreviewedCount.value = userUnreviewedCountData.value?.data.count || 0
+  }
+}
 </script>
 <template>
   <div>
@@ -96,7 +113,7 @@ const userStore = useUserStore()
           icon="i-solar-hashtag-circle-bold-duotone"
           color="bg-cyan-200"
         >
-          <a-statistic title="待审" :value="0">
+          <a-statistic title="待审" :value="userUnreviewedCount">
             <template #suffix> 句 </template>
           </a-statistic>
         </DashboardCard>

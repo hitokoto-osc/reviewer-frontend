@@ -24,7 +24,7 @@ const doValidate = debounce(() => {
     isTips.value = true
     return
   }
-  tips.value = ''
+  tips.value = '占位符'
   isTips.value = false
 }, 50)
 

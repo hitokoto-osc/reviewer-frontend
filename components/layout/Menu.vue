@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import type { VueElement } from 'vue'
 import type { ItemType } from 'ant-design-vue/es'
-import {
-  MailOutlined,
-  ContainerOutlined,
-  VerifiedOutlined,
-  BarChartOutlined,
-  AuditOutlined
-} from '@ant-design/icons-vue'
+import IconDashboard from '~icons/solar/widget-linear'
+import IconDoReview from '~icons/solar/document-add-linear'
+import IconRules from '~icons/solar/bookmark-circle-linear'
+import IconMessage from '~icons/solar/chat-round-dots-linear'
+import IconPollRecords from '~icons/solar/documents-linear'
+import IconScore from '~icons/solar/bolt-circle-linear'
+import IconApply from '~icons/solar/crown-linear'
 
 function getItem(
   label: VueElement | string,
@@ -26,15 +26,13 @@ function getItem(
 }
 
 const items: ItemType[] = reactive([
-  getItem('概览', 'dashboard', () => h(BarChartOutlined)),
-  getItem('句子审核', 'do_review', () => h(AuditOutlined)),
-  getItem('审核准则', 'review_rules', () => h(ContainerOutlined)),
-  getItem('消息与记录', 'messages', () => h(MailOutlined), [
-    getItem('通知', 'notifications'),
-    getItem('投票记录', 'poll_records'),
-    getItem('积分记录', 'score_records')
-  ]),
-  getItem('申请权限', 'apply_reviewer', () => h(VerifiedOutlined))
+  getItem('概览', 'dashboard', () => h(IconDashboard)),
+  getItem('句子审核', 'do_review', () => h(IconDoReview)),
+  getItem('审核准则', 'review_rules', () => h(IconRules)),
+  getItem('通知消息', 'messages', () => h(IconMessage)),
+  getItem('投票记录', 'poll_records', () => h(IconPollRecords)),
+  getItem('积分记录', 'score_records', () => h(IconScore)),
+  getItem('申请权限', 'apply_reviewer', () => h(IconApply))
   // getItem('Navigation Two', 'sub2', () => h(AppstoreOutlined)),
   // getItem('Navigation Two', 'sub2', () => h(AppstoreOutlined))
   // getItem('Navigation Two', 'sub2', () => h(AppstoreOutlined), [
@@ -73,10 +71,10 @@ const keyRouteMap = new Map<string, string>()
 keyRouteMap.set('dashboard', '/dashboard')
 keyRouteMap.set('do_review', '/dashboard/do_review')
 keyRouteMap.set('review_rules', 'https://www.yuque.com/freejishu/rfoxeq/xz3u2x')
+// keyRouteMap.set('messages', '/dashboard/messages')
 keyRouteMap.set('messages', '/dashboard/messages')
-keyRouteMap.set('notifications', '/dashboard/messages/notifications')
-keyRouteMap.set('poll_records', '/dashboard/messages/poll_records')
-keyRouteMap.set('score_records', '/dashboard/messages/score_records')
+keyRouteMap.set('poll_records', '/dashboard/records/review')
+keyRouteMap.set('score_records', '/dashboard/records/score')
 keyRouteMap.set('apply_reviewer', '/dashboard/apply_reviewer')
 const getKeyByRoute = (route: string) => {
   for (const [key, value] of keyRouteMap) {

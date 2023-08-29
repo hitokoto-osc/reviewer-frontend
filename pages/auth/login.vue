@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import isEmail from 'validator/es/lib/isEmail'
+import { debounce } from 'lodash-es'
 definePageMeta({
   layout: 'auth'
 })
@@ -11,18 +13,20 @@ const password = ref('')
 // 验证器相关
 const tips = ref('占位符')
 const isTips = ref<boolean | null>(null)
-const doValidate = () => {
+const doValidate = debounce(() => {
   if (!email.value || !password.value) {
     tips.value = '邮箱或密码不能为空'
-    return true
+    isTips.value = true
+    return
   }
-  if (!/^\w+@\w+\.\w+$/.test(email.value)) {
+  if (!isEmail(email.value)) {
     tips.value = '邮箱格式不正确'
-    return true
+    isTips.value = true
+    return
   }
-  tips.value = '占位符'
-  return false
-}
+  tips.value = ''
+}, 50)
+
 const disabled = computed(() => {
   return isTips.value == null || isTips.value
 })
@@ -37,7 +41,6 @@ const doLogin = async () => {
       email: email.value,
       password: password.value
     })
-    console.log(data)
     if (!data.value?.status || data.value?.status != 200) {
       // 登录失败
       tips.value = data.value?.message || '未知错误'
@@ -74,7 +77,7 @@ onMounted(() => {
           type="text"
           name="email"
           placeholder="邮箱"
-          @blur="isTips = doValidate()"
+          @input="doValidate()"
         />
       </div>
       <div class="input-group">
@@ -84,7 +87,7 @@ onMounted(() => {
           type="password"
           name="password"
           placeholder="密码"
-          @blur="isTips = doValidate()"
+          @input="doValidate()"
         />
       </div>
       <div class="mt-15">

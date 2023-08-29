@@ -53,7 +53,7 @@ const classNames = computed(() => {
 }
 
 .input {
-  @apply h-12 w-full bg-transparent outline-none border-0 border-b-1 border-gray-200 pl-10 text-current;
+  @apply h-12 w-full bg-transparent outline-none border-0 border-b-1 border-gray-200 pl-10 text-current rounded-0;
 
   &:focus {
     + .input-border {

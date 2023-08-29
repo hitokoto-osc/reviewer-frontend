@@ -25,6 +25,7 @@
     "@pinia/nuxt": "^0.4.11",
     "@types/md5": "^2.3.2",
     "@types/node": "^20.5.6",
+    "@types/validator": "^13.11.1",
     "@typescript-eslint/eslint-plugin": "^6.4.1",
     "@typescript-eslint/parser": "^6.4.1",
     "@unocss/nuxt": "^0.55.3",
@@ -75,9 +76,14 @@
     "stylelint-scss": "^5.1.0",
     "typescript": "^5.2.2",
     "unplugin-icons": "^0.16.5",
+    "validator": "^13.11.0",
     "vant": "^4.6.6",
     "vite": "^4.4.9",
     "vue-masonry": "^0.16.0",
     "xss": "^1.0.14"
+  },
+  "dependencies": {
+    "@types/lodash-es": "^4.17.8",
+    "lodash-es": "^4.17.21"
   }
 }

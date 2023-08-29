@@ -25,6 +25,7 @@ const doValidate = debounce(() => {
     return
   }
   tips.value = ''
+  isTips.value = false
 }, 50)
 
 const disabled = computed(() => {

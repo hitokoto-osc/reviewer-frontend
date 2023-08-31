@@ -149,9 +149,13 @@ export type PollDetailReq = {
 export type PollDetailRes = PollListCollectionElement
 
 export function usePollDetail(
-  pollID: number,
+  pollID: number | Ref<number>,
   req: PollDetailReq = {},
   options: HTTPOption<PollDetailRes> = {}
 ) {
-  return useHTTP.get<PollDetailRes>(`/poll/${pollID}`, req, options)
+  return useHTTP.get<PollDetailRes>(
+    () => `/poll/${typeof pollID === 'number' ? pollID : pollID.value}`,
+    req,
+    options
+  )
 }

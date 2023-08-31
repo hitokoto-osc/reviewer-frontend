@@ -64,3 +64,46 @@ export function useUserUnreviewedCount(
     options
   )
 }
+
+export type UserPollLogsReq = {
+  page?: number
+  page_size?: number
+  order: 'acs' | 'desc'
+}
+
+export type UserPollLogsRes = {
+  collection: Array<{
+    poll_id: number
+    point: number
+    sentence_uuid: string
+    type: PollMethod
+    comment: string
+    created_at: string
+    updated_at: string
+    sentence: {
+      id: number
+      uuid: string
+      hitokoto: string
+      type: HitokotoType
+      from: string
+      from_who?: string
+      creator: string
+      creator_uid: number
+      reviewer: number
+      status: HitokotoStatus
+      poll_status: PollStatus
+      created_at: string
+    }
+    user_marks: number[]
+  }>
+  total: number
+  page: number
+  page_size: number
+}
+
+export function useUserPollLogs(
+  params: UserPollLogsReq | Ref<UserPollLogsReq>,
+  options: HTTPOption<UserPollLogsRes> = {}
+) {
+  return useHTTP.get<UserPollLogsRes>(`/user/poll/logs`, params, options)
+}

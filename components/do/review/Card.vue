@@ -2,6 +2,7 @@
 import xss from 'xss'
 import dayjs from 'dayjs'
 import type { PollMethod } from '@/enums/poll'
+import type { HitokotoType } from '~/enums/hitokoto'
 
 // Props 定义
 export type CardPropsPoll = {
@@ -15,7 +16,7 @@ export type CardPropsPoll = {
 export type CardPropsSentence = {
   uuid: string
   hitokoto: string
-  type: string
+  type: HitokotoType
   fromWho?: string
   from: string
   creator: string

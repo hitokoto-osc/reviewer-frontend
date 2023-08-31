@@ -1,5 +1,6 @@
+import { PollStatus } from './../enums/poll'
 import { HitokotoType } from '@/enums/hitokoto'
-const hitokotoTypeMap = {
+const HitokotoTypeMap = {
   a: '动画',
   b: '漫画',
   c: '游戏',
@@ -15,10 +16,10 @@ const hitokotoTypeMap = {
 } as Record<string, string>
 
 export function convertHitokotoType(input: string | HitokotoType): string {
-  return hitokotoTypeMap[input] || '未知分类'
+  return HitokotoTypeMap[input] || '未知分类'
 }
 
-const pollMethodMap = {
+const PollMethodMap = {
   1: '赞同',
   2: '驳回',
   3: '需要修改',
@@ -26,5 +27,21 @@ const pollMethodMap = {
 } as Record<number, string>
 
 export function convertPollMethod(input: number): string {
-  return pollMethodMap[input] || '未知'
+  return PollMethodMap[input] || '未知'
+}
+
+const PollStatusMap = {
+  0: '未开放',
+  1: '进行中',
+  2: '处理中',
+  100: '暂停',
+  101: '关闭',
+  102: '普通用户投票',
+  200: '通过',
+  201: '驳回',
+  202: '需要修改'
+} as Record<PollStatus, string>
+
+export function convertPollStatus(input: PollStatus): string {
+  return PollStatusMap[input] || '未知'
 }

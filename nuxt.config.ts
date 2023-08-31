@@ -17,7 +17,7 @@ export default defineNuxtConfig({
         {
           // Google Fonts
           rel: 'stylesheet',
-          href: 'https://fonts.googleapis.com/css?family=Noto+Serif+SC:600&display=swap'
+          href: 'https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Serif+TC:wght@400;600;700;900&display=swap'
         }
         // {
         //   rel: 'stylesheet',
@@ -57,6 +57,9 @@ export default defineNuxtConfig({
   gtag: {
     id: 'G-86GDBEXXNZ'
   },
+  build: {
+    transpile: [/echarts/]
+  },
 
   imports: {
     dirs: ['./stores']
@@ -73,7 +76,9 @@ export default defineNuxtConfig({
       enabled: true
     }
   },
-  components: true,
+  components: {
+    dirs: ['~/components']
+  },
   runtimeConfig: {
     public: {
       endpoint: {

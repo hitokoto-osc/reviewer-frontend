@@ -23,7 +23,7 @@ export default defineConfig({
     [
       'font-noto-serif',
       {
-        'font-family': 'Noto Serif SC, serif'
+        'font-family': '"Noto Serif SC", "Noto Serif TC", serif'
       }
     ]
   ],

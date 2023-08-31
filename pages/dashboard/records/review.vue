@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { UserPollLogsReq, useUserPollLogs } from '~/composables/api'
-
 useHead({
   title: '审核记录'
 })
@@ -70,19 +69,31 @@ watch([page, pageSize], () => {
         v-if="!userPollLogsPending && !userPollLogsError"
         class="records-container"
       >
-        <div class="records">
-          <template v-if="userPollLogsData && userPollLogsData.data.total > 0">
-            <ReviewRecordsCard
-              v-for="userPollLog in userPollLogsData.data.collection"
-              :key="userPollLog.poll_id"
-              :user-poll-log="userPollLog"
-              @show-poll-detail="showPollDetail"
-            />
-          </template>
-          <div v-else class="status">
-            <a-empty />
-          </div>
-        </div>
+        <ClientOnly>
+          <masonry
+            class="records"
+            :cols="{ default: 2, 640: 1 }"
+            :gutter="'1rem'"
+          >
+            <template
+              v-if="userPollLogsData && userPollLogsData.data.total > 0"
+            >
+              <div
+                v-for="userPollLog in userPollLogsData.data.collection"
+                :key="userPollLog.poll_id"
+                class="py-2"
+              >
+                <ReviewRecordsCard
+                  :user-poll-log="userPollLog"
+                  @show-poll-detail="showPollDetail"
+                />
+              </div>
+            </template>
+            <div v-else class="status">
+              <a-empty />
+            </div>
+          </masonry>
+        </ClientOnly>
         <!-- 分页器 -->
         <div
           v-show="userPollLogsData && userPollLogsData.data.total > 0"
@@ -117,8 +128,8 @@ watch([page, pageSize], () => {
       @apply w-full flex-1 flex flex-col;
 
       .records {
-        @apply w-full flex-1 flex flex-col;
-        @apply grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-4;
+        @apply w-full flex-1;
+        // @apply grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-4;
       }
     }
   }

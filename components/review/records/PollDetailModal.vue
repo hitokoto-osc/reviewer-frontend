@@ -12,7 +12,13 @@ const emit = defineEmits<{
 
 // fetch PollDetail
 const pollID = computed(() => props.pollId)
-const { data, pending, error, refresh } = usePollDetail(pollID)
+const { data, pending, error, refresh } = usePollDetail(
+  pollID,
+  {},
+  {
+    immediate: false
+  }
+)
 
 watch(
   () => props.open,
@@ -29,9 +35,9 @@ watch(
     @update:open="emit('update:open', $event)"
     @ok="emit('update:open', false)"
   >
-    <template v-if="pending">
+    <div v-if="pending" class="loading">
       <a-spin />
-    </template>
+    </div>
     <template v-if="error">
       <p>加载失败</p>
     </template>
@@ -83,6 +89,10 @@ watch(
 </template>
 
 <style lang="scss" scoped>
+.loading {
+  @apply w-full flex h-70 items-center justify-center;
+}
+
 .chart {
   @apply w-full h-70 mt-5;
 }

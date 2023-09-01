@@ -56,6 +56,12 @@ const onOperationDone = (event: 'submit' | 'cancel') => {
 }
 
 const userStore = useUserStore()
+
+const marksSelectedValues = ref<number[]>([])
+
+const onSelectChange = (x: number[]) => {
+  marksSelectedValues.value = x
+}
 </script>
 
 <template>
@@ -86,7 +92,18 @@ const userStore = useUserStore()
         </li>
       </ul>
     </div>
-    <DoReviewCardMarksContainer v-if="props.marks" :marks="props.marks" />
+    <div v-if="props.marks" class="marks-container">
+      <span v-show="props.marks && props.marks.length" class="tips">
+        此句被标记为：
+      </span>
+      <PollMarks
+        v-if="props.marks"
+        :marks="props.marks"
+        :marks-selected-values="marksSelectedValues"
+        :checkable="!props.polledRecord"
+        @on-select-change="onSelectChange"
+      />
+    </div>
     <div v-if="props.polledRecord" class="review-record">
       <span>
         您投了 <b>{{ convertPollMethod(props.polledRecord.method) }}</b>
@@ -98,8 +115,10 @@ const userStore = useUserStore()
       </span>
     </div>
     <DoReviewCardActionsContainer
+      :props-marks-selected-values="marksSelectedValues"
       :is-polled="!!props.polledRecord"
       :poll-id="props.poll.id"
+      @on-select-change="onSelectChange"
       @do-web-search="
         emit('doWebSearch', {
           sentence: props.sentence.hitokoto,
@@ -121,6 +140,14 @@ const userStore = useUserStore()
 </template>
 
 <style lang="scss" scoped>
+.marks-container {
+  @apply mt-3;
+
+  .tips {
+    @apply block mb-2;
+  }
+}
+
 .hitokoto-sentence {
   @apply text-lg font-noto-serif font-600;
 }

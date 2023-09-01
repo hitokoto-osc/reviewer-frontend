@@ -7,11 +7,13 @@ import {
 import { PollMethod } from '@/enums/poll'
 import type { PollReq } from '@/composables/api'
 const props = defineProps<{
+  propsMarksSelectedValues: number[]
   isPolled: boolean
   pollId: number // 为了照顾 Vue 的转换规则，因此这里使用 Id 而不是 ID
 }>()
 
 const emit = defineEmits<{
+  onSelectChange: [marksSelectedValues: number[]]
   doMasonryRepaint: [] // 此事件完全只是为了让父组件重绘制
   doWebSearch: []
   doLocalSearch: []
@@ -24,6 +26,11 @@ const marksSelectedValues = ref<number[]>([])
 watch(
   () => marksSelectedValues.value,
   () => nextTick(() => emit('doMasonryRepaint'))
+)
+
+watch(
+  () => props.propsMarksSelectedValues,
+  () => (marksSelectedValues.value = props.propsMarksSelectedValues)
 )
 
 // 评论框
@@ -88,6 +95,7 @@ const onCancelPoll = async () => {
         mode="multiple"
         :style="{ width: '100%' }"
         placeholder="请选择您对此句的看法，部分选项会展示给其他审核员以辅助审核（选填，若选择“需要修改”则为必填）"
+        @change="emit('onSelectChange', marksSelectedValues)"
       >
         <a-select-option v-for="i in marksStore.marks" :key="i.id">
           {{ i.text }}

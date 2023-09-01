@@ -29,8 +29,13 @@ const emit = defineEmits<{
 
 <template>
   <a-card class="review-record-card">
+    <ReviewRecordsCardStamp
+      v-if="props.userPollLog.sentence.poll_status != PollStatus.Open"
+      :poll-status="props.userPollLog.sentence.poll_status"
+    />
     <template #title> #{{ props.userPollLog.poll_id }} </template>
     <ReviewRecordsCardSentence :sentence="sentence" />
+
     <a-divider />
 
     <div class="polled-info-container">
@@ -53,7 +58,7 @@ const emit = defineEmits<{
         投票评论：{{ userPollLog.comment }}
       </p>
     </div>
-    <div class="actions-container flex justify-end mt-5">
+    <div class="actions-container">
       <a-button
         v-show="
           userStore.user?.role === UserRole.Admin ||
@@ -69,9 +74,17 @@ const emit = defineEmits<{
 </template>
 
 <style lang="scss" scoped>
+.review-record-card {
+  @apply relative overflow-hidden;
+}
+
 .polled-info-container {
   p {
     @apply mb-1 mt-0;
   }
+}
+
+.actions-container {
+  @apply flex mt-5 justify-end;
 }
 </style>

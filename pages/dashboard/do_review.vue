@@ -8,12 +8,12 @@ useHead({
   title: '句子审核'
 })
 // TODO: 临时修复 Masonry 路由切换后绘制错误的问题
-const redrawVueMasonry = inject<(id: string) => void>('redrawVueMasonry')
-const redrawMasonary = () => redrawVueMasonry && redrawVueMasonry('32')
-onMounted(() => {
-  if (!redrawVueMasonry) return
-  setTimeout(redrawMasonary, 600)
-})
+// const redrawVueMasonry = inject<(id: string) => void>('redrawVueMasonry')
+// const redrawMasonary = () => redrawVueMasonry && redrawVueMasonry('32')
+// onMounted(() => {
+//   if (!redrawVueMasonry) return
+//   setTimeout(redrawMasonary, 600)
+// })
 
 const route = useRoute()
 
@@ -198,7 +198,7 @@ const refreshPollItem = async (index: number, pollID: number) => {
   else
     message.error(`刷新投票 ${pollID} 失败，投票数据为空。请刷新页面后重试。`)
 
-  nextTick(redrawMasonary)
+  // nextTick(redrawMasonary)
 }
 const onOperationDone = (event: 'submit' | 'cancel', index: number) => {
   // console.log(event, index)
@@ -259,40 +259,35 @@ const onOperationDone = (event: 'submit' | 'cancel', index: number) => {
 
     <div class="content">
       <!-- TODO: 抽象成组件 -->
-      <ClientOnly>
-        <div
-          v-if="!pending && !error && cardData.length"
-          v-masonry="32"
-          class="grid"
-          transition-duration="0.3s"
-          item-selector=".grid-item"
-        >
-          <template v-for="(card, cardIndex) in cardData" :key="card.poll.id">
-            <div v-masonry-tile class="grid-item">
+      <FetchStatusWarpper
+        :pending="pending"
+        :error="error"
+        :not-empty="cardData.length > 0"
+      >
+        <ClientOnly>
+          <masonry :cols="{ default: 2, 640: 1 }" :gutter="'1rem'">
+            <div
+              v-for="(card, cardIndex) in cardData"
+              :key="card.poll.id"
+              class="grid-item"
+            >
               <DoReviewCard
                 :poll="card.poll"
                 :sentence="card.sentence"
                 :marks="card.marks"
                 :polled-record="card.polledRecord"
                 :index="cardIndex"
-                @do-masonry-repaint="nextTick(redrawMasonary)"
                 @do-web-search="doWebSearch"
                 @do-local-search="doLocalSearch"
                 @opeartion-done="onOperationDone"
               />
             </div>
-          </template>
-        </div>
-        <div v-else-if="cardData.length === 0" class="flex-1">
-          <a-empty class="mt-10" />
-        </div>
-        <a-result
-          v-else-if="error"
-          status="500"
-          title="500"
-          sub-title="服务器错误，请稍后重试。"
-        ></a-result>
-      </ClientOnly>
+          </masonry>
+        </ClientOnly>
+        <template #empty>
+          <a-empty />
+        </template>
+      </FetchStatusWarpper>
     </div>
     <!-- 分页器 -->
     <div v-show="cardData.length !== 0" class="pagination">
@@ -311,11 +306,11 @@ const onOperationDone = (event: 'submit' | 'cancel', index: number) => {
 
 <style lang="scss" scoped>
 .grid-item {
-  @apply w-full md:w-1/2 px-2 py-2;
+  @apply py-2;
 }
 
 .do-review {
-  @apply h-full w-full flex flex-col;
+  @apply w-full flex flex-col;
 
   .ant-page-header {
     @apply mx-0 px-0;

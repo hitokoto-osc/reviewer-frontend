@@ -59,24 +59,17 @@ watch([page, pageSize], () => {
       :poll-id="showPollDetailModalPollId"
     />
     <div class="main">
-      <div v-if="userPollLogsPending" class="status">
-        <a-spin />
-      </div>
-      <div v-if="userPollLogsError" class="status">
-        <p>加载失败</p>
-      </div>
-      <div
-        v-if="!userPollLogsPending && !userPollLogsError"
-        class="records-container"
+      <FetchStatusWarpper
+        :pending="userPollLogsPending"
+        :error="userPollLogsError"
+        :not-empty="!!userPollLogsData && userPollLogsData.data.total > 0"
       >
-        <ClientOnly>
-          <masonry
-            class="records"
-            :cols="{ default: 2, 640: 1 }"
-            :gutter="'1rem'"
-          >
-            <template
-              v-if="userPollLogsData && userPollLogsData.data.total > 0"
+        <div v-if="userPollLogsData" class="records-container">
+          <ClientOnly>
+            <masonry
+              class="records"
+              :cols="{ default: 2, 640: 1 }"
+              :gutter="{ default: '1rem', 640: 0 }"
             >
               <div
                 v-for="userPollLog in userPollLogsData.data.collection"
@@ -88,27 +81,27 @@ watch([page, pageSize], () => {
                   @show-poll-detail="showPollDetail"
                 />
               </div>
-            </template>
-            <div v-else class="status">
-              <a-empty />
-            </div>
-          </masonry>
-        </ClientOnly>
-        <!-- 分页器 -->
-        <div
-          v-show="userPollLogsData && userPollLogsData.data.total > 0"
-          class="pagination"
-        >
-          <a-pagination
-            :current="page"
-            :page-size="pageSize"
-            show-quick-jumper
-            show-size-changer
-            :page-size-options="pageSizeOptions"
-            :total="userPollLogsData?.data?.total || 0"
-            @change="onPagniationChange"
-          />
+            </masonry>
+          </ClientOnly>
         </div>
+        <template #empty>
+          <a-empty />
+        </template>
+      </FetchStatusWarpper>
+      <!-- 分页器 -->
+      <div
+        v-show="userPollLogsData && userPollLogsData.data.total > 0"
+        class="pagination"
+      >
+        <a-pagination
+          :current="page"
+          :page-size="pageSize"
+          show-quick-jumper
+          show-size-changer
+          :page-size-options="pageSizeOptions"
+          :total="userPollLogsData?.data?.total || 0"
+          @change="onPagniationChange"
+        />
       </div>
     </div>
   </div>

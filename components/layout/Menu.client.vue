@@ -8,6 +8,8 @@ import IconMessage from '~icons/solar/chat-round-dots-linear'
 import IconPollRecords from '~icons/solar/documents-linear'
 import IconScore from '~icons/solar/bolt-circle-linear'
 import IconApply from '~icons/solar/crown-linear'
+import { UserRole } from '@/enums/user'
+const userStore = useUserStore()
 
 function getItem(
   label: VueElement | string,
@@ -27,12 +29,17 @@ function getItem(
 
 const items: ItemType[] = reactive([
   getItem('概览', 'dashboard', () => h(IconDashboard)),
-  getItem('句子审核', 'do_review', () => h(IconDoReview)),
+  userStore.user?.role === UserRole.Reviewer ||
+  userStore.user?.role === UserRole.Admin
+    ? getItem('句子审核', 'do_review', () => h(IconDoReview))
+    : null,
   getItem('审核准则', 'review_rules', () => h(IconRules)),
   getItem('通知消息', 'messages', () => h(IconMessage)),
   getItem('投票记录', 'poll_records', () => h(IconPollRecords)),
   getItem('积分记录', 'score_records', () => h(IconScore)),
-  getItem('申请权限', 'apply_reviewer', () => h(IconApply))
+  userStore.user?.role === UserRole.User
+    ? getItem('申请权限', 'apply_reviewer', () => h(IconApply))
+    : null
   // getItem('Navigation Two', 'sub2', () => h(AppstoreOutlined)),
   // getItem('Navigation Two', 'sub2', () => h(AppstoreOutlined))
   // getItem('Navigation Two', 'sub2', () => h(AppstoreOutlined), [
@@ -61,6 +68,7 @@ const items: ItemType[] = reactive([
   //   'group'
   // )
 ])
+console.log(items)
 
 const selectedKeys = ref<string[]>(['1'])
 const openKeys = ref<string[]>(['messages'])

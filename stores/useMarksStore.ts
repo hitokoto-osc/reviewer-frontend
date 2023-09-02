@@ -36,6 +36,13 @@ export const useMarksStore = defineStore('marks', {
         }
       })
       return map
+    },
+    isExpried(state) {
+      return (
+        !state.marks ||
+        state.marks.length === 0 ||
+        Date.now() - state.lastUpdated > 1000 * 60 * 60 * 30 // 30 分钟
+      )
     }
   },
   actions: {

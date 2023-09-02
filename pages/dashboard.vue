@@ -4,8 +4,13 @@ definePageMeta({
 })
 // 刷新 Mark 列表
 const marksStore = useMarksStore()
-const { error: fetchMarksError, data: marksData } = usePollMarks({
-  lazy: true
+const {
+  error: fetchMarksError,
+  data: marksData,
+  execute
+} = usePollMarks({
+  lazy: true,
+  immediate: false
 })
 watch(
   () => [fetchMarksError.value, marksData.value],
@@ -14,9 +19,13 @@ watch(
       message.error('刷新 Mark 列表失败')
       return
     }
+    if (val[1] == null) return
     marksStore.$setMarks(marksData.value?.data || [])
   }
 )
+if (marksStore.isExpried) {
+  execute()
+}
 </script>
 
 <template>

@@ -23,7 +23,7 @@ const sentence = computed(() => {
 })
 
 const emit = defineEmits<{
-  showPollDetail: [pollID: number]
+  showPollDetail: [pollID: number, userMarks: number[]]
 }>()
 </script>
 
@@ -52,7 +52,11 @@ const emit = defineEmits<{
         v-show="userPollLog.user_marks && userPollLog.user_marks.length > 0"
         class="user-marks"
       >
-        审核标记：<PollMarks :marks="userPollLog.user_marks" />
+        审核标记：<PollMarks
+          :marks="userPollLog.user_marks"
+          :marks-selected-values="userPollLog.user_marks"
+          :checkable="false"
+        />
       </div>
       <p v-show="userPollLog.comment" class="comment">
         投票评论：{{ userPollLog.comment }}
@@ -65,7 +69,13 @@ const emit = defineEmits<{
           userPollLog.sentence.poll_status != PollStatus.Open
         "
         type="primary"
-        @click="emit('showPollDetail', props.userPollLog.poll_id)"
+        @click="
+          emit(
+            'showPollDetail',
+            props.userPollLog.poll_id,
+            props.userPollLog.user_marks
+          )
+        "
       >
         投票详情
       </a-button>

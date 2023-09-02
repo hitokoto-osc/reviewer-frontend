@@ -6,9 +6,11 @@ useHead({
 
 const showPollDetailModal = ref(false)
 const showPollDetailModalPollId = ref(0)
-const showPollDetail = (pollID: number) => {
+const showPollDetailModalUserMarks = ref<number[]>([])
+const showPollDetail = (pollID: number, userMarks: number[]) => {
   showPollDetailModal.value = true
   showPollDetailModalPollId.value = pollID
+  showPollDetailModalUserMarks.value = userMarks
 }
 
 // 审核记录
@@ -57,6 +59,7 @@ watch([page, pageSize], () => {
     <ReviewRecordsPollDetailModal
       v-model:open="showPollDetailModal"
       :poll-id="showPollDetailModalPollId"
+      :user-marks="showPollDetailModalUserMarks"
     />
     <div class="main">
       <FetchStatusWarpper

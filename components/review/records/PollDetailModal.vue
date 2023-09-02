@@ -2,8 +2,9 @@
 import dayjs from 'dayjs'
 import { PollStatus } from '~/enums/poll'
 const props = defineProps<{
-  pollId: number
   open: boolean
+  pollId: number
+  userMarks: number[]
 }>()
 
 const emit = defineEmits<{
@@ -69,7 +70,11 @@ watch(
         class="marks"
       >
         <span>审核标记：</span>
-        <PollMarks :marks="data?.data.marks || []" />
+        <PollMarks
+          :marks="data?.data.marks || []"
+          :marks-selected-values="props.userMarks || []"
+          :checkable="false"
+        />
       </div>
       <div
         v-if="data?.data.records && data?.data.records.length > 0"

@@ -1,10 +1,12 @@
 <script setup lang="ts">
 const props = defineProps<{
   marks: number[]
+  marksSelectedValues: number[]
+  checkable: boolean
 }>()
 
 const emit = defineEmits<{
-  onMarkClick: [markID: number]
+  onSelectChange: [marksSelectedValues: number[]]
 }>()
 
 const marksStore = useMarksStore()
@@ -14,8 +16,22 @@ const marksStore = useMarksStore()
   <a-tag
     v-for="mark in props.marks"
     :key="mark"
-    :color="marksStore.markColorMap[mark]?.color || 'yellow'"
-    @click="emit('onMarkClick', mark)"
+    :style="
+      'cursor: pointer; -webkit-user-select: none; user-select: none;' +
+      (!props.checkable ? ' pointer-events: none;' : '')
+    "
+    :color="
+      (marksStore.markColorMap[mark]?.color || 'yellow') +
+      (props.marksSelectedValues.includes(mark) ? '-inverse' : '')
+    "
+    @click="
+      props.marksSelectedValues.includes(mark)
+        ? emit(
+            'onSelectChange',
+            props.marksSelectedValues.filter((it) => it != mark)
+          )
+        : emit('onSelectChange', props.marksSelectedValues.concat([mark]))
+    "
   >
     {{ marksStore.markColorMap[mark]?.text || '未知' }}
   </a-tag>

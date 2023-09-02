@@ -1,5 +1,7 @@
 import { MeiliSearch } from 'meilisearch'
+import type { SearchParams, SearchResponse } from 'meilisearch'
 import type { HitokotoType } from '@/enums/hitokoto'
+import type { AsyncDataOptions } from '#app'
 
 let client: MeiliSearch | null = null
 
@@ -32,15 +34,29 @@ export type SearchHitokotoResElement = {
   created_at: string
 }
 
-export function useSearchHitokoto(params: SearchHitokotoParams) {
+export function useSearchHitokoto(
+  params:
+    | SearchHitokotoParams
+    | (() => SearchHitokotoParams)
+    | Ref<SearchHitokotoParams>,
+  options: AsyncDataOptions<
+    SearchResponse<SearchHitokotoResElement, SearchParams>
+  > = {}
+) {
+  const param = unwrapT<SearchHitokotoParams>(params)
   const client = useSearchClient()
-  return client
-    .index('sentences') // v1 句子集合
-    .search<SearchHitokotoResElement>(
-      params.sentence, // 查询参数
-      {
-        limit: params.limit,
-        offset: params.offset
-      }
-    )
+  return useAsyncData<SearchResponse<SearchHitokotoResElement, SearchParams>>(
+    'search_hitokoto',
+    () =>
+      client
+        .index('sentences') // v1 句子集合
+        .search<SearchHitokotoResElement>(
+          param.sentence, // 查询参数
+          {
+            limit: param.limit,
+            offset: param.offset
+          }
+        ),
+    options
+  )
 }

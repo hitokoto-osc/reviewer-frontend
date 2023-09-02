@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { useSearchHitokoto } from '~/composables/api'
 import type { SearchParams } from './Card.vue'
-import type { Hits } from 'meilisearch'
-import type { SearchHitokotoResElement } from '@/composables/api'
 
 const props = defineProps<{
   open: boolean
@@ -13,57 +11,44 @@ const emit = defineEmits<{
   'update:open': [value: boolean]
 }>()
 
-const total = ref(0)
 const currentPage = ref(1)
 const paegSizeOptions = ref([5, 10, 20])
 const limit = ref(5)
 const offset = computed(() => (currentPage.value - 1) * limit.value)
 
-const status = ref<'ok' | 'error' | 'empty' | 'pending'>('ok')
+const params = reactive({
+  sentence: computed(() => props.searchParams.sentence),
+  offset,
+  limit
+})
+const { pending, error, data, refresh } = await useSearchHitokoto(params, {
+  lazy: true,
+  immediate: false
+})
+
+watch(error, (val) => {
+  if (val) console.log(val)
+})
+
+const total = computed(() => data.value?.estimatedTotalHits || 0)
 const tips = computed(() => {
   if (total.value) return `共找到 ${total.value} 条结果`
   return ''
 })
 
-const records = ref<Hits<SearchHitokotoResElement>>([])
-
-const doLocalSearch = async () => {
-  status.value = 'pending'
-  try {
-    // console.log(offset.value, limit.value, currentPage.value)
-    const result = await useSearchHitokoto({
-      sentence: props.searchParams.sentence,
-      offset: offset.value,
-      limit: limit.value
-    })
-    total.value = result.estimatedTotalHits
-    records.value = result.hits
-  } catch (e) {
-    console.log(e)
-    message.error('搜索失败')
-    status.value = 'error'
-  } finally {
-    status.value = 'ok'
-  }
-}
-
-const resetStatus = (all: boolean) => {
-  status.value = 'pending'
-
-  if (all) {
-    total.value = 0
-    currentPage.value = 1
-    records.value = []
-  }
+const resetStatus = () => {
+  currentPage.value = 1
 }
 
 watch(
-  () => [props.open, limit.value, currentPage.value],
-  (val, oldVal) => {
-    if (typeof val[0] === 'boolean' && !val[0]) return
-    resetStatus(val[0] !== oldVal[0])
-    doLocalSearch()
+  () => props.open,
+  (val) => {
+    val && (currentPage.value === 1 ? refresh() : resetStatus())
   }
+)
+watch(
+  () => [limit.value, currentPage.value],
+  () => refresh()
 )
 </script>
 
@@ -78,19 +63,19 @@ watch(
     @ok="emit('update:open', false)"
     @cancel="emit('update:open', false)"
   >
-    <p class="font-noto-serif">{{ props.searchParams.sentence }}</p>
-    <a-divider v-if="status === 'ok'">
+    <p class="font-noto-serif font-bold text-center">
+      {{ props.searchParams.sentence }}
+    </p>
+    <a-divider v-if="!pending && !error">
       {{ tips }}
     </a-divider>
     <a-divider v-else />
-    <div v-if="status === 'pending'" class="loading-box">
-      <a-spin />
-    </div>
-    <div v-if="status === 'error'" class="loading-box">
-      <a-result status="500" title="500" sub-title="请求错误" />
-    </div>
-    <template v-else>
-      <a-list :data-source="records">
+    <FetchStatusWarpper
+      :pending="pending"
+      :error="error"
+      :not-empty="!!data && data.hits.length > 0"
+    >
+      <a-list v-if="!!data" :data-source="data.hits">
         <template #renderItem="{ item }">
           <a-list-item>
             <DoReviewLocalSearchModalListElement :data="item" />
@@ -107,7 +92,7 @@ watch(
           show-less-items
         />
       </a-row>
-    </template>
+    </FetchStatusWarpper>
   </a-modal>
 </template>
 

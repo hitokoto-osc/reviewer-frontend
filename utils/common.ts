@@ -34,3 +34,13 @@ export async function untilScrollTo(
 export async function scrollToTop(element?: HTMLElement) {
   await untilScrollTo({ top: 0, behavior: 'smooth' }, element)
 }
+
+export function unwrapT<T>(a: T | Ref<T> | (() => T)): T {
+  if (typeof a === 'function') {
+    return (a as () => T)()
+  } else if (isRef(a)) {
+    return (a as Ref<T>).value
+  } else {
+    return a as T
+  }
+}

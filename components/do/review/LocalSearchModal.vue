@@ -92,6 +92,9 @@ watch(
           show-less-items
         />
       </a-row>
+      <template #empty>
+        <a-empty />
+      </template>
     </FetchStatusWarpper>
   </a-modal>
 </template>

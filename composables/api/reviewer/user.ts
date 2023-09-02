@@ -107,3 +107,37 @@ export function useUserPollLogs(
 ) {
   return useHTTP.get<UserPollLogsRes>(`/user/poll/logs`, params, options)
 }
+
+export type UserScoreRecordsReq = {
+  page?: number
+  page_size?: number
+  order: 'acs' | 'desc'
+}
+
+export type UserScoreRecordsRes = {
+  collection: Array<{
+    id: number
+    poll_id: number
+    user_id: number
+    sentence_uuid: string
+    score: number
+    type: string
+    reason: string
+    updated_at: string
+    created_at: string
+  }>
+  total: number
+  page: number
+  page_size: number
+}
+
+export function useUserScoreRecords(
+  params: UserScoreRecordsReq | Ref<UserScoreRecordsReq>,
+  options: HTTPOption<UserScoreRecordsRes> = {}
+) {
+  return useHTTP.get<UserScoreRecordsRes>(
+    '/user/score/records',
+    params,
+    options
+  )
+}

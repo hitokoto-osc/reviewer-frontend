@@ -1,9 +1,13 @@
 <script lang="ts" setup>
-const props = defineProps<{
-  pending: boolean
-  error: unknown | null
-  notEmpty: boolean
-}>()
+const slots = useSlots()
+const props = withDefaults(
+  defineProps<{
+    pending: boolean
+    error: unknown | null
+    notEmpty?: boolean
+  }>(),
+  {}
+)
 </script>
 
 <template>
@@ -15,10 +19,10 @@ const props = defineProps<{
       <a-result status="500" title="500" sub-title="请求错误"> </a-result>
     </div>
     <template v-else>
-      <slot v-if="notEmpty" />
-      <div v-else class="status">
+      <div v-if="!!slots['empty'] && !props.notEmpty" class="status">
         <slot name="empty" />
       </div>
+      <slot v-else />
     </template>
   </div>
 </template>

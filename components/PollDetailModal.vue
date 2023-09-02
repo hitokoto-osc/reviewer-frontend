@@ -1,11 +1,16 @@
 <script lang="ts" setup>
 import dayjs from 'dayjs'
 import { PollStatus } from '~/enums/poll'
-const props = defineProps<{
-  open: boolean
-  pollId: number
-  userMarks?: number[]
-}>()
+import { CardPropsSentence } from './do/review/Card.vue'
+const props = withDefaults(
+  defineProps<{
+    open: boolean
+    pollId: number
+    userMarks?: number[]
+    showSentence?: boolean
+  }>(),
+  { userMarks: () => [], showSentence: false }
+)
 
 const emit = defineEmits<{
   'update:open': [value: boolean]
@@ -27,6 +32,19 @@ watch(
     val && refresh()
   }
 )
+
+// sentence
+const sentence = computed(() => {
+  return {
+    uuid: data.value?.data.sentence.uuid,
+    hitokoto: data.value?.data.sentence.hitokoto,
+    type: data.value?.data.sentence.type,
+    fromWho: data.value?.data.sentence.from_who,
+    from: data.value?.data.sentence.from,
+    creator: data.value?.data.sentence.creator,
+    createdAt: data.value?.data.sentence.created_at
+  } as CardPropsSentence
+})
 </script>
 
 <template>
@@ -43,8 +61,12 @@ watch(
       <p>加载失败</p>
     </template>
     <template v-if="!pending && !error">
+      <template v-if="props.showSentence">
+        <SentenceContainer :sentence="sentence" />
+        <a-divider />
+      </template>
       <div class="chart">
-        <ReviewRecordsPollPointsPieChart
+        <PollDetailPieChart
           :approve="data?.data.approve || 0"
           :reject="data?.data.reject || 0"
           :need-modify="data?.data.need_edited || 0"

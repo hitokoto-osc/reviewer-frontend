@@ -9,3 +9,8 @@ export enum UserStatus {
   Normal = 1,
   Suspended = -1
 }
+
+export enum UserScoreRecordType {
+  Increment = 'increment',
+  Decrement = 'decrement'
+}

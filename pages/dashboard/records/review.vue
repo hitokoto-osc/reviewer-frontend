@@ -60,7 +60,7 @@ watch([page, pageSize], () => {
 <template>
   <div class="review-records">
     <a-page-header title="审核记录" />
-    <ReviewRecordsPollDetailModal
+    <PollDetailModal
       v-model:open="pollDetailModalParams.show"
       :poll-id="pollDetailModalParams.pollID"
       :user-marks="pollDetailModalParams.userMarks"

@@ -34,7 +34,7 @@ const emit = defineEmits<{
       :poll-status="props.userPollLog.sentence.poll_status"
     />
     <template #title> #{{ props.userPollLog.poll_id }} </template>
-    <ReviewRecordsCardSentence :sentence="sentence" />
+    <SentenceContainer :sentence="sentence" />
 
     <a-divider />
 

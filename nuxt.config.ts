@@ -58,7 +58,7 @@ export default defineNuxtConfig({
     id: 'G-86GDBEXXNZ'
   },
   build: {
-    transpile: [/echarts/]
+    transpile: [/echarts/, 'vue-countup-v3', /ant-design-vue/]
   },
 
   imports: {

@@ -50,8 +50,8 @@ export default defineNuxtConfig({
       {
         /* options */
       }
-    ]
-    // '@vueuse/nuxt'
+    ],
+    '@vueuse/nuxt'
   ],
   antd: {},
   gtag: {

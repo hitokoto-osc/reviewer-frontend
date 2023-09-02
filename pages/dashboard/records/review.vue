@@ -25,7 +25,8 @@ const page = computed(() => {
 const pageSize = computed(() => {
   return Number(route.query.pageSize) || Number(pageSizeOptions.value[0])
 })
-const onPagniationChange = (page: number, pageSize: number) => {
+const onPagniationChange = async (page: number, pageSize: number) => {
+  await scrollToTop()
   navigateTo({
     name: route.name || undefined,
     query: {

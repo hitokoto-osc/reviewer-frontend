@@ -15,3 +15,22 @@ export function greetingByTime(time: dayjs.Dayjs) {
     return '夜深了'
   }
 }
+
+export async function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms))
+}
+
+export async function untilScrollTo(
+  options: ScrollToOptions,
+  element?: HTMLElement
+) {
+  if (!element) element = document.documentElement
+  element.scrollTo(options)
+  while (element.scrollTop !== options.top) {
+    await sleep(10)
+  }
+}
+
+export async function scrollToTop(element?: HTMLElement) {
+  await untilScrollTo({ top: 0, behavior: 'smooth' }, element)
+}

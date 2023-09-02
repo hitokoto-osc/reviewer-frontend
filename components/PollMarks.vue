@@ -1,12 +1,18 @@
 <script setup lang="ts">
-const props = defineProps<{
-  marks: number[]
-  marksSelectedValues: number[]
-  checkable: boolean
-}>()
+const props = withDefaults(
+  defineProps<{
+    marks: number[]
+    marksSelectedValues?: number[]
+    checkable?: boolean
+  }>(),
+  {
+    marksSelectedValues: () => [],
+    checkable: false
+  }
+)
 
 const emit = defineEmits<{
-  onSelectChange: [marksSelectedValues: number[]]
+  'update:marksSelectedValues': [value: number[]]
 }>()
 
 const marksStore = useMarksStore()
@@ -16,21 +22,21 @@ const marksStore = useMarksStore()
   <a-tag
     v-for="mark in props.marks"
     :key="mark"
-    :style="
-      'cursor: pointer; -webkit-user-select: none; user-select: none;' +
-      (!props.checkable ? ' pointer-events: none;' : '')
-    "
+    class="cursor-pointer"
+    :class="{
+      'pointer-events-none': !props.checkable
+    }"
     :color="
       (marksStore.markColorMap[mark]?.color || 'yellow') +
       (props.marksSelectedValues.includes(mark) ? '-inverse' : '')
     "
     @click="
-      props.marksSelectedValues.includes(mark)
-        ? emit(
-            'onSelectChange',
-            props.marksSelectedValues.filter((it) => it != mark)
-          )
-        : emit('onSelectChange', props.marksSelectedValues.concat([mark]))
+      emit(
+        'update:marksSelectedValues',
+        props.marksSelectedValues.includes(mark)
+          ? props.marksSelectedValues.filter((it) => it != mark)
+          : props.marksSelectedValues.concat([mark])
+      )
     "
   >
     {{ marksStore.markColorMap[mark]?.text || '未知' }}

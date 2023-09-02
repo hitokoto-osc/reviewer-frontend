@@ -4,13 +4,16 @@ useHead({
   title: '审核记录'
 })
 
-const showPollDetailModal = ref(false)
-const showPollDetailModalPollId = ref(0)
-const showPollDetailModalUserMarks = ref<number[]>([])
+// 投票详情模态框
+const pollDetailModalParams = reactive({
+  show: false,
+  pollID: 0,
+  userMarks: [] as number[]
+})
 const showPollDetail = (pollID: number, userMarks: number[]) => {
-  showPollDetailModal.value = true
-  showPollDetailModalPollId.value = pollID
-  showPollDetailModalUserMarks.value = userMarks
+  pollDetailModalParams.show = true
+  pollDetailModalParams.pollID = pollID
+  pollDetailModalParams.userMarks = userMarks
 }
 
 // 审核记录
@@ -57,9 +60,9 @@ watch([page, pageSize], () => {
   <div class="review-records">
     <a-page-header title="审核记录" />
     <ReviewRecordsPollDetailModal
-      v-model:open="showPollDetailModal"
-      :poll-id="showPollDetailModalPollId"
-      :user-marks="showPollDetailModalUserMarks"
+      v-model:open="pollDetailModalParams.show"
+      :poll-id="pollDetailModalParams.pollID"
+      :user-marks="pollDetailModalParams.userMarks"
     />
     <div class="main">
       <FetchStatusWarpper

@@ -4,7 +4,7 @@ import { PollStatus } from '~/enums/poll'
 const props = defineProps<{
   open: boolean
   pollId: number
-  userMarks: number[]
+  userMarks?: number[]
 }>()
 
 const emit = defineEmits<{
@@ -73,7 +73,6 @@ watch(
         <PollMarks
           :marks="data?.data.marks || []"
           :marks-selected-values="props.userMarks || []"
-          :checkable="false"
         />
       </div>
       <div

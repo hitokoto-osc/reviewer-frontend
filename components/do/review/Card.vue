@@ -58,10 +58,6 @@ const onOperationDone = (event: 'submit' | 'cancel') => {
 const userStore = useUserStore()
 
 const marksSelectedValues = ref<number[]>([])
-
-const onSelectChange = (x: number[]) => {
-  marksSelectedValues.value = x
-}
 </script>
 
 <template>
@@ -98,10 +94,9 @@ const onSelectChange = (x: number[]) => {
       </span>
       <PollMarks
         v-if="props.marks"
+        v-model:marks-selected-values="marksSelectedValues"
         :marks="props.marks"
-        :marks-selected-values="marksSelectedValues"
         :checkable="!props.polledRecord"
-        @on-select-change="onSelectChange"
       />
     </div>
     <div v-if="props.polledRecord" class="review-record">
@@ -115,10 +110,9 @@ const onSelectChange = (x: number[]) => {
       </span>
     </div>
     <DoReviewCardActionsContainer
-      :props-marks-selected-values="marksSelectedValues"
+      v-model:marks-selected-values="marksSelectedValues"
       :is-polled="!!props.polledRecord"
       :poll-id="props.poll.id"
-      @on-select-change="onSelectChange"
       @do-web-search="
         emit('doWebSearch', {
           sentence: props.sentence.hitokoto,

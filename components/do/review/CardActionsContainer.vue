@@ -7,13 +7,13 @@ import {
 import { PollMethod } from '@/enums/poll'
 import type { PollReq } from '@/composables/api'
 const props = defineProps<{
-  propsMarksSelectedValues: number[]
+  marksSelectedValues?: number[]
   isPolled: boolean
   pollId: number // 为了照顾 Vue 的转换规则，因此这里使用 Id 而不是 ID
 }>()
 
 const emit = defineEmits<{
-  onSelectChange: [marksSelectedValues: number[]]
+  'update:marksSelectedValues': [values: number[]]
   doMasonryRepaint: [] // 此事件完全只是为了让父组件重绘制
   doWebSearch: []
   doLocalSearch: []
@@ -22,15 +22,18 @@ const emit = defineEmits<{
 
 // 标记列表
 const marksStore = useMarksStore()
-const marksSelectedValues = ref<number[]>([])
+const marksSelected = ref<number[]>([])
 watch(
-  () => marksSelectedValues.value,
+  () => marksSelected.value,
   () => nextTick(() => emit('doMasonryRepaint'))
 )
 
 watch(
-  () => props.propsMarksSelectedValues,
-  () => (marksSelectedValues.value = props.propsMarksSelectedValues)
+  () => props.marksSelectedValues,
+  (val) => {
+    if (!val) return
+    marksSelected.value = val
+  }
 )
 
 // 评论框
@@ -50,8 +53,8 @@ const onSubmitPoll = async (method: PollMethod) => {
     const req: PollReq = {
       method
     }
-    if (marksSelectedValues.value.length > 0) {
-      req.mark_ids = marksSelectedValues.value
+    if (marksSelected.value.length > 0) {
+      req.mark_ids = marksSelected.value
     }
     if (comment.value) {
       req.comment = comment.value
@@ -91,11 +94,11 @@ const onCancelPoll = async () => {
       <p class="tips">在考察此句的内容、情感、结构后，请您对此句做出判断：</p>
       <!-- 标记选择框 -->
       <a-select
-        v-model:value="marksSelectedValues"
+        v-model:value="marksSelected"
         mode="multiple"
         :style="{ width: '100%' }"
         placeholder="请选择您对此句的看法，部分选项会展示给其他审核员以辅助审核（选填，若选择“需要修改”则为必填）"
-        @change="emit('onSelectChange', marksSelectedValues)"
+        @change="emit('update:marksSelectedValues', marksSelected)"
       >
         <a-select-option v-for="i in marksStore.marks" :key="i.id">
           {{ i.text }}

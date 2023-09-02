@@ -52,11 +52,7 @@ const emit = defineEmits<{
         v-show="userPollLog.user_marks && userPollLog.user_marks.length > 0"
         class="user-marks"
       >
-        审核标记：<PollMarks
-          :marks="userPollLog.user_marks"
-          :marks-selected-values="userPollLog.user_marks"
-          :checkable="false"
-        />
+        审核标记：<PollMarks :marks="userPollLog.user_marks" />
       </div>
       <p v-show="userPollLog.comment" class="comment">
         投票评论：{{ userPollLog.comment }}

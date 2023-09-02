@@ -33,7 +33,7 @@
   }
 
   .content {
-    @apply flex-1 py-5 px-10;
+    @apply w-full flex-1 py-5 px-10;
   }
 }
 </style>

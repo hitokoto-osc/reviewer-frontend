@@ -48,6 +48,10 @@ const doLogin = async () => {
       isTips.value = true
       return
     }
+    if (data.value.data[0].is_suspended === 1) {
+      message.error('您的账号已被停用，详情请联系管理员。')
+      return
+    }
     // 登录成功
     userStore.setToken(data.value?.data[0].token)
   } finally {

@@ -8,6 +8,7 @@ export interface AuthLoginRes {
   message: string
   data: {
     token: string // 我们只需要其中的令牌部分，其他参数直接忽略
+    is_suspended: number
   }[]
   ts: number
 }

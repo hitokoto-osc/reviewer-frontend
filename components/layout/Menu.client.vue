@@ -16,30 +16,43 @@ function getItem(
   key: string,
   icon?: unknown,
   children?: ItemType[],
-  type?: 'group'
+  type?: 'group',
+  role?: UserRole
 ): ItemType {
   return {
     key,
     icon,
     children,
     label,
-    type
+    type,
+    role
   } as ItemType
 }
 
-const items: ItemType[] = reactive([
+const rawItems: ItemType[] = [
   getItem('概览', 'dashboard', () => h(IconDashboard)),
-  userStore.user?.role === UserRole.Reviewer ||
-  userStore.user?.role === UserRole.Admin
-    ? getItem('句子审核', 'do_review', () => h(IconDoReview))
-    : null,
+
+  getItem(
+    '句子审核',
+    'do_review',
+    () => h(IconDoReview),
+    undefined,
+    undefined,
+    UserRole.Reviewer
+  ),
+
   getItem('审核准则', 'review_rules', () => h(IconRules)),
   getItem('通知消息', 'messages', () => h(IconMessage)),
   getItem('投票记录', 'poll_records', () => h(IconPollRecords)),
   getItem('积分记录', 'score_records', () => h(IconScore)),
-  userStore.user?.role === UserRole.User
-    ? getItem('申请权限', 'apply_reviewer', () => h(IconApply))
-    : null
+  getItem(
+    '申请权限',
+    'apply_reviewer',
+    () => h(IconApply),
+    undefined,
+    undefined,
+    UserRole.User
+  )
   // getItem('Navigation Two', 'sub2', () => h(AppstoreOutlined)),
   // getItem('Navigation Two', 'sub2', () => h(AppstoreOutlined))
   // getItem('Navigation Two', 'sub2', () => h(AppstoreOutlined), [
@@ -67,7 +80,20 @@ const items: ItemType[] = reactive([
   //   [getItem('Option 13', '13'), getItem('Option 14', '14')],
   //   'group'
   // )
-])
+]
+const items = computed(() => {
+  const role = userStore.user?.role || UserRole.Guest
+  return rawItems.filter((item: ItemType) => {
+    const v = item as ItemType & { role: UserRole }
+    if (v.role === undefined) return true
+    return (
+      (v.role === UserRole.Reviewer &&
+        (role === UserRole.Reviewer || role === UserRole.Admin)) ||
+      (v.role === UserRole.User && role === UserRole.User)
+    )
+  })
+})
+
 // console.log(items)
 
 const selectedKeys = ref<string[]>(['1'])
@@ -121,6 +147,7 @@ watch(selectedKeys, (val, old) => {
     class="menu"
     mode="inline"
     :items="items"
+    force-sub-menu-render
   ></a-menu>
 </template>
 

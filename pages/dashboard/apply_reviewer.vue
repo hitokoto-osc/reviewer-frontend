@@ -90,7 +90,7 @@ const apply = async () => {
       <h3>审核细则</h3>
       <p>
         很显然，每个人的价值观和准入灵感都是存在差异的。因此一份共通的审核标准十分必要。我们目前将此份标准托管在语雀，您可以点击旁边的地址打开：
-        <a href="https://www.yuque.com/freejishu/rfoxeq/xz3u2x">
+        <a href="https://www.yuque.com/freejishu/rfoxeq/xz3u2x" target="_blank">
           https://www.yuque.com/freejishu/rfoxeq/xz3u2x </a
         >。
       </p>

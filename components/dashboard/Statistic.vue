@@ -10,14 +10,11 @@ const props = withDefaults(
     value: number | string
     // CountUp
     useCountUp?: boolean
-    prefix?: string
-    suffix?: string
+
     decimalPlaces?: number
     startVal?: number
   }>(),
   {
-    prefix: undefined,
-    suffix: undefined,
     useCountUp: false,
     decimalPlaces: 0,
     startVal: 0
@@ -34,8 +31,6 @@ const props = withDefaults(
           :start-val="props.startVal"
           :end-val="props.value"
           :decimal-places="props.decimalPlaces"
-          :prefix="props.prefix"
-          :suffix="props.suffix"
         >
           {{ props.value }}
           <template v-if="slots.prefix" #prefix>

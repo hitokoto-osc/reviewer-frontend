@@ -68,7 +68,7 @@ const items: ItemType[] = reactive([
   //   'group'
   // )
 ])
-console.log(items)
+// console.log(items)
 
 const selectedKeys = ref<string[]>(['1'])
 const openKeys = ref<string[]>(['messages'])

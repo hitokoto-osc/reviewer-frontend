@@ -141,3 +141,29 @@ export function useUserScoreRecords(
     options
   )
 }
+
+export type UserApplyTokenRes = {
+  verification_token: string
+  valid_until: string
+}
+
+export function useUserApplyToken(options: HTTPOption<UserApplyTokenRes> = {}) {
+  return useHTTP.get<UserApplyTokenRes>(`/user/apply/token`, {}, options)
+}
+
+export type UserApplyReviewerReq = {
+  verification_token: string
+}
+
+export type UserApplyReviewerRes = Record<string, never>
+
+export function doApplyReviewer(
+  req: UserApplyReviewerReq,
+  options: HTTPOption<UserApplyReviewerRes> = {}
+) {
+  return useHTTP.post<UserApplyReviewerRes>(
+    `/user/apply/reviewer`,
+    req,
+    options
+  )
+}

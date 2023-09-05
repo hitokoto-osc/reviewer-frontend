@@ -62,7 +62,7 @@ if (
             :value="userStore.user?.poll.count || 0"
             use-count-up
           >
-            <template #suffix> 票 </template>
+            <template #suffix> 次 </template>
           </DashboardStatistic>
         </DashboardCard>
       </a-col>

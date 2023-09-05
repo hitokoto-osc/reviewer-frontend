@@ -22,6 +22,9 @@ const emit = defineEmits<{
 
 // 标记列表
 const marksStore = useMarksStore()
+const marks = computed(() =>
+  marksStore.marks.filter((v) => v.deprecated_at === null)
+)
 const marksSelected = ref<number[]>([])
 watch(
   () => marksSelected.value,
@@ -100,7 +103,7 @@ const onCancelPoll = async () => {
         placeholder="请选择您对此句的看法，部分选项会展示给其他审核员以辅助审核（选填，若选择“需要修改”则为必填）"
         @change="emit('update:marksSelectedValues', marksSelected)"
       >
-        <a-select-option v-for="i in marksStore.marks" :key="i.id">
+        <a-select-option v-for="i in marks" :key="i.id">
           {{ i.text }}
         </a-select-option>
       </a-select>

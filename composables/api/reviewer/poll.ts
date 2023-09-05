@@ -12,6 +12,7 @@ export type PollMarkRes = {
   text: string
   level: PollMarkLevel
   property: number
+  deprecated_at?: string
   updated_at: string
   created_at: string
 }[]

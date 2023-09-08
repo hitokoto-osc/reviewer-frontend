@@ -43,6 +43,7 @@ const onSelect = (item: PopoverAction) => {
 </template>
 
 <style lang="scss">
+.mobile-menu-wrapper,
 .account-mobile-menu {
   @apply flex md:hidden mr-2;
 }

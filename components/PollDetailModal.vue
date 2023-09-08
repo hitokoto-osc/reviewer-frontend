@@ -103,8 +103,10 @@ const sentence = computed(() => {
       >
         <p class="title">审核记录</p>
         <ul>
-          <li v-for="record in data?.data.records" :key="record.user_id">
-            {{ record.user_id }}：{{ convertPollMethod(record.method) }}
+          <li v-for="record in data?.data.records" :key="record.user.id">
+            {{ `${record.user.name}（${record.user.id}）` }}：{{
+              convertPollMethod(record.method)
+            }}
             {{ record.point }} 票
             {{ record.comment && `，评论到：“${record.comment}”` }}
           </li>

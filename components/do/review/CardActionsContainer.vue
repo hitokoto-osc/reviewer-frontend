@@ -12,6 +12,8 @@ const emit = defineEmits<{
   doMasonryRepaint: [] // 此事件完全只是为了让父组件重绘制
   doWebSearch: []
   doLocalSearch: []
+  viewComments: []
+  doSwiftModify: []
   operationDone: [event: 'submit' | 'cancel']
 }>()
 
@@ -141,6 +143,8 @@ const onCancelPoll = async () => {
             @switch-comment-input="onSwitchComment"
             @do-local-search="emit('doLocalSearch')"
             @do-web-search="emit('doWebSearch')"
+            @view-comments="emit('viewComments')"
+            @do-swift-modify="emit('doSwiftModify')"
           />
         </div>
       </div>

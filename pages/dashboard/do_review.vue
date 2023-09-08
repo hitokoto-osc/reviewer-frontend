@@ -205,6 +205,12 @@ const onOperationDone = (event: 'submit' | 'cancel', index: number) => {
   // console.log(event, index)
   refreshPollItem(index, cardData.value[index].poll.id)
 }
+
+// 查看评论
+const viewCommentsModal = reactive({
+  open: false,
+  index: 0
+})
 </script>
 <template>
   <div class="do-review">
@@ -215,6 +221,12 @@ const onOperationDone = (event: 'submit' | 'cancel', index: number) => {
     <DoReviewWebSearchModal
       v-model:open="webSearchModal"
       :search-params="searchParams"
+    />
+    <DoReviewCommentsModal
+      v-model:open="viewCommentsModal.open"
+      :records="
+        pollListData?.data.collection[viewCommentsModal.index].records || []
+      "
     />
     <a-page-header title="句子审核" />
     <div class="toolbar">
@@ -280,6 +292,12 @@ const onOperationDone = (event: 'submit' | 'cancel', index: number) => {
                 :index="cardIndex"
                 @do-web-search="doWebSearch"
                 @do-local-search="doLocalSearch"
+                @view-comments="
+                  (index) => {
+                    viewCommentsModal.open = true
+                    viewCommentsModal.index = index
+                  }
+                "
                 @opeartion-done="onOperationDone"
               />
             </div>

@@ -47,6 +47,8 @@ const emit = defineEmits<{
   doWebSearch: [sentence: SearchParams]
   doLocalSearch: [sentence: SearchParams]
   doMasonryRepaint: [] // 传递此事件只是为了让父组件重绘制
+  viewComments: [index: number]
+  doSwiftModify: [pollID: number]
   opeartionDone: [event: 'submit' | 'cancel', index: number]
 }>()
 
@@ -129,6 +131,8 @@ const marksSelectedValues = ref<number[]>([])
       "
       @do-masonry-repaint="emit('doMasonryRepaint')"
       @operation-done="onOperationDone"
+      @view-comments="emit('viewComments', props.index)"
+      @do-swift-modify="emit('doSwiftModify', props.poll.id)"
     />
   </a-card>
 </template>

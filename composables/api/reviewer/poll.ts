@@ -62,7 +62,11 @@ export type PollListCollectionElement = {
     updated_at: string
   }
   records: Array<{
-    user_id: number
+    user: {
+      id: number
+      name: string
+      email_hash: string
+    }
     point: number
     method: number
     comment: string

@@ -20,7 +20,7 @@ const userStore = useUserStore()
 
 <style lang="scss" scoped>
 .account {
-  @apply w-fit items-center px-3 py-1 hover:bg-gray-100 rounded-2;
+  @apply flex w-fit md:w-full items-center px-3 py-1 hover:bg-gray-100 rounded-2;
 
   .username {
     @apply hidden md:inline text-sm mr-3;

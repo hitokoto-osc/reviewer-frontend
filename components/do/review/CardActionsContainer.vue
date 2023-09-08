@@ -1,9 +1,4 @@
 <script setup lang="ts">
-import {
-  SwapOutlined,
-  SearchOutlined,
-  SelectOutlined
-} from '@ant-design/icons-vue'
 import { PollMethod } from '@/enums/poll'
 import type { PollReq } from '@/composables/api'
 const props = defineProps<{
@@ -142,30 +137,11 @@ const onCancelPoll = async () => {
         </div>
         <div class="md:flex-1"></div>
         <div class="tool-actions">
-          <a-tooltip placement="bottom">
-            <template #title> 显示/隐藏输入框 </template>
-            <a-button
-              shape="circle"
-              :icon="h(SwapOutlined)"
-              @click="onSwitchComment"
-            />
-          </a-tooltip>
-          <a-tooltip placement="bottom">
-            <template #title> 查看此句在库内是否重复 </template>
-            <a-button
-              shape="circle"
-              :icon="h(SelectOutlined)"
-              @click="emit('doLocalSearch')"
-            />
-          </a-tooltip>
-          <a-tooltip placement="bottom">
-            <template #title> 使用搜索引擎搜索此句 </template>
-            <a-button
-              shape="circle"
-              :icon="h(SearchOutlined)"
-              @click="emit('doWebSearch')"
-            />
-          </a-tooltip>
+          <DoReviewCardActionsToolsContainer
+            @switch-comment-input="onSwitchComment"
+            @do-local-search="emit('doLocalSearch')"
+            @do-web-search="emit('doWebSearch')"
+          />
         </div>
       </div>
     </template>

@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import type { PopoverAction } from 'vant'
-import type { AccountMenuItem } from './Container.vue'
+import type { Item } from './'
 
 const props = defineProps<{
-  items: AccountMenuItem[]
+  items: Item[]
 }>()
 const actions = computed(() => {
   return props.items.map(
@@ -36,7 +36,7 @@ const onSelect = (item: PopoverAction) => {
       @select="onSelect"
     >
       <template #reference>
-        <LayoutHeaderAccountInfo class="account-mobile-menu" />
+        <slot />
       </template>
     </van-popover>
   </div>

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { Item } from '@/components/menu'
 // 登出部分
 const userStore = useUserStore()
 // TODO: 使用组合式 API 的 Message 接口
@@ -12,14 +13,7 @@ const doLogout = () => {
 }
 
 // 账户设置菜单
-export interface AccountMenuItem {
-  icon?: string | VNode
-  text: string
-  onClick?: () => void
-  to?: string
-  href?: string
-}
-const items: AccountMenuItem[] = [
+const items: Item[] = [
   {
     text: '控制台',
     to: '/dashboard'
@@ -39,17 +33,13 @@ const items: AccountMenuItem[] = [
 
 <template>
   <div class="account-container">
-    <template v-if="userStore.user && !userStore.isExpired">
-      <ClientOnly>
-        <a-dropdown>
-          <template #overlay>
-            <LayoutHeaderAccountPCMenu :items="items" />
-          </template>
-          <LayoutHeaderAccountInfo class="account-pc-menu" />
-        </a-dropdown>
-      </ClientOnly>
-      <LayoutHeaderAccountMobileMenu :items="items" />
-    </template>
+    <MenuContainer
+      v-if="userStore.user && !userStore.isExpired"
+      :items="items"
+      class=":uno: flex items-center justify-center"
+    >
+      <LayoutHeaderAccountInfo />
+    </MenuContainer>
     <div v-else class="menu-item">
       <NuxtLink to="/auth/login">登录</NuxtLink>
     </div>
@@ -70,9 +60,5 @@ const items: AccountMenuItem[] = [
   @apply h-full flex w-fit items-center justify-center cursor-pointer;
   @apply absolute right-0 top-1/2 transform -translate-y-1/2;
   @apply md:static md:transform-none md:top-0 md:bottom-0;
-
-  .account-pc-menu {
-    @apply hidden md:flex;
-  }
 }
 </style>

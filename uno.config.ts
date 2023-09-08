@@ -27,5 +27,10 @@ export default defineConfig({
       }
     ]
   ],
-  transformers: [transformerCompileClass(), transformerDirectives()]
+  transformers: [
+    transformerCompileClass({
+      classPrefix: 'ouo-'
+    }),
+    transformerDirectives()
+  ]
 })

@@ -53,5 +53,11 @@ export const useUserStore = defineStore('user', {
       this.expiredAt = dayjs().add(1, 'month').valueOf()
     }
   },
-  persist: true
+  persist: {
+    storage: persistedState.cookiesWithOptions({
+      maxAge: 60 * 60 * 24 * 30, // 30 days
+      sameSite: 'strict'
+    }),
+    serializer: getCookiesSerializer()
+  }
 })

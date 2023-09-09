@@ -97,6 +97,9 @@ devDependencies:
   ant-design-vue:
     specifier: ~4.0.2
     version: 4.0.2(vue@3.3.4)
+  crypto-es:
+    specifier: ^2.0.4
+    version: 2.0.4
   dayjs:
     specifier: ^1.11.9
     version: 1.11.9
@@ -2809,6 +2812,7 @@ packages:
     dependencies:
       is-glob: 4.0.3
       micromatch: 4.0.5
+      napi-wasm: 1.1.0
     dev: true
     bundledDependencies:
       - napi-wasm
@@ -5197,6 +5201,10 @@ packages:
 
   /crypt@0.0.2:
     resolution: {integrity: sha512-mCxBlsHFYh9C+HVpiEacem8FEBnMXgU9gy4zmNC+SXAZNB/1idgp/aulFJ4FgCi7GPEVbfyng092GqL2k2rmow==}
+    dev: true
+
+  /crypto-es@2.0.4:
+    resolution: {integrity: sha512-GJxgJJ7HjGzwT7iQF0K9RertKkzgSKUXd8X2aQ7RGDS8yMVDzIBFMNHID9hnj48Ep8NAICHWV1CFIETlVNZ/Lg==}
     dev: true
 
   /crypto-random-string@2.0.0:
@@ -8201,6 +8209,10 @@ packages:
 
   /nanopop@2.3.0:
     resolution: {integrity: sha512-fzN+T2K7/Ah25XU02MJkPZ5q4Tj5FpjmIYq4rvoHX4yb16HzFdCO6JxFFn5Y/oBhQ8no8fUZavnyIv9/+xkBBw==}
+    dev: true
+
+  /napi-wasm@1.1.0:
+    resolution: {integrity: sha512-lHwIAJbmLSjF9VDRm9GoVOy9AGp3aIvkjv+Kvz9h16QR3uSVYH78PNQUnT2U4X53mhlnV2M7wrhibQ3GHicDmg==}
     dev: true
 
   /natural-compare@1.4.0:

@@ -88,6 +88,9 @@ export default defineNuxtConfig({
       },
       pubkey: {
         searchAPI: process.env.HITOKOTO_SEARCH_API_PUBKEY || ''
+      },
+      encrypt: {
+        cookiesKey: process.env.COOKIES_ENCRYPT_KEY || ''
       }
     }
   }

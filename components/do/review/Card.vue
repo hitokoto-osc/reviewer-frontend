@@ -3,6 +3,7 @@ import xss from 'xss'
 import dayjs from 'dayjs'
 import type { PollMethod } from '@/enums/poll'
 import type { HitokotoType } from '~/enums/hitokoto'
+import type { Sentence } from '@/components/SentenceModifyModal.vue'
 
 // Props 定义
 export type CardPropsPoll = {
@@ -48,7 +49,10 @@ const emit = defineEmits<{
   doLocalSearch: [sentence: SearchParams]
   doMasonryRepaint: [] // 传递此事件只是为了让父组件重绘制
   viewComments: [index: number]
-  doSwiftModify: [pollID: number]
+  doSwiftModify: [
+    sentence: Sentence,
+    onModifyFinished: (sentence: Sentence) => void
+  ]
   opeartionDone: [event: 'submit' | 'cancel', index: number]
 }>()
 
@@ -60,6 +64,8 @@ const onOperationDone = (event: 'submit' | 'cancel') => {
 const userStore = useUserStore()
 
 const marksSelectedValues = ref<number[]>([])
+
+provide('sentence', props.sentence) // 提供句子数据给子组件
 </script>
 
 <template>
@@ -132,7 +138,9 @@ const marksSelectedValues = ref<number[]>([])
       @do-masonry-repaint="emit('doMasonryRepaint')"
       @operation-done="onOperationDone"
       @view-comments="emit('viewComments', props.index)"
-      @do-swift-modify="emit('doSwiftModify', props.poll.id)"
+      @do-swift-modify="
+        emit('doSwiftModify', props.sentence as Sentence, $event)
+      "
     />
   </a-card>
 </template>

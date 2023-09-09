@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import { snakeCase } from 'lodash-es'
 import { PollMethod } from '@/enums/poll'
 import type { PollReq } from '@/composables/api'
+import type { Sentence } from '@/components/SentenceModifyModal.vue'
+import { SnakeSentence } from '~/utils/formatter'
 const props = defineProps<{
   marksSelectedValues?: number[]
   isPolled: boolean
@@ -13,7 +16,7 @@ const emit = defineEmits<{
   doWebSearch: []
   doLocalSearch: []
   viewComments: []
-  doSwiftModify: []
+  doSwiftModify: [onModifyFinished: (sentence: Sentence) => void]
   operationDone: [event: 'submit' | 'cancel']
 }>()
 
@@ -87,6 +90,21 @@ const onCancelPoll = async () => {
     onSubmitLoading.value = false
   }
 }
+
+// 快捷修改
+const sentence = inject<Sentence>('sentence') as Sentence
+const onSwiftModify = (camel: Sentence) => {
+  const snake: SnakeSentence = (
+    Object.keys(camel) as Array<keyof Sentence>
+  ).reduce((acc, cur) => {
+    if (camel[cur] === sentence[cur]) return acc
+    const key = snakeCase(cur) as keyof SnakeSentence
+    acc[key] = camel[cur] as never
+    return acc
+  }, {} as SnakeSentence)
+  if (Object.keys(snake).length === 0) return
+  comment.value = JSON.stringify(snake)
+}
 </script>
 <template>
   <div class="actions-container">
@@ -144,7 +162,7 @@ const onCancelPoll = async () => {
             @do-local-search="emit('doLocalSearch')"
             @do-web-search="emit('doWebSearch')"
             @view-comments="emit('viewComments')"
-            @do-swift-modify="emit('doSwiftModify')"
+            @do-swift-modify="emit('doSwiftModify', onSwiftModify)"
           />
         </div>
       </div>

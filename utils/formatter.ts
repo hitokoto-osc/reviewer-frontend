@@ -24,3 +24,41 @@ export function formatReviewer(reviewerUid: number): string | null | undefined {
     ? reviewerMap[reviewerUid as keyof typeof reviewerMap]
     : null
 }
+
+export type SnakeSentence = Omit<
+  PollListCollectionElement['sentence'],
+  | 'id'
+  | 'creator_uid'
+  | 'creator'
+  | 'reviewer'
+  | 'status'
+  | 'poll_status'
+  | 'created_at'
+>
+
+const SentenceFieldMap: Record<keyof SnakeSentence, string> = {
+  uuid: '标识',
+  hitokoto: '句子',
+  type: '类型',
+  from: '来源',
+  from_who: '作者'
+}
+
+export function formartPollComment(comment: string): string {
+  try {
+    const parsed = JSON.parse(comment) as SnakeSentence
+    return (
+      '建议将' +
+      (Object.keys(parsed) as Array<keyof SnakeSentence>)
+        .map((key) => {
+          const target =
+            key === 'type' ? convertHitokotoType(parsed[key]) : parsed[key]
+          return ` <b>${SentenceFieldMap[key]}</b> 修改为 “<u>${target}</u>”`
+        })
+        .join('，') +
+      '。'
+    )
+  } catch (e) {
+    return comment
+  }
+}

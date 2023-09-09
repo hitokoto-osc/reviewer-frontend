@@ -3,7 +3,7 @@ import { PlusCircleOutlined } from '@ant-design/icons-vue'
 import { PollStatus, PolledFilter } from '@/enums/poll'
 import type { SearchParams } from '@/components/do/review/Card.vue'
 import type { SegmentedOption } from 'ant-design-vue/es/segmented/src/segmented' // TODO: Antdv 的类型定义有问题，这里需要手动指定路径
-
+import type { Sentence } from '@/components/SentenceModifyModal.vue'
 useHead({
   title: '句子审核'
 })
@@ -211,6 +211,28 @@ const viewCommentsModal = reactive({
   open: false,
   index: 0
 })
+
+// 快捷修改
+const swiftModifyModal = reactive({
+  open: false,
+  sentence: {} as Sentence,
+  onModifyCallback: undefined as ((sentence: Sentence) => void) | undefined
+})
+
+const doSwiftModify = (
+  sentence: Sentence,
+  fn: (sentence: Sentence) => void
+) => {
+  swiftModifyModal.sentence = { ...sentence }
+  swiftModifyModal.onModifyCallback = fn
+  swiftModifyModal.open = true
+}
+
+const onModifySentenceFinished = (sentence: Sentence) => {
+  swiftModifyModal.open = false
+  swiftModifyModal.onModifyCallback &&
+    swiftModifyModal.onModifyCallback(sentence)
+}
 </script>
 <template>
   <div class="do-review">
@@ -227,6 +249,11 @@ const viewCommentsModal = reactive({
       :records="
         pollListData?.data.collection[viewCommentsModal.index].records || []
       "
+    />
+    <SentenceModifyModal
+      v-model:open="swiftModifyModal.open"
+      :sentence="swiftModifyModal.sentence"
+      @finish="onModifySentenceFinished"
     />
     <a-page-header title="句子审核" />
     <div class="toolbar">
@@ -298,6 +325,7 @@ const viewCommentsModal = reactive({
                     viewCommentsModal.index = index
                   }
                 "
+                @do-swift-modify="doSwiftModify"
                 @opeartion-done="onOperationDone"
               />
             </div>

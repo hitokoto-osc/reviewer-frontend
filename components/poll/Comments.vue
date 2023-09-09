@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import dayjs from 'dayjs'
+import { filterXSS } from 'xss'
 import type { PollDetailRes } from '@/composables/api'
 import { getAvatarURLByHash } from '~/utils/avatar'
 const props = defineProps<{
@@ -26,9 +27,11 @@ watch(records, (val) => console.log(val))
                 {{ dayjs(record.created_at).format('YYYY-MM-DD HH:mm:ss') }}
               </span>
             </div>
-            <div class=":uno: text-sm">
-              {{ record.comment }}
-            </div>
+            <!-- eslint-disable vue/no-v-html-->
+            <div
+              class=":uno: text-sm underline-offset-2"
+              v-html="filterXSS(formartPollComment(record.comment))"
+            ></div>
           </div>
         </div>
         <a-divider v-if="index < records.length - 1" class=":uno: my-3" />

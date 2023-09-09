@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { filterXSS } from 'xss'
 import dayjs from 'dayjs'
 import { PollStatus } from '~/enums/poll'
 import { CardPropsSentence } from './do/review/Card.vue'
@@ -108,7 +109,14 @@ const sentence = computed(() => {
               convertPollMethod(record.method)
             }}
             {{ record.point }} 票
-            {{ record.comment && `，评论到：“${record.comment}”` }}
+            <!--eslint-disable vue/no-v-html-->
+            <span
+              v-if="record.comment"
+              class=":uno: underline-offset-2"
+              v-html="
+                filterXSS(`，评论到：“${formartPollComment(record.comment)}”`)
+              "
+            />
           </li>
         </ul>
       </div>

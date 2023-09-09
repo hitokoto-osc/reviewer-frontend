@@ -54,6 +54,7 @@ jobs:
           envkey_HITOKOTO_REVIEWER_API_ENDPOINT: ${{ secrets.HITOKOTO_REVIEWER_API_ENDPOINT }}
           envkey_HITOKOTO_SEARCH_API_ENDPOINT: ${{ secrets.HITOKOTO_SEARCH_API_ENDPOINT }}
           envkey_HITOKOTO_SEARCH_API_PUBKEY: ${{ secrets.HITOKOTO_SEARCH_API_PUBKEY }}
+          envkey_COOKIES_ENCRYPT_KEY: ${{ secrets.COOKIES_ENCRYPT_KEY }}
       - name: Build project
         run: pnpm build
       -

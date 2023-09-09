@@ -1,20 +1,21 @@
-import crypto from 'crypto-es'
+import cryptoJS from 'crypto-js'
 import type { Serializer } from 'pinia-plugin-persistedstate'
+
+const getKey = () => {
+  const runtimeConfig = useRuntimeConfig()
+  return runtimeConfig.public.encrypt.cookiesKey
+}
+
 export function getCookiesSerializer(): Serializer {
   return {
     serialize: (value) => {
-      const runtimeConfig = useRuntimeConfig()
-      const key = runtimeConfig.public.encrypt.cookiesKey
+      const key = getKey()
       const data = JSON.stringify(value)
-      return crypto.AES.encrypt(data, key).toString(crypto.format.Hex)
+      return cryptoJS.AES.encrypt(data, key).toString()
     },
     deserialize: (value: string) => {
-      const runtimeConfig = useRuntimeConfig()
-      const key = runtimeConfig.public.encrypt.cookiesKey
-      const data = crypto.AES.decrypt(
-        crypto.enc.Hex.parse(value),
-        key
-      ).toString(crypto.enc.Utf8)
+      const key = getKey()
+      const data = cryptoJS.AES.decrypt(value, key).toString(cryptoJS.enc.Utf8)
       return JSON.parse(data)
     }
   }

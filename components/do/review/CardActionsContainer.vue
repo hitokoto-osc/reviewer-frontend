@@ -36,10 +36,17 @@ const filterOptions = (
   inputValue: string,
   option?: DefaultOptionType
 ): boolean => !!option && option.label.indexOf(inputValue) >= 0
-
+const appendMarkByLabel = (label: string) => {
+  const mark = marksStore.marks.find((v) => v.text === label)
+  if (!mark) return
+  !marksSelected.value.includes(mark.id) && marksSelected.value.push(mark.id)
+}
 watch(
   () => marksSelected.value,
-  () => nextTick(() => emit('doMasonryRepaint'))
+  (val) => {
+    emit('update:marksSelectedValues', val)
+    nextTick(() => emit('doMasonryRepaint'))
+  }
 )
 
 watch(
@@ -104,12 +111,27 @@ const onCancelPoll = async () => {
 
 // 快捷修改
 const sentence = inject<Sentence>('sentence') as Sentence
+const keyCastToLabel = (key: keyof SnakeSentence) => {
+  switch (key) {
+    case 'type':
+      return '分类有误'
+    case 'hitokoto':
+      return '句子存在错误'
+    case 'from_who':
+      return '作者错误或误用'
+    case 'from':
+      return '来源错误或误用'
+    default:
+      throw new Error('未知的 key')
+  }
+}
 const onSwiftModify = (camel: Sentence) => {
   const snake: SnakeSentence = (
     Object.keys(camel) as Array<keyof Sentence>
   ).reduce((acc, cur) => {
     if (camel[cur] === sentence[cur]) return acc
     const key = snakeCase(cur) as keyof SnakeSentence
+    appendMarkByLabel(keyCastToLabel(key))
     acc[key] = camel[cur] as never
     return acc
   }, {} as SnakeSentence)
@@ -139,7 +161,6 @@ const doSwiftModify = () => {
         :options="options"
         :filter-option="filterOptions"
         placeholder="请选择您对此句的看法，部分选项会展示给其他审核员以辅助审核（选填，若选择“需要修改”则为必填）"
-        @change="emit('update:marksSelectedValues', marksSelected)"
       >
       </a-select>
       <!-- 评论框 -->

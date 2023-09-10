@@ -169,6 +169,7 @@ const doSwiftModify = (
 
 .hitokoto-info-container {
   @apply mt-3 bg-zinc-50 -mx-6 px-6 py-2;
+  @apply dark:bg-dark-700;
 
   ul {
     @apply list-none ml-0 pl-0;

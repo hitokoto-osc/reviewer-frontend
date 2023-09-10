@@ -34,6 +34,8 @@ export default defineNuxtConfig({
   ],
   modules: [
     '@unocss/nuxt',
+    // Doc: https://color-mode.nuxtjs.org/
+    '@nuxtjs/color-mode',
     // Doc: https://github.com/nuxt-community/eslint-module
     // '@nuxtjs/eslint-module',
     // Doc: https://github.com/nuxt-community/stylelint-module
@@ -53,6 +55,11 @@ export default defineNuxtConfig({
     ],
     '@vueuse/nuxt'
   ],
+  colorMode: {
+    preference: 'system', // default value of $colorMode.preference
+    fallback: 'light', // fallback value if not system preference found
+    storageKey: 'color-mode'
+  },
   antd: {},
   gtag: {
     id: 'G-86GDBEXXNZ'

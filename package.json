@@ -19,6 +19,7 @@
     "@commitlint/config-conventional": "^17.7.0",
     "@iconify/json": "^2.2.113",
     "@nuxt/devtools": "latest",
+    "@nuxtjs/color-mode": "^3.3.0",
     "@nuxtjs/eslint-module": "^4.1.0",
     "@nuxtjs/stylelint-module": "^5.1.0",
     "@pinia-plugin-persistedstate/nuxt": "^1.1.1",

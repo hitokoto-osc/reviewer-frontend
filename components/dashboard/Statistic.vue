@@ -58,12 +58,14 @@ const props = withDefaults(
 
   .title {
     @apply text-14px mb-4px text-black text-opacity-45;
+    @apply dark:text-white dark:text-opacity-45;
   }
 
   .content {
     .value,
     .countup-wrap {
       @apply text-24px text-black text-opacity-88;
+      @apply dark:text-white dark:text-opacity-85;
 
       .suffix {
         @apply ms-4px inline-block;

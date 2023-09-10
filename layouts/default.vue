@@ -24,6 +24,7 @@
 <style lang="scss" scoped>
 .layout {
   @apply min-h-100vh h-auto w-full flex flex-col shrink-0 bg-slate-100;
+  @apply dark:bg-black;
 
   .actions {
     @apply fixed right-0 hidden md:block;
@@ -32,6 +33,7 @@
 
   .main {
     @apply mt-3 md:mt-15 mx-auto w-full md:w-90% lg:w-80% xl:w-70%  bg-white md:rounded-t-4 border-2 shadow-sm shadow-slate-100;
+    @apply dark:bg-#141414 dark:shadow-dark-100 dark:text-white dark:text-opacity-85;
     @apply flex-1 flex shrink-0;
 
     .sidebar {

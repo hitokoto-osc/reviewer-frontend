@@ -20,7 +20,10 @@ const classNames = computed(() => {
 <template>
   <div class="input-group">
     <div class="icon">
-      <div class="w-7 h-7 inline-block text-current" :class="classNames"></div>
+      <div
+        class="w-7 h-7 inline-block text-current dark:text-white dark:text-opacity-80"
+        :class="classNames"
+      ></div>
     </div>
     <input
       :value="props.modelValue"
@@ -48,12 +51,14 @@ const classNames = computed(() => {
 
 .input-border {
   @apply absolute bottom-0 w-0 bg-white transition-all duration-300 ease-in-out left-1/2;
+  @apply dark:bg-dark;
 
   height: 1px;
 }
 
 .input {
   @apply h-12 w-full bg-transparent outline-none border-0 border-b-1 border-gray-200 pl-10 text-current rounded-0;
+  @apply dark:border-dark-900 dark:text-white dark:text-opacity-80;
 
   &:focus {
     + .input-border {

@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import zhCN from 'ant-design-vue/es/locale/zh_CN'
+import { theme } from 'ant-design-vue'
+import locale from 'ant-design-vue/es/locale/zh_CN'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import 'dayjs/locale/zh-cn'
@@ -12,16 +13,30 @@ useHead({
     return titleChunk ? `${titleChunk} - ${appConfig.title}` : appConfig.title
   }
 })
+const colorMode = useColorMode()
+const config = reactive({
+  locale,
+  theme: {
+    ...theme.defaultConfig,
+    algorithm: theme.darkAlgorithm
+  }
+})
+watchEffect(() => {
+  config.theme.algorithm =
+    colorMode.value === 'dark' ? theme.darkAlgorithm : theme.defaultAlgorithm
+})
 </script>
 
 <template>
   <div class="app">
-    <a-config-provider :locale="zhCN">
-      <NuxtLayout>
-        <NuxtLoadingIndicator />
-        <NuxtPage />
-      </NuxtLayout>
-    </a-config-provider>
+    <a-style-provider hash-priority="high">
+      <a-config-provider v-bind="config">
+        <NuxtLayout>
+          <NuxtLoadingIndicator />
+          <NuxtPage />
+        </NuxtLayout>
+      </a-config-provider>
+    </a-style-provider>
   </div>
 </template>
 

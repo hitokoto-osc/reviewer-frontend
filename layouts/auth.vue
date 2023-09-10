@@ -15,7 +15,7 @@ watchEffect(() => {
   <div
     class="w-full h-100vh flex"
     :class="{
-      'bg-slate-50': pending || error
+      'bg-slate-50 dark:bg-black': pending || error
     }"
     :style="{
       background: background
@@ -24,7 +24,7 @@ watchEffect(() => {
     <div
       class="flex"
       shadow="md:2xl"
-      bg="white/55"
+      bg="white/55 dark:dark-500/55"
       rounded="md:r-3xl"
       w="full md:1/3 lg:1/5"
       p="x-8 y-12"
@@ -52,12 +52,17 @@ watchEffect(() => {
       <div class="flex-1 mt-15">
         <slot />
       </div>
-      <footer class="text-center text-current text-inherit text-sm">
+      <footer
+        class="text-center text-current text-inherit text-sm dark:text-white dark:text-opacity-80"
+      >
         <div
           class="i-solar-heart-bold inline-block text-2xl text-red-600 animate__animated animate__heartBeat animate__infinite"
         ></div>
         <br />
-        <a class="no-underline" href="https://beian.miit.gov.cn/">
+        <a
+          class="no-underline dark:text-purple-500"
+          href="https://beian.miit.gov.cn/"
+        >
           沪ICP备16031287号-1
         </a>
         <br />

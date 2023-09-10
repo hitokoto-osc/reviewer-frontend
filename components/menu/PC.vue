@@ -10,8 +10,8 @@ const props = defineProps<{
       <template #overlay>
         <a-menu :selectable="false">
           <a-menu-item
-            v-for="item in props.items"
-            :key="item.text"
+            v-for="(item, index) in props.items"
+            :key="index"
             :icon="item.icon"
           >
             <a

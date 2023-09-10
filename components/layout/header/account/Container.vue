@@ -12,11 +12,21 @@ const doLogout = () => {
   }, 1500)
 }
 
+const colorMode = useColorMode()
+const colorModeText = computed(() =>
+  colorMode.value === 'dark' ? '浅色模式' : '深色模式'
+)
 // 账户设置菜单
-const items: Item[] = [
+const items: Item[] = reactive([
   {
     text: '控制台',
     to: '/dashboard'
+  },
+  {
+    text: colorModeText,
+    onClick: () => {
+      colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'
+    }
   },
   {
     text: '设置',
@@ -28,7 +38,7 @@ const items: Item[] = [
       doLogout()
     }
   }
-]
+])
 </script>
 
 <template>
@@ -53,6 +63,7 @@ const items: Item[] = [
 
   a {
     @apply no-underline text-current py-3 px-5 cursor-pointer hover:bg-gray-100 rounded-2 select-none;
+    @apply dark:hover:bg-dark-200;
   }
 }
 

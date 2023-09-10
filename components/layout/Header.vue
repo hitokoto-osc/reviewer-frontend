@@ -36,6 +36,7 @@ const userStore = useUserStore()
 <style lang="scss" scoped>
 .header-container {
   @apply h-16 w-full bg-white flex justify-center border-b-1 shadow-sm shadow-slate-200 relative shrink-0;
+  @apply dark:bg-dark-700 dark:border-dark-500 dark:shadow-dark-500 dark:text-white dark:text-opacity-85;
 
   .header {
     @apply flex h-full w-full md:w-80% lg:w-70%;
@@ -64,6 +65,7 @@ const userStore = useUserStore()
 
       a {
         @apply no-underline text-current py-3 px-5 cursor-pointer hover:bg-gray-100 rounded-2 select-none;
+        @apply dark:hover:bg-dark-200;
       }
     }
   }

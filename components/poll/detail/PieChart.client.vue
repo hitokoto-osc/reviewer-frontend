@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { use } from 'echarts/core'
+import darkTheme from '@/assets/echarts/theme/dark'
+import { use, registerTheme } from 'echarts/core'
 import { CanvasRenderer } from 'echarts/renderers'
 import { PieChart } from 'echarts/charts'
 import {
@@ -7,14 +8,14 @@ import {
   TooltipComponent,
   LegendComponent
 } from 'echarts/components'
-import VChart from 'vue-echarts'
+import VChart, { THEME_KEY } from 'vue-echarts'
 
 const props = defineProps<{
   approve: number
   reject: number
   needModify: number
 }>()
-
+registerTheme('dark', darkTheme())
 use([
   CanvasRenderer,
   PieChart,
@@ -22,8 +23,8 @@ use([
   TooltipComponent,
   LegendComponent
 ])
-
-// provide(THEME_KEY, 'dark')
+const colorMode = useColorMode()
+provide(THEME_KEY, colorMode.value)
 
 const option = computed(() => {
   return {

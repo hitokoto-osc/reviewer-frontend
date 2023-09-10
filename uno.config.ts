@@ -2,7 +2,16 @@ import { defineConfig, presetUno, presetIcons, presetAttributify } from 'unocss'
 import transformerCompileClass from '@unocss/transformer-compile-class'
 import transformerDirectives from '@unocss/transformer-directives'
 export default defineConfig({
-  presets: [presetUno(), presetIcons(), presetAttributify()],
+  presets: [
+    presetUno({
+      dark: {
+        dark: '.dark-mode',
+        light: '.light-mode'
+      }
+    }),
+    presetIcons(),
+    presetAttributify()
+  ],
   rules: [
     [
       /^bg-gradient-(\d+)$/,

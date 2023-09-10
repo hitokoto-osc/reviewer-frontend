@@ -1,3 +1,4 @@
+import { snakeCase, camelCase } from 'lodash-es'
 import { PollStatus } from './../enums/poll'
 import { HitokotoType } from '@/enums/hitokoto'
 const HitokotoTypeMap = {
@@ -44,4 +45,26 @@ const PollStatusMap = {
 
 export function convertPollStatus(input: PollStatus): string {
   return PollStatusMap[input] || '未知'
+}
+
+export function objToCamel<
+  T extends { [key: string]: unknown },
+  V extends { [key: string]: unknown } = { [key: string]: unknown }
+>(obj: V): T {
+  return (Object.keys(obj) as Array<keyof V>).reduce((acc, key) => {
+    const camelKey = camelCase(key as unknown as string) as keyof T
+    acc[camelKey] = obj[key] as unknown as T[keyof T]
+    return acc
+  }, {} as T)
+}
+
+export function objToSnake<
+  T extends { [key: string]: unknown },
+  V extends { [key: string]: unknown } = { [key: string]: unknown }
+>(obj: V): T {
+  return (Object.keys(obj) as Array<keyof V>).reduce((acc, key) => {
+    const snakeKey = snakeCase(key as unknown as string) as keyof T
+    acc[snakeKey] = obj[key] as unknown as T[keyof T]
+    return acc
+  }, {} as T)
 }

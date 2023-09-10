@@ -66,6 +66,17 @@ const userStore = useUserStore()
 const marksSelectedValues = ref<number[]>([])
 
 provide('sentence', props.sentence) // 提供句子数据给子组件
+// 快捷修改
+const doSwiftModify = (
+  fn: (sentence: Sentence) => void,
+  initialState: Partial<Sentence>
+) => {
+  emit(
+    'doSwiftModify',
+    { ...(props.sentence as Sentence), ...initialState },
+    fn
+  )
+}
 </script>
 
 <template>
@@ -138,9 +149,7 @@ provide('sentence', props.sentence) // 提供句子数据给子组件
       @do-masonry-repaint="emit('doMasonryRepaint')"
       @operation-done="onOperationDone"
       @view-comments="emit('viewComments', props.index)"
-      @do-swift-modify="
-        emit('doSwiftModify', props.sentence as Sentence, $event)
-      "
+      @do-swift-modify="doSwiftModify"
     />
   </a-card>
 </template>

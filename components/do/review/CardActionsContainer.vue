@@ -16,7 +16,10 @@ const emit = defineEmits<{
   doWebSearch: []
   doLocalSearch: []
   viewComments: []
-  doSwiftModify: [onModifyFinished: (sentence: Sentence) => void]
+  doSwiftModify: [
+    onModifyFinished: (sentence: Sentence) => void,
+    currentState: Partial<Sentence>
+  ]
   operationDone: [event: 'submit' | 'cancel']
 }>()
 
@@ -105,6 +108,16 @@ const onSwiftModify = (camel: Sentence) => {
   if (Object.keys(snake).length === 0) return
   comment.value = JSON.stringify(snake)
 }
+const doSwiftModify = () => {
+  try {
+    const initialState = objToCamel<Partial<Sentence>>(
+      JSON.parse(comment.value || '{}') as Record<string, never>
+    )
+    emit('doSwiftModify', onSwiftModify, initialState)
+  } catch (e) {
+    emit('doSwiftModify', onSwiftModify, {} as Partial<Sentence>)
+  }
+}
 </script>
 <template>
   <div class="actions-container">
@@ -162,7 +175,7 @@ const onSwiftModify = (camel: Sentence) => {
             @do-local-search="emit('doLocalSearch')"
             @do-web-search="emit('doWebSearch')"
             @view-comments="emit('viewComments')"
-            @do-swift-modify="emit('doSwiftModify', onSwiftModify)"
+            @do-swift-modify="doSwiftModify"
           />
         </div>
       </div>

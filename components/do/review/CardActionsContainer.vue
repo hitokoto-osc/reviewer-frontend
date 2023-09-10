@@ -3,6 +3,7 @@ import { snakeCase } from 'lodash-es'
 import { PollMethod } from '@/enums/poll'
 import type { PollReq } from '@/composables/api'
 import type { Sentence } from '@/components/SentenceModifyModal.vue'
+import type { DefaultOptionType } from 'ant-design-vue/es/select'
 import { SnakeSentence } from '~/utils/formatter'
 const props = defineProps<{
   marksSelectedValues?: number[]
@@ -25,10 +26,17 @@ const emit = defineEmits<{
 
 // 标记列表
 const marksStore = useMarksStore()
-const marks = computed(() =>
-  marksStore.marks.filter((v) => v.deprecated_at === null)
-)
 const marksSelected = ref<number[]>([])
+const options = computed(() =>
+  marksStore.marks
+    .filter((v) => v.deprecated_at === null)
+    .map((v) => ({ label: v.text, value: v.id }))
+)
+const filterOptions = (
+  inputValue: string,
+  option?: DefaultOptionType
+): boolean => !!option && option.label.indexOf(inputValue) >= 0
+
 watch(
   () => marksSelected.value,
   () => nextTick(() => emit('doMasonryRepaint'))
@@ -128,12 +136,11 @@ const doSwiftModify = () => {
         v-model:value="marksSelected"
         mode="multiple"
         :style="{ width: '100%' }"
+        :options="options"
+        :filter-option="filterOptions"
         placeholder="请选择您对此句的看法，部分选项会展示给其他审核员以辅助审核（选填，若选择“需要修改”则为必填）"
         @change="emit('update:marksSelectedValues', marksSelected)"
       >
-        <a-select-option v-for="i in marks" :key="i.id">
-          {{ i.text }}
-        </a-select-option>
       </a-select>
       <!-- 评论框 -->
       <a-textarea

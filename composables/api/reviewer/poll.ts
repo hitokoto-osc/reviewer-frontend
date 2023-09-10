@@ -39,7 +39,7 @@ export type PollListCollectionElement = {
     hitokoto: string
     type: HitokotoType
     from: string
-    from_who?: string
+    from_who: string | null
     creator: string
     creator_uid: number
     reviewer: number

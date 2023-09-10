@@ -18,7 +18,7 @@ export type CardPropsSentence = {
   uuid: string
   hitokoto: string
   type: HitokotoType
-  fromWho?: string
+  fromWho: string | null
   from: string
   creator: string
   createdAt: string
@@ -41,7 +41,7 @@ const props = defineProps<{
 export interface SearchParams {
   sentence: string
   from: string
-  fromWho?: string
+  fromWho: string | null
 }
 
 const emit = defineEmits<{

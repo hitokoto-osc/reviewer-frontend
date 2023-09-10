@@ -17,11 +17,12 @@ const emit = defineEmits<{
 
 const onOK = () => {
   emit('update:open', false)
-  if (formState.fromWho === '') formState.fromWho = undefined
-  emit('finish', formState)
+  const data: Sentence = { ...formState }
+  if (data.fromWho === '') data.fromWho = null
+  emit('finish', data)
 }
 
-const formState = reactive<Sentence>({
+const formState = reactive<Sentence & { fromWho: string }>({
   uuid: '',
   hitokoto: '',
   type: HitokotoType.Anime,
@@ -39,7 +40,7 @@ watch(
     formState.uuid = props.sentence.uuid
     formState.hitokoto = props.sentence.hitokoto
     formState.type = props.sentence.type
-    formState.fromWho = props.sentence.fromWho
+    formState.fromWho = props.sentence.fromWho || ''
     formState.from = props.sentence.from
   }
 )

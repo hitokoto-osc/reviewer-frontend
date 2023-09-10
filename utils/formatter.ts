@@ -53,7 +53,9 @@ export function formartPollComment(comment: string): string {
         .map((key) => {
           const target =
             key === 'type' ? convertHitokotoType(parsed[key]) : parsed[key]
-          return ` <b>${SentenceFieldMap[key]}</b> 修改为 “<u>${target}</u>”`
+          return ` <b>${SentenceFieldMap[key]}</b> 修改为 “<u>${
+            target || '未填写'
+          }</u>”`
         })
         .join('，') +
       '。'

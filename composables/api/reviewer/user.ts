@@ -34,7 +34,7 @@ export interface UserInfoRes {
       hitokoto: string
       type: HitokotoType
       from: string
-      from_who?: string
+      from_who: string | null
       creator: string
       creator_uid: number
       reviewer: number
@@ -86,7 +86,7 @@ export type UserPollLogsRes = {
       hitokoto: string
       type: HitokotoType
       from: string
-      from_who?: string
+      from_who: string | null
       creator: string
       creator_uid: number
       reviewer: number

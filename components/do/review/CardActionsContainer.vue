@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import PinyinMatch from 'pinyin-match'
 import { snakeCase } from 'lodash-es'
 import { PollMethod } from '@/enums/poll'
 import type { PollReq } from '@/composables/api'
@@ -35,7 +36,8 @@ const options = computed(() =>
 const filterOptions = (
   inputValue: string,
   option?: DefaultOptionType
-): boolean => !!option && option.label.indexOf(inputValue) >= 0
+): boolean =>
+  !!option && Array.isArray(PinyinMatch.match(option.label, inputValue))
 const appendMarkByLabel = (label: string) => {
   const mark = marksStore.marks.find((v) => v.text === label)
   if (!mark) return

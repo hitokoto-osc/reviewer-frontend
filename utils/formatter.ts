@@ -44,7 +44,7 @@ const SentenceFieldMap: Record<keyof SnakeSentence, string> = {
   from_who: '作者'
 }
 
-export function formartPollComment(comment: string): string {
+export function formatPollComment(comment: string): string {
   try {
     const parsed = JSON.parse(comment) as SnakeSentence
     return (

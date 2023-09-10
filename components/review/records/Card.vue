@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import dayjs from 'dayjs'
+import { filterXSS } from 'xss'
 import { UserRole } from '@/enums/user'
 import { PollStatus } from '@/enums/poll'
 import type { UserPollLogsRes } from '@/composables/api'
@@ -54,8 +55,12 @@ const emit = defineEmits<{
       >
         审核标记：<PollMarks :marks="userPollLog.user_marks" />
       </div>
+      <!-- eslint-disable vue/no-v-html -->
       <p v-show="userPollLog.comment" class="comment">
-        投票评论：{{ userPollLog.comment }}
+        投票评论：<span
+          class=":uno: underline-offset-2"
+          v-html="filterXSS(formatPollComment(userPollLog.comment))"
+        ></span>
       </p>
     </div>
     <div class="actions-container">

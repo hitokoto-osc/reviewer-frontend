@@ -114,7 +114,7 @@ const sentence = computed(() => {
               v-if="record.comment"
               class=":uno: underline-offset-2"
               v-html="
-                filterXSS(`，评论到：“${formartPollComment(record.comment)}”`)
+                filterXSS(`，评论到：“${formatPollComment(record.comment)}”`)
               "
             />
           </li>

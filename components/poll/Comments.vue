@@ -30,7 +30,7 @@ watch(records, (val) => console.log(val))
             <!-- eslint-disable vue/no-v-html-->
             <div
               class=":uno: text-sm underline-offset-2"
-              v-html="filterXSS(formartPollComment(record.comment))"
+              v-html="filterXSS(formatPollComment(record.comment))"
             ></div>
           </div>
         </div>

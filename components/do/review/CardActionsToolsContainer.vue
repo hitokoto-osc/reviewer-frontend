@@ -4,7 +4,7 @@ import type { Item } from '@/components/menu'
 const emit = defineEmits<{
   switchCommentInput: []
   viewComments: []
-  doSwiftModify: []
+  // doSwiftModify: []
   doWebSearch: []
   doLocalSearch: []
 }>()
@@ -33,13 +33,13 @@ const items: Item[] = reactive([
     onClick: () => {
       emit('doWebSearch')
     }
-  },
-  {
-    text: '快捷修改',
-    onClick: () => {
-      emit('doSwiftModify')
-    }
   }
+  // {
+  //   text: '快捷修改',
+  //   onClick: () => {
+  //     emit('doSwiftModify')
+  //   }
+  // }
 ])
 </script>
 <template>

@@ -190,13 +190,22 @@ const doSwiftModify = () => {
           >
             驳回
           </a-button>
-          <a-button
-            :loading="onSubmitLoading"
-            :disabled="onSubmitLoading"
-            @click="onSubmitPoll(PollMethod.NeedModify)"
-          >
-            需要更改
-          </a-button>
+          <a-button-group>
+            <a-button
+              :loading="onSubmitLoading"
+              :disabled="onSubmitLoading"
+              class="!mr-0"
+              @click="onSubmitPoll(PollMethod.NeedModify)"
+            >
+              需要更改
+            </a-button>
+            <a-button
+              class="px-1.75 inline-flex items-center"
+              @click="doSwiftModify"
+            >
+              <div class="i-solar-pen-2-bold inline-block w-4 h-4" />
+            </a-button>
+          </a-button-group>
         </div>
         <div class="md:flex-1"></div>
         <div class="tool-actions">
@@ -205,7 +214,6 @@ const doSwiftModify = () => {
             @do-local-search="emit('doLocalSearch')"
             @do-web-search="emit('doWebSearch')"
             @view-comments="emit('viewComments')"
-            @do-swift-modify="doSwiftModify"
           />
         </div>
       </div>

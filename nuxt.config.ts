@@ -35,9 +35,9 @@ export default defineNuxtConfig({
   modules: [
     '@unocss/nuxt',
     // Doc: https://github.com/nuxt-community/eslint-module
-    '@nuxtjs/eslint-module',
+    // '@nuxtjs/eslint-module',
     // Doc: https://github.com/nuxt-community/stylelint-module
-    '@nuxtjs/stylelint-module',
+    // '@nuxtjs/stylelint-module',
     // PWA
     // '@vite-pwa/nuxt',
     '@pinia/nuxt',
@@ -58,7 +58,7 @@ export default defineNuxtConfig({
     id: 'G-86GDBEXXNZ'
   },
   build: {
-    transpile: [/echarts/, 'vue-countup-v3', /ant-design-vue/]
+    transpile: [/echarts/, 'vue-countup-v3']
   },
 
   imports: {

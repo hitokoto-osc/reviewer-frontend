@@ -47,6 +47,8 @@ watchEffect(() => {
     <a-style-provider hash-priority="high">
       <a-config-provider v-bind="AntdConfig">
         <VanConfigProvider :theme="VantConfig.theme">
+          <VitePwaManifest />
+          <PwaPrompt />
           <NuxtLayout>
             <NuxtLoadingIndicator />
             <NuxtPage />

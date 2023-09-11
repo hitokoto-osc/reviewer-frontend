@@ -1,6 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   // ssr: process.env.NODE_ENV !== 'development',
+  ssr: false,
   app: {
     head: {
       meta: [
@@ -45,7 +46,7 @@ export default defineNuxtConfig({
     // Doc: https://github.com/nuxt-community/stylelint-module
     // '@nuxtjs/stylelint-module',
     // PWA
-    // '@vite-pwa/nuxt',
+    '@vite-pwa/nuxt',
     '@pinia/nuxt',
     '@pinia-plugin-persistedstate/nuxt',
     'nuxt-gtag',

@@ -20,6 +20,9 @@ const AntdConfig = reactive({
   locale,
   theme: {
     ...theme.defaultConfig,
+    token: {
+      colorPrimary: '#8921ff'
+    },
     algorithm: theme.darkAlgorithm
   }
 })

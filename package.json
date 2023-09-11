@@ -3,14 +3,14 @@
   "private": true,
   "scripts": {
     "build": "nuxi build --dotenv .env.production",
-    "dev": "nuxi dev --dotenv .env.local",
+    "dev": "run-s gen:css && nuxi dev --dotenv .env.local",
     "generate": "nuxi generate",
     "gen:css": "esno ./scripts/genAntdStyles.ts",
     "preview": "nuxi preview",
     "prepare": "husky install",
     "lint:js": "eslint --ext \".js,.ts,.tsx,.jsx,.vue\" --ignore-path .gitignore .",
     "lint:style": "stylelint \"**/*.{vue,htm,html,css,sss,less,scss,sass}\" --config .stylelintrc.js --ignore-path .gitignore",
-    "lint": "pnpm lint:js && pnpm lint:style",
+    "lint": "run-s lint:js && run-s lint:style",
     "postinstall": "nuxi prepare && sh -c 'if [ command -v ./node_modules/.bin/husky ]; then ./node_modules/.bin/husky install; fi;'"
   },
   "devDependencies": {
@@ -63,6 +63,7 @@
     "md5": "^2.3.0",
     "meilisearch": "^0.34.2",
     "modern-normalize": "^2.0.0",
+    "npm-run-all": "^4.1.5",
     "nuxt": "^3.7.1",
     "nuxt-gtag": "^1.1.0",
     "pinia": "^2.1.6",

@@ -200,10 +200,10 @@ const doSwiftModify = () => {
               需要更改
             </a-button>
             <a-button
-              class="px-1.75 inline-flex items-center"
+              class="!px-1.75 inline-flex items-center"
               @click="doSwiftModify"
             >
-              <div class="i-solar-pen-2-bold inline-block w-4 h-4" />
+              <div class="i-solar-pen-2-bold w-4 h-4" />
             </a-button>
           </a-button-group>
         </div>

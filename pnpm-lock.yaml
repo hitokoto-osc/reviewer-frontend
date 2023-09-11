@@ -101,8 +101,8 @@ devDependencies:
     specifier: ^4.1.1
     version: 4.1.1
   ant-design-vue:
-    specifier: ~4.0.3
-    version: 4.0.3(vue@3.3.4)
+    specifier: ~4.0.2
+    version: 4.0.2(vue@3.3.4)
   crypto-js:
     specifier: ^4.1.1
     version: 4.1.1
@@ -4380,6 +4380,37 @@ packages:
   /ansi-styles@6.2.1:
     resolution: {integrity: sha512-bN798gFfQX+viw3R7yrGWRqnrN2oRkEkUjjl4JNn4E8GxxbjtG3FbrEIIY3l8/hrwUwIeCZvi4QuOTP4MErVug==}
     engines: {node: '>=12'}
+    dev: true
+
+  /ant-design-vue@4.0.2(vue@3.3.4):
+    resolution: {integrity: sha512-4vD/mVXne1avmYo5j3V9bqAlMfxTu2D+k0j6dTN++OJZOjkuaV3waMLP1EJY0nj1xl0qUV96u7OD5xgTYfdtBQ==}
+    engines: {node: '>=12.22.0'}
+    peerDependencies:
+      vue: '>=3.2.0'
+    dependencies:
+      '@ant-design/colors': 6.0.0
+      '@ant-design/icons-vue': 6.1.0(vue@3.3.4)
+      '@babel/runtime': 7.22.15
+      '@ctrl/tinycolor': 3.6.1
+      '@emotion/hash': 0.9.1
+      '@emotion/unitless': 0.8.1
+      '@simonwep/pickr': 1.8.2
+      array-tree-filter: 2.1.0
+      async-validator: 4.2.5
+      csstype: 3.1.2
+      dayjs: 1.11.9
+      dom-align: 1.12.4
+      dom-scroll-into-view: 2.0.1
+      lodash: 4.17.21
+      lodash-es: 4.17.21
+      resize-observer-polyfill: 1.5.1
+      scroll-into-view-if-needed: 2.2.31
+      shallow-equal: 1.2.1
+      stylis: 4.3.0
+      throttle-debounce: 5.0.0
+      vue: 3.3.4
+      vue-types: 3.0.2(vue@3.3.4)
+      warning: 4.0.3
     dev: true
 
   /ant-design-vue@4.0.3(vue@3.3.4):

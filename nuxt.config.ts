@@ -18,6 +18,10 @@ export default defineNuxtConfig({
           // Google Fonts
           rel: 'stylesheet',
           href: 'https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Serif+TC:wght@400;600;700;900&display=swap'
+        },
+        {
+          rel: 'stylesheet',
+          href: '/css/antd.css'
         }
         // {
         //   rel: 'stylesheet',

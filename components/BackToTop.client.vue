@@ -107,12 +107,12 @@ const clipPath = computed(() => {
   @apply z-50 cursor-pointer;
   @apply w-12 h-12 rounded-full bg-white flex items-center justify-center;
   @apply shadow-sm shadow-slate-200;
-  @apply dark:bg-dark-700 shadow-dark-100 text-white text-opacity-85;
+  @apply dark:bg-dark-700 dark:shadow-dark-100 dark:text-white dark:text-opacity-85;
 
   .circular-progress {
     @apply absolute top-0 left-0;
     @apply w-12 h-12 rounded-full border-3 border-solid border-zinc-300;
-    @apply border-zinc-700;
+    @apply dark:border-zinc-700;
 
     // clip-path: polygon(50% 0%, 50% 50%, 100% 50%, 100% 0%);
   }

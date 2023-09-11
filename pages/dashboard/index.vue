@@ -34,7 +34,10 @@ if (
 
     <a-row :gutter="24" class="mt-13">
       <a-col :xs="24" :md="12" :lg="8">
-        <DashboardCard icon="i-solar-user-id-bold-duotone" color="bg-teal-200">
+        <DashboardCard
+          icon="i-solar-user-id-bold-duotone"
+          color="bg-teal-200 dark:bg-teal-800"
+        >
           <DashboardStatistic title="身份" :value="userStore.role">
           </DashboardStatistic>
         </DashboardCard>
@@ -42,7 +45,7 @@ if (
       <a-col :xs="24" :md="12" :lg="8">
         <DashboardCard
           icon="i-solar-money-bag-bold-duotone"
-          color="bg-orange-200"
+          color="bg-orange-200 dark:bg-orange-800"
         >
           <DashboardStatistic
             title="积分"
@@ -55,7 +58,7 @@ if (
       <a-col :xs="24" :md="12" :lg="8">
         <DashboardCard
           icon="i-solar-cup-star-bold-duotone"
-          color="bg-amber-200"
+          color="bg-amber-200 dark:bg-amber-800"
         >
           <DashboardStatistic
             title="参与"
@@ -67,7 +70,10 @@ if (
         </DashboardCard>
       </a-col>
       <a-col :xs="24" :md="12" :lg="8">
-        <DashboardCard icon="i-solar-cat-bold-duotone" color="bg-gray-200">
+        <DashboardCard
+          icon="i-solar-cat-bold-duotone"
+          color="bg-gray-200 dark:bg-gray-800"
+        >
           <DashboardStatistic
             title="赞同"
             :value="userStore.user?.poll.points.approved || 0"
@@ -80,7 +86,7 @@ if (
       <a-col :xs="24" :md="12" :lg="8">
         <DashboardCard
           icon="i-solar-forbidden-bold-duotone"
-          color="bg-red-200"
+          color="bg-red-200 dark:bg-red-800"
           rotate="rotate-270"
         >
           <DashboardStatistic
@@ -95,7 +101,7 @@ if (
       <a-col :xs="24" :md="12" :lg="8">
         <DashboardCard
           icon="i-solar-document-add-bold-duotone"
-          color="bg-indigo-200"
+          color="bg-indigo-200 dark:bg-indigo-800"
         >
           <DashboardStatistic
             title="需要修改"
@@ -109,7 +115,7 @@ if (
       <a-col :xs="24" :md="12" :lg="8">
         <DashboardCard
           icon="i-solar-ghost-smile-bold-duotone"
-          color="bg-sky-200"
+          color="bg-sky-200 dark:bg-sky-800"
         >
           <DashboardStatistic
             title="采纳率"
@@ -124,7 +130,7 @@ if (
       <a-col :xs="24" :md="12" :lg="8">
         <DashboardCard
           icon="i-solar-hashtag-circle-bold-duotone"
-          color="bg-cyan-200"
+          color="bg-cyan-200 dark:bg-cyan-800"
         >
           <DashboardStatistic
             title="待审"
@@ -138,7 +144,7 @@ if (
       <a-col :xs="24" :md="12" :lg="8">
         <DashboardCard
           icon="i-solar-volleyball-bold-duotone"
-          color="bg-gradient-to-r from-indigo-200 from-10% via-sky-200 via-30% to-emerald-200 to-90%"
+          color="last-activity-color"
         >
           <DashboardStatistic
             title="最后活跃"
@@ -149,3 +155,10 @@ if (
     </a-row>
   </div>
 </template>
+
+<style lang="scss">
+.last-activity-color {
+  @apply bg-gradient-to-r from-indigo-200 from-10% via-sky-200 via-30% to-emerald-200 to-90%;
+  @apply dark:from-indigo-800 dark:via-sky-800 dark:to-emerald-800;
+}
+</style>

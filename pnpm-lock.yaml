@@ -17,8 +17,8 @@ devDependencies:
     specifier: ^1.1.1
     version: 1.1.1(rollup@2.79.1)(vue@3.3.4)
   '@ant-design/icons-vue':
-    specifier: ^7.0.0
-    version: 7.0.0(vue@3.3.4)
+    specifier: ^6.1.0
+    version: 6.1.0(vue@3.3.4)
   '@commitlint/cli':
     specifier: ^17.7.1
     version: 17.7.1
@@ -142,6 +142,9 @@ devDependencies:
   eslint-plugin-vue:
     specifier: ^9.17.0
     version: 9.17.0(eslint@8.49.0)
+  esno:
+    specifier: ^0.17.0
+    version: 0.17.0
   husky:
     specifier: ^8.0.3
     version: 8.0.3
@@ -6177,6 +6180,13 @@ packages:
 
   /esno@0.16.3:
     resolution: {integrity: sha512-6slSBEV1lMKcX13DBifvnDFpNno5WXhw4j/ff7RI0y51BZiDqEe5dNhhjhIQ3iCOQuzsm2MbVzmwqbN78BBhPg==}
+    hasBin: true
+    dependencies:
+      tsx: 3.12.8
+    dev: true
+
+  /esno@0.17.0:
+    resolution: {integrity: sha512-w78cQGlptQfsBYfootUCitsKS+MD74uR5L6kNsvwVkJsfzEepIafbvWsx2xK4rcFP4IUftt4F6J8EhagUxX+Bg==}
     hasBin: true
     dependencies:
       tsx: 3.12.8

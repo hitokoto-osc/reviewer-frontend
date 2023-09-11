@@ -38,6 +38,7 @@ const userStore = useUserStore()
 <style lang="scss">
 .mobile-hamburger-drawer {
   @apply w-3/5 h-full;
+  @apply dark:bg-#141414;
 }
 </style>
 
@@ -48,6 +49,7 @@ const userStore = useUserStore()
   .account-container {
     @apply flex items-center h-16 py-2 w-full;
     @apply border-0 border-b-1 border-slate-100 border-solid;
+    @apply dark:border-slate-800;
 
     .avatar {
       @apply w-10 h-10 ml-5 rounded-full;

@@ -144,7 +144,7 @@ watch(selectedKeys, (val, old) => {
   <a-menu
     v-model:openKeys="openKeys"
     v-model:selectedKeys="selectedKeys"
-    class="menu"
+    class="menu !border-e-0"
     mode="inline"
     :items="items"
     force-sub-menu-render

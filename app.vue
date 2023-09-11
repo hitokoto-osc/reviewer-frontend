@@ -13,28 +13,42 @@ useHead({
     return titleChunk ? `${titleChunk} - ${appConfig.title}` : appConfig.title
   }
 })
+
+// 框架配置相关
 const colorMode = useColorMode()
-const config = reactive({
+const AntdConfig = reactive({
   locale,
   theme: {
     ...theme.defaultConfig,
     algorithm: theme.darkAlgorithm
   }
 })
+const VantConfig = reactive<{
+  theme: 'light' | 'dark'
+}>({
+  theme: 'light'
+})
 watchEffect(() => {
-  config.theme.algorithm =
-    colorMode.value === 'dark' ? theme.darkAlgorithm : theme.defaultAlgorithm
+  if (colorMode.value === 'dark') {
+    AntdConfig.theme.algorithm = theme.darkAlgorithm
+    VantConfig.theme = 'dark'
+  } else {
+    AntdConfig.theme.algorithm = theme.defaultAlgorithm
+    VantConfig.theme = 'light'
+  }
 })
 </script>
 
 <template>
   <div class="app">
     <a-style-provider hash-priority="high">
-      <a-config-provider v-bind="config">
-        <NuxtLayout>
-          <NuxtLoadingIndicator />
-          <NuxtPage />
-        </NuxtLayout>
+      <a-config-provider v-bind="AntdConfig">
+        <VanConfigProvider :theme="VantConfig.theme">
+          <NuxtLayout>
+            <NuxtLoadingIndicator />
+            <NuxtPage />
+          </NuxtLayout>
+        </VanConfigProvider>
       </a-config-provider>
     </a-style-provider>
   </div>

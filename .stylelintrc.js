@@ -9,7 +9,7 @@ module.exports = {
     'stylelint-order',
     'stylelint-declaration-block-no-ignored-properties'
   ],
-  ignoreFiles: ['node_modules/**/*', 'dist/**/*', '**/typings/**/*'],
+  ignoreFiles: ['node_modules/**/*', 'dist/**/*', '**/typings/**/*', 'public/css/**/*'],
   overrides: [
     {
       files: ['**/*.scss', '*.scss'],

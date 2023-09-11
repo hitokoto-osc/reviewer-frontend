@@ -33,7 +33,7 @@ const { data, pending, refresh } = await useUserScoreRecords(params, {
 const records = computed(() => {
   return data.value && data.value.data.total > 0
     ? data.value.data.collection.map((v) => {
-        console.log(v)
+        // console.log(v)
         return {
           ...v,
           reason: v.reason || '无',

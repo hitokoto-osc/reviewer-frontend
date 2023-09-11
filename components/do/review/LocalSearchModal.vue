@@ -27,7 +27,7 @@ const { pending, error, data, refresh } = await useSearchHitokoto(params, {
 })
 
 watch(error, (val) => {
-  if (val) console.log(val)
+  if (val) console.error(val)
 })
 
 const total = computed(() => data.value?.estimatedTotalHits || 0)

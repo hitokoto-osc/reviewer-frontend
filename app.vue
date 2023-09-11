@@ -65,7 +65,6 @@ provide('toggle-appearance', async ({ clientX: x, clientY: y }: MouseEvent) => {
   await document.startViewTransition(async () => {
     colorMode.preference = isDark.value ? 'light' : 'dark'
     await nextTick()
-    console.log(colorMode.preference, colorMode.value)
   }).ready
 
   document.documentElement.animate(

@@ -7,7 +7,7 @@ const props = defineProps<{
   records: PollDetailRes['records']
 }>()
 const records = computed(() => props.records.filter((v) => v.comment))
-watch(records, (val) => console.log(val))
+// watch(records, (val) => console.log(val))
 </script>
 <template>
   <div class="poll-comments-container">

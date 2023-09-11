@@ -85,6 +85,7 @@ export default defineNuxtConfig({
       name: '一言审核员中心',
       short_name: '审核员中心',
       theme_color: '#8921ff',
+      background_color: '#ffffff',
       icons: [
         {
           src: 'pwa-192x192.png',

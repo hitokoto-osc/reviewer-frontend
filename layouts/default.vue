@@ -2,6 +2,7 @@
 
 <template>
   <div class="layout">
+    <div class="header-placeholder block md:hidden" />
     <LayoutHeader />
 
     <main class="main">
@@ -25,6 +26,10 @@
 .layout {
   @apply min-h-100vh h-auto w-full flex flex-col shrink-0 bg-slate-100;
   @apply dark:bg-black;
+
+  .header-placeholder {
+    @apply h-16 w-full bg-white dark:bg-dark-700;
+  }
 
   .actions {
     @apply fixed right-0 hidden md:block;

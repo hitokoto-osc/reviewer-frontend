@@ -60,6 +60,8 @@ provide('toggle-appearance', async ({ clientX: x, clientY: y }: MouseEvent) => {
     )}px at ${x}px ${y}px)`
   ]
 
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore:ts(2339)
   await document.startViewTransition(async () => {
     colorMode.preference = isDark.value ? 'light' : 'dark'
     await nextTick()

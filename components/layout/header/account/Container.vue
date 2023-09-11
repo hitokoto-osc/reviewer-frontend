@@ -17,6 +17,9 @@ const colorModeText = computed(() =>
   colorMode.value === 'dark' ? '浅色模式' : '深色模式'
 )
 // 账户设置菜单
+const toggleAppearance = inject('toggle-appearance', () => {
+  colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'
+})
 const items: Item[] = reactive([
   {
     text: '控制台',
@@ -24,9 +27,7 @@ const items: Item[] = reactive([
   },
   {
     text: colorModeText,
-    onClick: () => {
-      colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'
-    }
+    onClick: toggleAppearance
   },
   {
     text: '设置',

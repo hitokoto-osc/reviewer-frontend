@@ -40,6 +40,41 @@ watchEffect(() => {
     VantConfig.theme = 'light'
   }
 })
+
+// 切换 明亮/暗黑 模式
+const enableTransitions = () =>
+  'startViewTransition' in document &&
+  window.matchMedia('(prefers-reduced-motion: no-preference)').matches
+
+const isDark = computed(() => colorMode.value === 'dark')
+
+provide('toggle-appearance', async ({ clientX: x, clientY: y }: MouseEvent) => {
+  if (!enableTransitions())
+    colorMode.preference = isDark.value ? 'light' : 'dark'
+
+  const clipPath = [
+    `circle(0px at ${x}px ${y}px)`,
+    `circle(${Math.hypot(
+      Math.max(x, innerWidth - x),
+      Math.max(y, innerHeight - y)
+    )}px at ${x}px ${y}px)`
+  ]
+
+  await document.startViewTransition(async () => {
+    colorMode.preference = isDark.value ? 'light' : 'dark'
+    await nextTick()
+    console.log(colorMode.preference, colorMode.value)
+  }).ready
+
+  document.documentElement.animate(
+    { clipPath: isDark.value ? clipPath.reverse() : clipPath },
+    {
+      duration: 400,
+      easing: 'ease-in',
+      pseudoElement: `::view-transition-${isDark.value ? 'old' : 'new'}(root)`
+    }
+  )
+})
 </script>
 
 <template>
@@ -84,5 +119,22 @@ watchEffect(() => {
 .layout-enter-from,
 .layout-leave-to {
   filter: grayscale(1);
+}
+
+/* dark/light radial transition */
+::view-transition-old(root),
+::view-transition-new(root) {
+  mix-blend-mode: normal;
+  animation: none;
+}
+
+::view-transition-old(root),
+.dark-mode::view-transition-new(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root),
+.dark-mode::view-transition-old(root) {
+  z-index: 9999;
 }
 </style>

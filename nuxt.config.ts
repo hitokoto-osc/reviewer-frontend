@@ -84,7 +84,8 @@ export default defineNuxtConfig({
     manifest: {
       name: '一言审核员中心',
       short_name: '审核员中心',
-      theme_color: '#8921ff',
+      // theme_color: '#8921ff',
+      theme_color: '#ffffff',
       background_color: '#ffffff',
       icons: [
         {

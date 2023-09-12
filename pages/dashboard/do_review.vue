@@ -247,7 +247,7 @@ const onModifySentenceFinished = (sentence: Sentence) => {
     <DoReviewCommentsModal
       v-model:open="viewCommentsModal.open"
       :records="
-        pollListData?.data.collection[viewCommentsModal.index].records || []
+        pollListData?.data.collection?.[viewCommentsModal.index].records || []
       "
     />
     <SentenceModifyModal

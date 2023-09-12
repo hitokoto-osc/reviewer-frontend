@@ -26,7 +26,7 @@ useHead({
 
 <style lang="scss" scoped>
 .tips {
-  @apply w-full flex mt-10 items-center flex-col;
+  @apply w-full flex mt-15 md:mt-20 items-center flex-col;
 
   .branner {
     @apply bg-clip-text bg-gradient-to-r from-cyan-400 from-10% via-purple-400 via-50% to-fuchsia-300 to-90% font-bold text-5xl text-transparent select-none;

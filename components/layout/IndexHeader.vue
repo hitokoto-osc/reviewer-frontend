@@ -9,14 +9,13 @@
 
 <style lang="scss" scoped>
 .header-container {
-  @apply h-16 w-full flex justify-center border-b-1 shadow-sm shadow-slate-200 shrink-0;
-  @apply dark:border-dark-500 dark:shadow-dark-500 dark:text-white dark:text-opacity-85;
-  @apply fixed top-0 md:relative z-1000;
+  @apply h-16 w-full flex justify-center  shrink-0;
+  @apply dark:text-white dark:text-opacity-85;
+  @apply relative;
 
   .header-background {
     @apply absolute left-0 top-0 h-16 w-full -z-1000;
-    @apply bg-white bg-opacity-70 backdrop-saturate-50 backdrop-blur-8 md:bg-opacity-100;
-    @apply dark:bg-dark-700 dark:bg-opacity-70 dark:md:bg-opacity-100;
+    @apply bg-transparent;
   }
 }
 </style>

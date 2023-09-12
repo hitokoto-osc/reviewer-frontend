@@ -2,7 +2,7 @@
 
 <template>
   <div class="layout">
-    <LayoutHeader />
+    <LayoutIndexHeader />
 
     <main class="main">
       <slot />

@@ -10,18 +10,18 @@ const emit = defineEmits<{
 }>()
 
 const items: Item[] = reactive([
-  // {
-  //   text: '切换回复框',
-  //   onClick: () => {
-  //     emit('switchCommentInput')
-  //   }
-  // },
   {
-    text: '查看评论',
+    text: '切换回复框',
     onClick: () => {
-      emit('viewComments')
+      emit('switchCommentInput')
     }
   },
+  // {
+  //   text: '查看评论',
+  //   onClick: () => {
+  //     emit('viewComments')
+  //   }
+  // },
   {
     text: '句库查重',
     onClick: () => {

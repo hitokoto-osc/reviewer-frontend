@@ -33,9 +33,14 @@ const props = defineProps<{
   poll: CardPropsPoll
   sentence: CardPropsSentence
   marks?: number[]
+  records: PollDetailRes['records']
   polledRecord?: CardPropsPolledRecord
   index: number // Item 在列表中的索引
 }>()
+
+const comments = computed(() => {
+  return props.records.filter((item) => item.comment)
+})
 
 // Emits 定义
 export interface SearchParams {
@@ -128,6 +133,10 @@ const doSwiftModify = (
         {{ props.poll.reject }} 票，需要更改 {{ props.poll.needModify }} 票。
       </span>
     </div>
+    <div v-if="comments.length > 0" class="comments">
+      <a-divider class="!mb-3 !mt-0">评论</a-divider>
+      <PollComments :records="comments" />
+    </div>
     <DoReviewCardActionsContainer
       v-model:marks-selected-values="marksSelectedValues"
       :is-polled="!!props.polledRecord"
@@ -178,6 +187,10 @@ const doSwiftModify = (
       @apply block ml-0 pl-0;
     }
   }
+}
+
+.comments {
+  @apply border-0 border-b border-solid border-#f0f0f0 my-0 pb-2;
 }
 
 .review-record {

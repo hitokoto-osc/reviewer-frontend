@@ -113,19 +113,19 @@ const hitokotoTypeOptions = reactive<
         <a-input :value="formState.uuid" disabled />
       </a-form-item>
       <a-form-item label="来源" name="from">
-        <a-input v-model:value="formState.from" />
+        <a-input v-model:value.trim="formState.from" />
       </a-form-item>
       <a-form-item label="作者" name="fromWho">
-        <a-input v-model:value="formState.fromWho" />
+        <a-input v-model:value.trim="formState.fromWho" />
       </a-form-item>
       <a-form-item label="分类" name="type">
         <a-select
-          v-model:value="formState.type"
+          v-model:value.trim="formState.type"
           :options="hitokotoTypeOptions"
         />
       </a-form-item>
       <a-form-item label="句子" name="hitokoto">
-        <a-textarea v-model:value="formState.hitokoto" />
+        <a-textarea v-model:value.trim="formState.hitokoto" />
       </a-form-item>
     </a-form>
   </a-modal>

@@ -115,6 +115,7 @@ const cardData = computed(() => {
         creator: item.sentence.creator,
         createdAt: item.sentence.created_at
       },
+      records: item.records || [],
       marks: item.marks,
       polledRecord: item.polled_data
         ? {
@@ -317,14 +318,9 @@ const onModifySentenceFinished = (sentence: Sentence) => {
                 :marks="card.marks"
                 :polled-record="card.polledRecord"
                 :index="cardIndex"
+                :records="card.records"
                 @do-web-search="doWebSearch"
                 @do-local-search="doLocalSearch"
-                @view-comments="
-                  (index) => {
-                    viewCommentsModal.open = true
-                    viewCommentsModal.index = index
-                  }
-                "
                 @do-swift-modify="doSwiftModify"
                 @opeartion-done="onOperationDone"
               />

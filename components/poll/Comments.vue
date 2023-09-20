@@ -12,7 +12,7 @@ const records = computed(() => props.records.filter((v) => v.comment))
 <template>
   <div class="poll-comments-container">
     <div v-if="records && records.length > 0" class="comments">
-      <template v-for="(record, index) in records" :key="record.user.id">
+      <template v-for="record in records" :key="record.user.id">
         <div class="comment">
           <div class="avatar">
             <img
@@ -29,12 +29,12 @@ const records = computed(() => props.records.filter((v) => v.comment))
             </div>
             <!-- eslint-disable vue/no-v-html-->
             <div
-              class=":uno: text-sm underline-offset-2"
+              class=":uno: text-sm underline-offset-2.5"
               v-html="filterXSS(formatPollComment(record.comment))"
             ></div>
           </div>
         </div>
-        <a-divider v-if="index < records.length - 1" class=":uno: my-3" />
+        <!-- <a-divider v-if="index < records.length - 1" class=":uno: !my-3" /> -->
       </template>
     </div>
     <a-empty v-else />
@@ -43,17 +43,17 @@ const records = computed(() => props.records.filter((v) => v.comment))
 
 <style lang="scss" scoped>
 .poll-comments-container {
-  @apply my-8;
+  // @apply my-8;
 
   .comments {
     .comment {
-      @apply flex my-2 items-center;
+      @apply flex my-4 items-center;
 
       .avatar {
         @apply w-fit h-fit mr-3 flex;
 
         img {
-          @apply rounded-full w-10 h-10 border-1 border-solid border-gray-200;
+          @apply rounded-full w-9.5 h-9.5 border-1 border-solid border-gray-200;
           @apply select-none;
         }
       }

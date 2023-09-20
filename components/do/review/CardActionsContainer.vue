@@ -41,7 +41,9 @@ const filterOptions = (
 const appendMarkByLabel = (label: string) => {
   const mark = marksStore.marks.find((v) => v.text === label)
   if (!mark) return
-  !marksSelected.value.includes(mark.id) && marksSelected.value.push(mark.id)
+  if (!marksSelected.value.includes(mark.id)) {
+    marksSelected.value = [...marksSelected.value, mark.id]
+  }
 }
 watch(
   () => marksSelected.value,

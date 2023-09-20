@@ -7,7 +7,6 @@ const props = defineProps<{
 const onContextMenu = (e: MouseEvent, item: Item) => {
   if (item.preventContextMenu) {
     e.preventDefault()
-    console.log(e)
     item.onClick?.(e)
   }
 }

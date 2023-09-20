@@ -208,10 +208,10 @@ const onOperationDone = (event: 'submit' | 'cancel', index: number) => {
 }
 
 // 查看评论
-const viewCommentsModal = reactive({
-  open: false,
-  index: 0
-})
+// const viewCommentsModal = reactive({
+//   open: false,
+//   index: 0
+// })
 
 // 快捷修改
 const swiftModifyModal = reactive({
@@ -245,12 +245,12 @@ const onModifySentenceFinished = (sentence: Sentence) => {
       v-model:open="webSearchModal"
       :search-params="searchParams"
     />
-    <DoReviewCommentsModal
+    <!-- <DoReviewCommentsModal
       v-model:open="viewCommentsModal.open"
       :records="
         pollListData?.data.collection?.[viewCommentsModal.index]?.records || []
       "
-    />
+    /> -->
     <SentenceModifyModal
       v-model:open="swiftModifyModal.open"
       :sentence="swiftModifyModal.sentence"

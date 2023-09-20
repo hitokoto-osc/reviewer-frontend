@@ -112,7 +112,18 @@ const onCancelPoll = async () => {
 }
 
 // 快捷修改
-const sentence = inject<Sentence>('sentence') as Sentence
+const swiftModifyState = reactive({
+  sentence: inject<Sentence>('sentence') as Sentence,
+  initialState: computed(() => {
+    try {
+      return objToCamel<Partial<Sentence>>(
+        JSON.parse(comment.value || '{}') as Record<string, never>
+      )
+    } catch (e) {
+      return {} as Partial<Sentence>
+    }
+  })
+})
 const keyCastToLabel = (key: keyof SnakeSentence) => {
   switch (key) {
     case 'type':
@@ -127,28 +138,26 @@ const keyCastToLabel = (key: keyof SnakeSentence) => {
       throw new Error('未知的 key')
   }
 }
+
 const onSwiftModify = (camel: Sentence) => {
   const snake: SnakeSentence = (
     Object.keys(camel) as Array<keyof Sentence>
   ).reduce((acc, cur) => {
-    if (camel[cur] === sentence[cur]) return acc
+    if (
+      // 如果当前值和初始值相同，则不需要修改
+      camel[cur] === swiftModifyState.sentence[cur] &&
+      swiftModifyState.initialState[cur] !== swiftModifyState.sentence[cur]
+    )
+      return acc
     const key = snakeCase(cur) as keyof SnakeSentence
     appendMarkByLabel(keyCastToLabel(key))
     acc[key] = camel[cur] as never
     return acc
   }, {} as SnakeSentence)
-  if (Object.keys(snake).length === 0) return
-  comment.value = JSON.stringify(snake)
+  comment.value = Object.keys(snake).length === 0 ? '' : JSON.stringify(snake)
 }
 const doSwiftModify = () => {
-  try {
-    const initialState = objToCamel<Partial<Sentence>>(
-      JSON.parse(comment.value || '{}') as Record<string, never>
-    )
-    emit('doSwiftModify', onSwiftModify, initialState)
-  } catch (e) {
-    emit('doSwiftModify', onSwiftModify, {} as Partial<Sentence>)
-  }
+  emit('doSwiftModify', onSwiftModify, swiftModifyState.initialState)
 }
 </script>
 <template>

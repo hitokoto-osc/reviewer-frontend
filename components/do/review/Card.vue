@@ -125,11 +125,15 @@ const doSwiftModify = (
     </div>
     <div v-if="props.polledRecord" class="review-record">
       <span>
-        您投了 <b>{{ convertPollMethod(props.polledRecord.method) }}</b>
-        <i>{{ props.polledRecord.point }}</i> 票。
+        您投了
+        <u class="underline-offset-3">
+          <b>{{ convertPollMethod(props.polledRecord.method) }}</b>
+        </u>
+        {{ props.polledRecord.point }}
+        票。
       </span>
       <span v-if="userStore.user?.role == 'admin'">
-        当前投票：批准 {{ props.poll.approve }} 票，驳回
+        当前投票：赞同 {{ props.poll.approve }} 票，驳回
         {{ props.poll.reject }} 票，需要更改 {{ props.poll.needModify }} 票。
       </span>
     </div>

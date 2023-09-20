@@ -192,7 +192,7 @@ const doSwiftModify = () => {
             :disabled="onSubmitLoading"
             @click="onSubmitPoll(PollMethod.Approve)"
           >
-            批准
+            赞同
           </a-button>
           <a-button
             :loading="onSubmitLoading"

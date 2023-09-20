@@ -5,11 +5,36 @@ import dayjs from 'dayjs'
 import { filterXSS } from 'xss'
 import type { PollDetailRes } from '@/composables/api'
 import { getAvatarURLByHash } from '~/utils/avatar'
-const props = defineProps<{
-  records: PollDetailRes['records']
-}>()
-const records = computed(() => props.records.filter((v) => v.comment))
+import { PollMethod } from '~/enums/poll'
+const props = withDefaults(
+  defineProps<{
+    records: PollDetailRes['records']
+    withPoints?: boolean
+  }>(),
+  {
+    withPoints: false
+  }
+)
+const records = computed(() =>
+  props.withPoints ? props.records : props.records.filter((v) => v.comment)
+)
 
+const render = (record: PollDetailRes['records'][0]): string => {
+  let tpl = ''
+  if (
+    props.withPoints &&
+    record.point > 0 &&
+    record.method !== PollMethod.NeedCommonUserPoll
+  ) {
+    tpl += `投了 <u>**${convertPollMethod(record.method)}**</u> ${
+      record.point
+    } 票。`
+  }
+  if (record.comment) {
+    tpl += `  \n${filterXSS(formatPollComment(record.comment))}`
+  }
+  return renderMarkdown(tpl)
+}
 // watch(records, (val) => console.log(val))
 </script>
 <template>
@@ -31,13 +56,7 @@ const records = computed(() => props.records.filter((v) => v.comment))
               </span>
             </div>
             <!-- eslint-disable vue/no-v-html vue/no-v-text-v-html-on-component-->
-            <Fancybox
-              class="content"
-              v-html="
-                renderMarkdown(filterXSS(formatPollComment(record.comment)))
-              "
-            >
-            </Fancybox>
+            <Fancybox class="content" v-html="render(record)"> </Fancybox>
           </div>
         </div>
         <!-- <a-divider v-if="index < records.length - 1" class=":uno: !my-3" /> -->

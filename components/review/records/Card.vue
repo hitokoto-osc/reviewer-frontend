@@ -55,13 +55,16 @@ const emit = defineEmits<{
       >
         审核标记：<PollMarks :marks="userPollLog.user_marks" />
       </div>
-      <!-- eslint-disable vue/no-v-html -->
-      <p v-show="userPollLog.comment" class="comment">
-        投票评论：<span
-          class=":uno: underline-offset-2"
-          v-html="filterXSS(formatPollComment(userPollLog.comment))"
-        ></span>
-      </p>
+      <div v-show="userPollLog.comment" class="comment-wrapper">
+        <p class="comment-label">投票评论：</p>
+        <!-- eslint-disable  vue/no-v-text-v-html-on-component vue/no-v-html-->
+        <Fancybox
+          class="comment"
+          v-html="
+            renderMarkdown(filterXSS(formatPollComment(userPollLog.comment)))
+          "
+        ></Fancybox>
+      </div>
     </div>
     <div class="actions-container">
       <a-button
@@ -97,5 +100,29 @@ const emit = defineEmits<{
 
 .actions-container {
   @apply flex mt-5 justify-end;
+}
+</style>
+
+<style lang="scss">
+.review-record-card {
+  .comment-wrapper {
+    @apply flex flex-row;
+
+    .comment-label {
+      @apply width-fit;
+    }
+
+    .comment {
+      @apply underline-offset-2.5 text-sm  flex-1;
+
+      p {
+        @apply mt-0 my-1;
+      }
+
+      img {
+        @apply rounded-md w-fit block mx-auto w-full h-auto my-2 cursor-pointer;
+      }
+    }
+  }
 }
 </style>

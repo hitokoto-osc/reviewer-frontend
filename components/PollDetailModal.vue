@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { filterXSS } from 'xss'
+// import { filterXSS } from 'xss'
 import dayjs from 'dayjs'
 import { PollStatus } from '~/enums/poll'
 import { CardPropsSentence } from './do/review/Card.vue'
@@ -103,13 +103,12 @@ const sentence = computed(() => {
         class="records"
       >
         <p class="title">审核记录</p>
-        <ul>
+        <!-- <ul>
           <li v-for="record in data?.data.records" :key="record.user.id">
             {{ `${record.user.name}（${record.user.id}）` }}：{{
               convertPollMethod(record.method)
             }}
             {{ record.point }} 票
-            <!--eslint-disable vue/no-v-html-->
             <span
               v-if="record.comment"
               class=":uno: underline-offset-2"
@@ -118,7 +117,8 @@ const sentence = computed(() => {
               "
             />
           </li>
-        </ul>
+        </ul> -->
+        <PollComments :records="data?.data.records || []" with-points />
       </div>
     </template>
   </a-modal>

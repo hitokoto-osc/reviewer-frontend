@@ -46,20 +46,28 @@ const SentenceFieldMap: Record<keyof SnakeSentence, string> = {
 
 export function formatPollComment(comment: string): string {
   try {
-    const parsed = JSON.parse(comment) as SnakeSentence
-    return (
-      '建议将' +
-      (Object.keys(parsed) as Array<keyof SnakeSentence>)
-        .map((key) => {
-          const target =
-            key === 'type' ? convertHitokotoType(parsed[key]) : parsed[key]
-          return ` <b>${SentenceFieldMap[key]}</b> 修改为 “<u>${
-            target || '未填写'
-          }</u>”`
-        })
-        .join('，') +
-      '。'
-    )
+    const parsed = JSON.parse(comment) as SnakeSentence & { review: string } // 实际上应该是 Partial<SnakeSentence>，但是这里为了方便，就不写了
+    const keys = Object.keys(parsed) as Array<
+      keyof (SnakeSentence & { review: string })
+    >
+    if (keys.length === 1 && keys[0] === 'review') {
+      return parsed.review
+    }
+    const tpl = keys.reduce((acc, cur, index) => {
+      if (cur === 'review') {
+        return acc
+      }
+      if (index !== 0) {
+        acc += '，'
+      }
+      const target =
+        cur === 'type' ? convertHitokotoType(parsed[cur]) : parsed[cur]
+      return (
+        acc +
+        ` <b>${SentenceFieldMap[cur]}</b> 修改为 “<u>${target || '未填写'}</u>”`
+      )
+    }, '建议将')
+    return `${tpl}。${parsed.review ? `  \n 此外，  \n${parsed.review}` : ''}`
   } catch (e) {
     return comment
   }

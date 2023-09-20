@@ -3,7 +3,10 @@ import { PlusCircleOutlined } from '@ant-design/icons-vue'
 import { PollStatus, PolledFilter } from '@/enums/poll'
 import type { SearchParams } from '@/components/do/review/Card.vue'
 import type { SegmentedOption } from 'ant-design-vue/es/segmented/src/segmented' // TODO: Antdv 的类型定义有问题，这里需要手动指定路径
-import type { Sentence } from '@/components/SentenceModifyModal.vue'
+import type {
+  Sentence,
+  StructureComment
+} from '@/components/SentenceModifyModal.vue'
 import { doWebSearch as utilDoWebSearch } from '~/utils/search'
 useHead({
   title: '句子审核'
@@ -233,23 +236,24 @@ const onOperationDone = (event: 'submit' | 'cancel', index: number) => {
 // 快捷修改
 const swiftModifyModal = reactive({
   open: false,
-  sentence: {} as Sentence,
-  onModifyCallback: undefined as ((sentence: Sentence) => void) | undefined
+  initialState: {} as StructureComment,
+  onModifyCallback: undefined as
+    | ((sentence: StructureComment) => void)
+    | undefined
 })
 
 const doSwiftModify = (
-  sentence: Sentence,
-  fn: (sentence: Sentence) => void
+  state: StructureComment,
+  fn: (state: Sentence) => void
 ) => {
-  swiftModifyModal.sentence = { ...sentence }
+  swiftModifyModal.initialState = { ...state }
   swiftModifyModal.onModifyCallback = fn
   swiftModifyModal.open = true
 }
 
-const onModifySentenceFinished = (sentence: Sentence) => {
+const onModifySentenceFinished = (state: StructureComment) => {
   swiftModifyModal.open = false
-  swiftModifyModal.onModifyCallback &&
-    swiftModifyModal.onModifyCallback(sentence)
+  swiftModifyModal.onModifyCallback && swiftModifyModal.onModifyCallback(state)
 }
 </script>
 <template>
@@ -270,7 +274,7 @@ const onModifySentenceFinished = (sentence: Sentence) => {
     /> -->
     <SentenceModifyModal
       v-model:open="swiftModifyModal.open"
-      :sentence="swiftModifyModal.sentence"
+      :initial-state="swiftModifyModal.initialState"
       @finish="onModifySentenceFinished"
     />
     <a-page-header title="句子审核" />

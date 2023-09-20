@@ -3,7 +3,10 @@ import xss from 'xss'
 import dayjs from 'dayjs'
 import type { PollMethod } from '@/enums/poll'
 import type { HitokotoType } from '~/enums/hitokoto'
-import type { Sentence } from '@/components/SentenceModifyModal.vue'
+import type {
+  Sentence,
+  StructureComment
+} from '@/components/SentenceModifyModal.vue'
 
 // Props 定义
 export type CardPropsPoll = {
@@ -55,8 +58,8 @@ const emit = defineEmits<{
   doMasonryRepaint: [] // 传递此事件只是为了让父组件重绘制
   viewComments: [index: number]
   doSwiftModify: [
-    sentence: Sentence,
-    onModifyFinished: (sentence: Sentence) => void
+    sentence: StructureComment,
+    onModifyFinished: (sentence: StructureComment) => void
   ]
   opeartionDone: [event: 'submit' | 'cancel', index: number]
 }>()
@@ -78,7 +81,7 @@ const doSwiftModify = (
 ) => {
   emit(
     'doSwiftModify',
-    { ...(props.sentence as Sentence), ...initialState },
+    { ...(props.sentence as Sentence), ...{ review: '' }, ...initialState },
     fn
   )
 }

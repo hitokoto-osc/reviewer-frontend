@@ -65,6 +65,7 @@
     "lint-staged": "^14.0.1",
     "markdown-it": "^13.0.1",
     "markdown-it-emoji": "^2.0.2",
+    "md-editor-v3": "^4.6.2",
     "md5": "^2.3.0",
     "meilisearch": "^0.34.2",
     "modern-normalize": "^2.0.0",

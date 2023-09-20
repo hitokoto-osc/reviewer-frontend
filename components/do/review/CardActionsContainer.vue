@@ -3,7 +3,10 @@ import PinyinMatch from 'pinyin-match'
 import { snakeCase } from 'lodash-es'
 import { PollMethod } from '@/enums/poll'
 import type { PollReq } from '@/composables/api'
-import type { Sentence } from '@/components/SentenceModifyModal.vue'
+import type {
+  Sentence,
+  StructureComment
+} from '@/components/SentenceModifyModal.vue'
 import type { DefaultOptionType } from 'ant-design-vue/es/select'
 import { SnakeSentence } from '~/utils/formatter'
 const props = defineProps<{
@@ -19,8 +22,8 @@ const emit = defineEmits<{
   doLocalSearch: []
   viewComments: []
   doSwiftModify: [
-    onModifyFinished: (sentence: Sentence) => void,
-    currentState: Partial<Sentence>
+    onModifyFinished: (state: StructureComment) => void,
+    currentState: Partial<StructureComment>
   ]
   operationDone: [event: 'submit' | 'cancel']
 }>()
@@ -118,11 +121,11 @@ const swiftModifyState = reactive({
   sentence: inject<Sentence>('sentence') as Sentence,
   initialState: computed(() => {
     try {
-      return objToCamel<Partial<Sentence>>(
+      return objToCamel<Partial<StructureComment>>(
         JSON.parse(comment.value || '{}') as Record<string, never>
       )
     } catch (e) {
-      return {} as Partial<Sentence>
+      return {} as Partial<StructureComment>
     }
   })
 })
@@ -141,21 +144,28 @@ const keyCastToLabel = (key: keyof SnakeSentence) => {
   }
 }
 
-const onSwiftModify = (camel: Sentence) => {
-  const snake: SnakeSentence = (
-    Object.keys(camel) as Array<keyof Sentence>
-  ).reduce((acc, cur) => {
-    if (
-      // 如果当前值和初始值相同，则不需要修改
-      camel[cur] === swiftModifyState.sentence[cur] &&
-      swiftModifyState.initialState[cur] !== swiftModifyState.sentence[cur]
-    )
+const onSwiftModify = (state: StructureComment) => {
+  const snake: Partial<SnakeSentence & { review: string }> = (
+    Object.keys(state) as Array<keyof StructureComment>
+  ).reduce(
+    (acc, cur) => {
+      if (cur === 'review' && state[cur] === swiftModifyState.initialState[cur])
+        return acc
+      if (
+        // 如果当前值和初始值相同，则不需要修改
+        cur !== 'review' &&
+        state[cur] === swiftModifyState.sentence[cur] &&
+        swiftModifyState.initialState[cur] !== swiftModifyState.sentence[cur]
+      )
+        return acc
+
+      const key = snakeCase(cur) as keyof SnakeSentence | 'review'
+      if (key !== 'review') appendMarkByLabel(keyCastToLabel(key))
+      acc[key] = state[cur] as never
       return acc
-    const key = snakeCase(cur) as keyof SnakeSentence
-    appendMarkByLabel(keyCastToLabel(key))
-    acc[key] = camel[cur] as never
-    return acc
-  }, {} as SnakeSentence)
+    },
+    {} as Partial<SnakeSentence & { review: string }>
+  )
   comment.value = Object.keys(snake).length === 0 ? '' : JSON.stringify(snake)
 }
 const doSwiftModify = () => {

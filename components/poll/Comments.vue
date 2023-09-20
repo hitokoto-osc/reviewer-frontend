@@ -80,12 +80,14 @@ const records = computed(() => props.records.filter((v) => v.comment))
   .comments {
     .comment {
       .content {
+        @apply underline-offset-2.5;
+
         p {
           @apply mt-0 my-1;
         }
 
         img {
-          @apply rounded-md w-full h-auto my-2;
+          @apply rounded-md w-fit block mx-auto w-full h-auto my-2 cursor-pointer;
         }
       }
     }

@@ -190,7 +190,7 @@ const doSwiftModify = (
 }
 
 .comments {
-  @apply border-0 border-b border-solid border-#f0f0f0 my-0 pb-2;
+  @apply border-0 border-b border-solid border-#f0f0f0 my-0 pb-2 pt-1;
 }
 
 .review-record {

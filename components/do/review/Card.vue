@@ -50,7 +50,7 @@ export interface SearchParams {
 }
 
 const emit = defineEmits<{
-  doWebSearch: [sentence: SearchParams]
+  doWebSearch: [event: PointerEvent | MouseEvent, sentence: SearchParams]
   doLocalSearch: [sentence: SearchParams]
   doMasonryRepaint: [] // 传递此事件只是为了让父组件重绘制
   viewComments: [index: number]
@@ -142,7 +142,7 @@ const doSwiftModify = (
       :is-polled="!!props.polledRecord"
       :poll-id="props.poll.id"
       @do-web-search="
-        emit('doWebSearch', {
+        emit('doWebSearch', $event, {
           sentence: props.sentence.hitokoto,
           from: props.sentence.from,
           fromWho: props.sentence.fromWho

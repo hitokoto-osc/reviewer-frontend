@@ -5,4 +5,5 @@ export interface Item {
   onClick?: (event?: MouseEvent | PointerEvent) => void
   to?: string
   href?: string
+  preventContextMenu?: boolean
 }

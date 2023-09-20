@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { WebSearch } from '~/enums/app'
 import type { SearchParams } from './Card.vue'
 const props = defineProps<{
   open: boolean
@@ -9,45 +10,10 @@ const emit = defineEmits<{
   'update:open': [value: boolean]
 }>()
 
-const openNewTab = (url: string) =>
-  navigateTo(url, {
-    external: true,
-    open: {
-      target: '_blank',
-      windowFeatures: {
-        noopener: true,
-        noreferrer: true
-      }
-    }
-  })
-
-const searchViaBaidu = () =>
-  openNewTab(
-    `https://www.baidu.com/s?wd=${encodeURIComponent(
-      props.searchParams.sentence
-    )}`
-  )
-
-const searchViaGoogle = () =>
-  openNewTab(
-    `https://www.google.com/search?q=${encodeURIComponent(
-      props.searchParams.sentence
-    )}`
-  )
-
-const searchViaBing = () =>
-  openNewTab(
-    `https://cn.bing.com/search?q=${encodeURIComponent(
-      props.searchParams.sentence
-    )}`
-  )
-
-const searchViaDuckDuckGo = () =>
-  openNewTab(
-    `https://duckduckgo.com/?q=${encodeURIComponent(
-      props.searchParams.sentence
-    )}`
-  )
+const doSearch = (type: WebSearch) => {
+  localStorage.setItem('webSearchPerference', type.toString())
+  doWebSearch(type, props.searchParams.sentence)
+}
 </script>
 
 <template>
@@ -68,10 +34,10 @@ const searchViaDuckDuckGo = () =>
     </p>
     <p><strong>单击下方的按钮以使用对应的搜索引擎进行搜索。</strong></p>
     <div class="search-buttons-group">
-      <a-button @click="searchViaBaidu"> 百度 </a-button>
-      <a-button @click="searchViaGoogle"> 谷歌 </a-button>
-      <a-button @click="searchViaBing"> 必应 </a-button>
-      <a-button @click="searchViaDuckDuckGo"> DuckDuckGo </a-button>
+      <a-button @click="doSearch(WebSearch.Baidu)"> 百度 </a-button>
+      <a-button @click="doSearch(WebSearch.Google)"> 谷歌 </a-button>
+      <a-button @click="doSearch(WebSearch.Bing)"> 必应 </a-button>
+      <a-button @click="doSearch(WebSearch.DuckDuckGo)"> DuckDuckGo </a-button>
     </div>
   </a-modal>
 </template>

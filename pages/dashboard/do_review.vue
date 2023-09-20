@@ -4,6 +4,7 @@ import { PollStatus, PolledFilter } from '@/enums/poll'
 import type { SearchParams } from '@/components/do/review/Card.vue'
 import type { SegmentedOption } from 'ant-design-vue/es/segmented/src/segmented' // TODO: Antdv 的类型定义有问题，这里需要手动指定路径
 import type { Sentence } from '@/components/SentenceModifyModal.vue'
+import { doWebSearch as utilDoWebSearch } from '~/utils/search'
 useHead({
   title: '句子审核'
 })
@@ -174,7 +175,23 @@ const searchParams = ref<SearchParams>({
   from: '',
   fromWho: ''
 })
-const doWebSearch = (sentence: SearchParams) => {
+const doWebSearch = (
+  event: PointerEvent | MouseEvent,
+  sentence: SearchParams
+) => {
+  if (event.type === 'click') {
+    try {
+      const searchType = Number.parseInt(
+        localStorage.getItem('webSearchPerference') || ''
+      )
+      if (!isNaN(searchType)) {
+        setTimeout(() => {
+          utilDoWebSearch(searchType, sentence.sentence)
+        }, 20)
+        return
+      }
+    } catch (e) {}
+  }
   searchParams.value = sentence
   webSearchModal.value = true
 }

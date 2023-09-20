@@ -15,7 +15,7 @@ const props = defineProps<{
 const emit = defineEmits<{
   'update:marksSelectedValues': [values: number[]]
   doMasonryRepaint: [] // 此事件完全只是为了让父组件重绘制
-  doWebSearch: []
+  doWebSearch: [event: PointerEvent | MouseEvent]
   doLocalSearch: []
   viewComments: []
   doSwiftModify: [
@@ -221,7 +221,7 @@ const doSwiftModify = () => {
           <DoReviewCardActionsToolsContainer
             @switch-comment-input="onSwitchComment"
             @do-local-search="emit('doLocalSearch')"
-            @do-web-search="emit('doWebSearch')"
+            @do-web-search="emit('doWebSearch', $event)"
             @view-comments="emit('viewComments')"
           />
         </div>

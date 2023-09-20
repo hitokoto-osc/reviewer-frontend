@@ -5,7 +5,7 @@ const emit = defineEmits<{
   switchCommentInput: []
   viewComments: []
   // doSwiftModify: []
-  doWebSearch: []
+  doWebSearch: [event: PointerEvent | MouseEvent]
   doLocalSearch: []
 }>()
 
@@ -30,8 +30,12 @@ const items: Item[] = reactive([
   },
   {
     text: '网络搜索',
-    onClick: () => {
-      emit('doWebSearch')
+    preventContextMenu: true,
+    onClick: (event?: MouseEvent | PointerEvent) => {
+      if (!event) {
+        event = new PointerEvent('click')
+      }
+      emit('doWebSearch', event)
     }
   }
   // {

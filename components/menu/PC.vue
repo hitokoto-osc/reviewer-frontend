@@ -3,6 +3,14 @@ import type { Item } from './'
 const props = defineProps<{
   items: Item[]
 }>()
+
+const onContextMenu = (e: MouseEvent, item: Item) => {
+  if (item.preventContextMenu) {
+    e.preventDefault()
+    console.log(e)
+    item.onClick?.(e)
+  }
+}
 </script>
 <template>
   <div class="pc-menu-wrapper">
@@ -13,6 +21,7 @@ const props = defineProps<{
             v-for="(item, index) in props.items"
             :key="index"
             :icon="item.icon"
+            @contextmenu="onContextMenu($event, item)"
           >
             <a
               v-if="item.href || item.onClick"

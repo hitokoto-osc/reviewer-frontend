@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import dayjs from 'dayjs'
+
+// FilterXSS
 import { filterXSS } from 'xss'
 import type { PollDetailRes } from '@/composables/api'
 import { getAvatarURLByHash } from '~/utils/avatar'
@@ -7,6 +9,7 @@ const props = defineProps<{
   records: PollDetailRes['records']
 }>()
 const records = computed(() => props.records.filter((v) => v.comment))
+
 // watch(records, (val) => console.log(val))
 </script>
 <template>
@@ -27,11 +30,14 @@ const records = computed(() => props.records.filter((v) => v.comment))
                 {{ dayjs(record.created_at).format('YYYY-MM-DD HH:mm:ss') }}
               </span>
             </div>
-            <!-- eslint-disable vue/no-v-html-->
-            <div
-              class=":uno: text-sm underline-offset-2.5"
-              v-html="filterXSS(formatPollComment(record.comment))"
-            ></div>
+            <!-- eslint-disable vue/no-v-html vue/no-v-text-v-html-on-component-->
+            <Fancybox
+              class="content"
+              v-html="
+                renderMarkdown(filterXSS(formatPollComment(record.comment)))
+              "
+            >
+            </Fancybox>
           </div>
         </div>
         <!-- <a-divider v-if="index < records.length - 1" class=":uno: !my-3" /> -->
@@ -47,14 +53,39 @@ const records = computed(() => props.records.filter((v) => v.comment))
 
   .comments {
     .comment {
-      @apply flex my-4 items-center;
+      @apply flex my-4;
 
       .avatar {
         @apply w-fit h-fit mr-3 flex;
 
         img {
-          @apply rounded-full w-9.5 h-9.5 border-1 border-solid border-gray-200;
+          @apply rounded-full w-9.5 h-9.5 border-1 border-solid border-gray-200 mt-0;
           @apply select-none;
+        }
+      }
+
+      .content {
+        @apply text-sm underline-offset-2.5 w-full;
+
+        img {
+          @apply rounded-lg w-full h-auto;
+        }
+      }
+    }
+  }
+}
+</style>
+<style lang="scss">
+.poll-comments-container {
+  .comments {
+    .comment {
+      .content {
+        p {
+          @apply mt-0 my-1;
+        }
+
+        img {
+          @apply rounded-md w-full h-auto my-2;
         }
       }
     }

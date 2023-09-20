@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import dayjs from 'dayjs'
-import { filterXSS } from 'xss'
 import { UserRole } from '@/enums/user'
 import { PollStatus } from '@/enums/poll'
 import type { UserPollLogsRes } from '@/composables/api'
@@ -61,7 +60,7 @@ const emit = defineEmits<{
         <Fancybox
           class="comment"
           v-html="
-            renderMarkdown(filterXSS(formatPollComment(userPollLog.comment)))
+            filterXSS(renderMarkdown(formatPollComment(userPollLog.comment)))
           "
         ></Fancybox>
       </div>
@@ -121,6 +120,10 @@ const emit = defineEmits<{
 
       img {
         @apply rounded-md w-fit block mx-auto w-full h-auto my-2 cursor-pointer;
+      }
+
+      blockquote {
+        @apply m-0 my-1.5 px-2.5 py-1.5 border-0 border-l-4 border-solid border-gray-300 bg-gray-50 dark:border-gray-500 dark:bg-gray-800;
       }
     }
   }

@@ -1,8 +1,5 @@
 <script setup lang="ts">
 import dayjs from 'dayjs'
-
-// FilterXSS
-import { filterXSS } from 'xss'
 import type { PollDetailRes } from '@/composables/api'
 import { getAvatarURLByHash } from '~/utils/avatar'
 import { PollMethod } from '~/enums/poll'
@@ -31,9 +28,9 @@ const render = (record: PollDetailRes['records'][0]): string => {
     } 票。`
   }
   if (record.comment) {
-    tpl += `  \n${filterXSS(formatPollComment(record.comment))}`
+    tpl += `  \n${formatPollComment(record.comment)}`
   }
-  return renderMarkdown(tpl)
+  return filterXSS(renderMarkdown(tpl))
 }
 // watch(records, (val) => console.log(val))
 </script>
@@ -107,6 +104,10 @@ const render = (record: PollDetailRes['records'][0]): string => {
 
         img {
           @apply rounded-md w-fit block mx-auto w-full h-auto my-2 cursor-pointer;
+        }
+
+        blockquote {
+          @apply m-0 my-1.5 pl-2.5 py-1.5 border-0 border-l-4 border-solid border-gray-300 bg-gray-50 dark:border-gray-500 dark:bg-gray-800;
         }
       }
     }

@@ -40,10 +40,12 @@ watchEffect(() => {
               'logo-bg': !background
             }"
           ></div>
-          <img
-            src="~assets/img/logo.svg"
+          <NuxtImg
+            src="/img/logo.svg"
             draggable="false"
             class="logo w-18 h-18"
+            preload
+            loading="lazy"
           />
         </div>
 

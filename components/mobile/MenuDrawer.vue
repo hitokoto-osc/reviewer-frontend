@@ -19,9 +19,11 @@ const userStore = useUserStore()
     >
       <div class="drawer-container">
         <div class="account-container">
-          <img
+          <NuxtImg
             :src="getAvatarURL(userStore.user?.email || '')"
             draggable="false"
+            loading="lazy"
+            placeholder
             class="avatar"
           />
           <div class="main">

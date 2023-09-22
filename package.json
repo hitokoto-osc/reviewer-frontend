@@ -99,6 +99,7 @@
     "xss": "^1.0.14"
   },
   "dependencies": {
+    "@nuxt/image": "1.0.0-rc.2",
     "@types/lodash-es": "^4.17.9",
     "lodash-es": "^4.17.21"
   }

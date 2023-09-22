@@ -38,6 +38,7 @@ export default defineNuxtConfig({
     '~/assets/scss/main.scss'
   ],
   modules: [
+    '@nuxt/image',
     '@unocss/nuxt',
     // Doc: https://color-mode.nuxtjs.org/
     '@nuxtjs/color-mode',

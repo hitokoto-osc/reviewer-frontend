@@ -9,10 +9,12 @@ const userStore = useUserStore()
   <div class="account" :class="props.class">
     <span class="username"> {{ userStore.user?.name }} </span>
     <div class="avatar-wrapper">
-      <img
+      <NuxtImg
         :src="getAvatarURL(userStore.user?.email || '')"
         draggable="false"
         class="avatar"
+        loading="lazy"
+        placeholder
       />
     </div>
   </div>

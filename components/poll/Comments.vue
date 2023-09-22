@@ -40,9 +40,11 @@ const render = (record: PollDetailRes['records'][0]): string => {
       <template v-for="record in records" :key="record.user.id">
         <div class="comment">
           <div class="avatar">
-            <img
+            <NuxtImg
               :src="getAvatarURLByHash(record.user.email_hash)"
               :draggable="false"
+              loading="lazy"
+              placeholder
             />
           </div>
           <div class=":uno: flex-1 flex flex-col justify-center">

@@ -9,7 +9,13 @@ const userStore = useUserStore()
   />
   <div class="header">
     <div class="logo-container" @click="navigateTo('/')">
-      <img src="~assets/img/logo.svg" draggable="false" class="logo" />
+      <NuxtImg
+        src="/img/logo.svg"
+        draggable="false"
+        class="logo"
+        loading="lazy"
+        preload
+      />
       <span class="name"> 审核员中心 </span>
     </div>
     <div class="menu">

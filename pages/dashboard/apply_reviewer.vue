@@ -70,8 +70,14 @@ const apply = async () => {
         href="https://cdn.a632079.me/assets/images/202309040813220.png"
         target="_blank"
       >
-        <img src="https://cdn.a632079.me/assets/images/202309040813220.png"
-      /></a>
+        <NuxtImg
+          src="https://cdn.a632079.me/assets/images/202309040813220.png"
+          draggable="false"
+          class="w-full md:w-90% mx-auto block"
+          loading="lazy"
+          placeholder
+        />
+      </a>
       <p>
         审核员模块
         <a

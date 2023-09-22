@@ -76,8 +76,8 @@ const marksSelectedValues = ref<number[]>([])
 provide('sentence', props.sentence) // 提供句子数据给子组件
 // 快捷修改
 const doSwiftModify = (
-  fn: (sentence: Sentence) => void,
-  initialState: Partial<Sentence>
+  fn: (sentence: StructureComment) => void,
+  initialState: Partial<StructureComment>
 ) => {
   emit(
     'doSwiftModify',
@@ -197,7 +197,7 @@ const doSwiftModify = (
 }
 
 .comments {
-  @apply border-0 border-b border-solid border-#f0f0f0 my-0 pb-2 pt-1;
+  @apply border-0 border-b border-solid border-#f0f0f0 my-0 pb-2 pt-1 dark:border-#303030;
 }
 
 .review-record {

@@ -149,8 +149,13 @@ const onSwiftModify = (state: StructureComment) => {
     Object.keys(state) as Array<keyof StructureComment>
   ).reduce(
     (acc, cur) => {
-      if (cur === 'review' && state[cur] === swiftModifyState.initialState[cur])
-        return acc
+      if (cur === 'review') {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore ts(2790)
+        if (!state[cur]) delete state[cur]
+        if (state[cur] === swiftModifyState.initialState[cur]) return acc
+      }
+
       if (
         // 如果当前值和初始值相同，则不需要修改
         cur !== 'review' &&

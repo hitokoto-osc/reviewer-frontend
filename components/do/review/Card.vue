@@ -113,7 +113,9 @@ const doSwiftModify = (
             <strike class="line-through decoration-1.5"> 未填写 </strike>
             <a-tooltip>
               <template #title
-                ><b>未填写</b> 指 空，即 <code>null</code></template
+                ><b>未填写</b> 指
+                <u class="underline underline-offset-2.5">未填写任何内容</u>，即
+                <code>null</code></template
               >
               <sup>
                 <div

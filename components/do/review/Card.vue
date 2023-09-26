@@ -104,7 +104,25 @@ const doSwiftModify = (
       <ul>
         <li>分类：{{ convertHitokotoType(props.sentence.type) }}</li>
         <li>来源：{{ props.sentence.from || '未知来源' }}</li>
-        <li>作者：{{ props.sentence.fromWho || '未填写' }}</li>
+        <li>
+          作者：
+          <template v-if="!!props.sentence.fromWho">
+            {{ props.sentence.fromWho }}
+          </template>
+          <template v-else>
+            <strike class="line-through decoration-1.5"> 未填写 </strike>
+            <a-tooltip>
+              <template #title
+                ><b>未填写</b> 指 空，即 <code>null</code></template
+              >
+              <sup>
+                <div
+                  class="i-solar-question-circle-bold inline-block ml-1 text-sm hover:cursor-help"
+                />
+              </sup>
+            </a-tooltip>
+          </template>
+        </li>
         <li>提交者：{{ props.sentence.creator }}</li>
         <li>
           创建于：{{
@@ -191,7 +209,7 @@ const doSwiftModify = (
     @apply list-none ml-0 pl-0;
 
     li {
-      @apply block ml-0 pl-0;
+      @apply flex ml-0 pl-0 items-center;
     }
   }
 }

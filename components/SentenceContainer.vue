@@ -11,14 +11,18 @@ const props = defineProps<{
 <template>
   <a-popover placement="top">
     <template #content>
-      <p>分类：{{ convertHitokotoType(props.sentence.type) }}</p>
-      <p>提交者：{{ props.sentence.creator }}</p>
-      <p>
-        提交于:
-        {{
-          dayjs(+props.sentence.createdAt * 1000).format('YYYY-MM-DD HH:mm:ss')
-        }}
-      </p>
+      <ul>
+        <li>分类：{{ convertHitokotoType(props.sentence.type) }}</li>
+        <li>提交者：{{ props.sentence.creator }}</li>
+        <li>
+          提交于:
+          {{
+            dayjs(+props.sentence.createdAt * 1000).format(
+              'YYYY-MM-DD HH:mm:ss'
+            )
+          }}
+        </li>
+      </ul>
     </template>
     <template #title>
       <span class="font-mono">{{ props.sentence.uuid }}</span>

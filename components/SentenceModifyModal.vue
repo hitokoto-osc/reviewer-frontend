@@ -19,12 +19,12 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   'update:open': [value: boolean]
-  finish: [sentence: Sentence]
+  finish: [sentence: StructureComment]
 }>()
 
 const onOK = () => {
   emit('update:open', false)
-  const data: Sentence = { ...formState }
+  const data: StructureComment = { ...formState }
   if (data.fromWho === '') data.fromWho = null
   emit('finish', data)
 }

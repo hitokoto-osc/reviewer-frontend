@@ -3,10 +3,7 @@ import { PlusCircleOutlined } from '@ant-design/icons-vue'
 import { PollStatus, PolledFilter } from '@/enums/poll'
 import type { SearchParams } from '@/components/do/review/Card.vue'
 import type { SegmentedOption } from 'ant-design-vue/es/segmented/src/segmented' // TODO: Antdv 的类型定义有问题，这里需要手动指定路径
-import type {
-  Sentence,
-  StructureComment
-} from '@/components/SentenceModifyModal.vue'
+import type { StructureComment } from '@/components/SentenceModifyModal.vue'
 import { doWebSearch as utilDoWebSearch } from '~/utils/search'
 useHead({
   title: '句子审核'
@@ -34,7 +31,7 @@ const pageSize = computed(() => {
     : pageSize
 })
 
-const onPagniationChange = async (newPage: number, newPageSize: number) => {
+const onPaginationChange = async (newPage: number, newPageSize: number) => {
   await scrollToTop()
   navigateTo({
     name: route.name || undefined,
@@ -185,7 +182,7 @@ const doWebSearch = (
   if (event.type === 'click') {
     try {
       const searchType = Number.parseInt(
-        localStorage.getItem('webSearchPerference') || ''
+        localStorage.getItem('webSearchPreference') || ''
       )
       if (!isNaN(searchType)) {
         setTimeout(() => {
@@ -244,7 +241,7 @@ const swiftModifyModal = reactive({
 
 const doSwiftModify = (
   state: StructureComment,
-  fn: (state: Sentence) => void
+  fn: (state: StructureComment) => void
 ) => {
   swiftModifyModal.initialState = { ...state }
   swiftModifyModal.onModifyCallback = fn
@@ -321,7 +318,7 @@ const onModifySentenceFinished = (state: StructureComment) => {
 
     <div class="content">
       <!-- TODO: 抽象成组件 -->
-      <FetchStatusWarpper
+      <FetchStatusWrapper
         :pending="pending"
         :error="error"
         :not-empty="cardData.length > 0"
@@ -343,7 +340,7 @@ const onModifySentenceFinished = (state: StructureComment) => {
                 @do-web-search="doWebSearch"
                 @do-local-search="doLocalSearch"
                 @do-swift-modify="doSwiftModify"
-                @opeartion-done="onOperationDone"
+                @operation-done="onOperationDone"
               />
             </div>
           </masonry>
@@ -351,7 +348,7 @@ const onModifySentenceFinished = (state: StructureComment) => {
         <template #empty>
           <a-empty />
         </template>
-      </FetchStatusWarpper>
+      </FetchStatusWrapper>
     </div>
     <!-- 分页器 -->
     <div v-show="cardData.length !== 0" class="pagination">
@@ -362,7 +359,7 @@ const onModifySentenceFinished = (state: StructureComment) => {
         show-size-changer
         :page-size-options="pageSizeOptions"
         :total="pollListData?.data?.total || 0"
-        @change="onPagniationChange"
+        @change="onPaginationChange"
       />
     </div>
   </div>

@@ -25,7 +25,7 @@ const page = computed(() => {
 const pageSize = computed(() => {
   return Number(route.query.pageSize) || Number(pageSizeOptions.value[0])
 })
-const onPagniationChange = async (page: number, pageSize: number) => {
+const onPaginationChange = async (page: number, pageSize: number) => {
   await scrollToTop()
   navigateTo({
     name: route.name || undefined,
@@ -66,7 +66,7 @@ watch([page, pageSize], () => {
       :user-marks="pollDetailModalParams.userMarks"
     />
     <div class="main">
-      <FetchStatusWarpper
+      <FetchStatusWrapper
         :pending="userPollLogsPending"
         :error="userPollLogsError"
         :not-empty="!!userPollLogsData && userPollLogsData.data.total > 0"
@@ -94,7 +94,7 @@ watch([page, pageSize], () => {
         <template #empty>
           <a-empty />
         </template>
-      </FetchStatusWarpper>
+      </FetchStatusWrapper>
       <!-- 分页器 -->
       <div
         v-show="userPollLogsData && userPollLogsData.data.total > 0"
@@ -107,7 +107,7 @@ watch([page, pageSize], () => {
           show-size-changer
           :page-size-options="pageSizeOptions"
           :total="userPollLogsData?.data?.total || 0"
-          @change="onPagniationChange"
+          @change="onPaginationChange"
         />
       </div>
     </div>

@@ -61,12 +61,12 @@ const emit = defineEmits<{
     sentence: StructureComment,
     onModifyFinished: (sentence: StructureComment) => void
   ]
-  opeartionDone: [event: 'submit' | 'cancel', index: number]
+  operationDone: [event: 'submit' | 'cancel', index: number]
 }>()
 
 const onOperationDone = (event: 'submit' | 'cancel') => {
   // console.log(event)
-  emit('opeartionDone', event, props.index)
+  emit('operationDone', event, props.index)
 }
 
 const userStore = useUserStore()

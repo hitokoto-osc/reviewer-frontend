@@ -39,7 +39,7 @@ const userStore = useUserStore()
 <style lang="scss" scoped>
 .header {
   @apply flex h-full w-full md:w-80% lg:w-70%;
-  @apply justify-center md:jusitfy-start;
+  @apply justify-center md:justify-start;
 
   .logo-container {
     @apply h-full w-fit flex items-center justify-center cursor-pointer;

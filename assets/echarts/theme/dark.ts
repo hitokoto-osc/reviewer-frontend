@@ -70,7 +70,7 @@ export default function () {
         color: '#817f91'
       },
       label: {
-        // TODO Contrast of label backgorundColor
+        // TODO Contrast of label backgroundColor
         color: '#fff'
       }
     },

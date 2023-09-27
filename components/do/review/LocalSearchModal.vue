@@ -12,7 +12,7 @@ const emit = defineEmits<{
 }>()
 
 const currentPage = ref(1)
-const paegSizeOptions = ref([5, 10, 20])
+const pageSizeOptions = ref([5, 10, 20])
 const limit = ref(5)
 const offset = computed(() => (currentPage.value - 1) * limit.value)
 
@@ -70,7 +70,7 @@ watch(
       {{ tips }}
     </a-divider>
     <a-divider v-else />
-    <FetchStatusWarpper
+    <FetchStatusWrapper
       :pending="pending"
       :error="error"
       :not-empty="!!data && data.hits.length > 0"
@@ -88,14 +88,14 @@ watch(
           v-model:current="currentPage"
           v-model:page-size="limit"
           :total="total"
-          :page-size-options="paegSizeOptions"
+          :page-size-options="pageSizeOptions"
           show-less-items
         />
       </a-row>
       <template #empty>
         <a-empty />
       </template>
-    </FetchStatusWarpper>
+    </FetchStatusWrapper>
   </a-modal>
 </template>
 

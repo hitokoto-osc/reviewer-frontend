@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Item } from '@/components/menu'
-// import IconRoundSortHorizontalLinea from '~icons/solar/round-sort-horizontal-linear'
+// import IconRoundSortHorizontalLinear from '~icons/solar/round-sort-horizontal-linear'
 const emit = defineEmits<{
   switchCommentInput: []
   viewComments: []

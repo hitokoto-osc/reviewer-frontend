@@ -23,7 +23,7 @@ watch(
     marksStore.$setMarks(marksData.value?.data || [])
   }
 )
-if (marksStore.isExpried) {
+if (marksStore.isExpired) {
   execute()
 }
 </script>

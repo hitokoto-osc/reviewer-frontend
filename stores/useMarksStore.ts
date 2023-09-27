@@ -37,7 +37,7 @@ export const useMarksStore = defineStore('marks', {
       })
       return map
     },
-    isExpried(state) {
+    isExpired(state) {
       return (
         !state.marks ||
         state.marks.length === 0 ||

@@ -11,7 +11,7 @@ const emit = defineEmits<{
 }>()
 
 const doSearch = (type: WebSearch) => {
-  localStorage.setItem('webSearchPerference', type.toString())
+  localStorage.setItem('webSearchPreference', type.toString())
   doWebSearch(type, props.searchParams.sentence)
 }
 </script>

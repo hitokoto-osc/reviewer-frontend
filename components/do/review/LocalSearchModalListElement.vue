@@ -17,11 +17,13 @@ const props = defineProps<{
       </p>
     </template>
     <div class="sentence-preview-container">
-      <p>
+      <p class="text-base font-noto-serif font-semibold">
         {{ props.data.hitokoto }}
       </p>
-      <small>
-        —— {{ props.data.from_who || '' }}「{{ props.data.from || '未知' }}」
+      <small class="font-noto-serif text-sm font-600">
+        ——{{ props.data.from_who ? ` ${props.data.from_who}` : '' }}『{{
+          props.data.from || '未知'
+        }}』
       </small>
     </div>
   </a-popover>
@@ -30,11 +32,6 @@ const props = defineProps<{
 <style scoped lang="scss">
 .sentence-preview-container {
   width: 100%;
-
-  p,
-  small {
-    font-family: 'Noto Serif SC', serif;
-  }
 
   small {
     display: block;

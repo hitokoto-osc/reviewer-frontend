@@ -63,7 +63,7 @@ watch(
     @ok="emit('update:open', false)"
     @cancel="emit('update:open', false)"
   >
-    <p class="font-noto-serif font-bold text-center">
+    <p class="font-noto-serif font-bold text-center text-lg">
       {{ props.searchParams.sentence }}
     </p>
     <a-divider v-if="!pending && !error">

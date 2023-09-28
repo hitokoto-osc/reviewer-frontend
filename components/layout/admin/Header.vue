@@ -13,10 +13,14 @@ const items: Item[] = reactive([
 
 <template>
   <header>
-    <div class="flex-1"></div>
+    <div class="flex-1 items-center flex">
+      <div class="weather-wrapper w-30 ml-5">
+        <LayoutAdminHeaderWeather />
+      </div>
+    </div>
     <div class=":uno: h-full flex items-center">
       <MenuContainer :items="items">
-        <LayoutHeaderAccountInfo />
+        <LayoutHeaderAccountInfo class="cursor-pointer" />
       </MenuContainer>
     </div>
   </header>

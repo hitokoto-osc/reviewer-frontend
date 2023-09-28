@@ -32,7 +32,7 @@ watch(
 watch(
   () => state.active,
   (val) => {
-    console.log(val)
+    // console.log(val)
     if (!state.tabs.find((item) => item.key === val)) {
       const item = ctx.routes.find((item) => item.key === val)
       if (item) {

@@ -49,7 +49,7 @@ const emit = defineEmits<{
   @apply -mr-18px h-full relative inline-flex z-0 cursor-pointer;
 
   .bg {
-    @apply absolute w-full h-full left-0 top-0 -z-2 color-transparent;
+    @apply absolute w-full h-full left-0 top-0 -z-1 color-transparent;
   }
 
   &:hover {

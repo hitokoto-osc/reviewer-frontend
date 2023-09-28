@@ -51,7 +51,8 @@ onUnmounted(() => {
 </template>
 
 <style lang="scss">
-#he-plugin-simple {
-  @apply z-100;
+#he-plugin-simple,
+#weather-view-he {
+  @apply z-1000;
 }
 </style>

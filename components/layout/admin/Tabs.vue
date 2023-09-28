@@ -133,14 +133,14 @@ const refreshAll = async () => {
 
 <style lang="scss" scoped>
 .tabs {
-  @apply flex h-11  bg-white border-0 border-b-1 border-solid border-#f0f0f0 px-2 z-0 transition-all duration-300;
+  @apply fixed top-0 mt-16 h-11 md:w-5/6 lg:w-6/7 flex  bg-white border-0 border-b-1 border-solid border-#f0f0f0 px-2 z-0 transition-all duration-300;
   @apply dark:border-#303030 dark:bg-#141414;
 
   .refresh-action {
     @apply h-full mr-1.5 inline-flex items-center;
 
     .icon-wrapper {
-      @apply p-1.5 hover:bg-gray-100 rounded-md cursor-pointer transition-all duration-300 ease-in-out;
+      @apply p-1.5 hover:bg-gray-100 rounded-md cursor-pointer transition-all duration-300 ease-in-out z-1000;
 
       .icon {
         @apply i-ic-round-refresh w-5.5 h-5.5;

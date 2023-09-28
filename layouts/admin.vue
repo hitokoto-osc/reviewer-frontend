@@ -9,7 +9,7 @@
         <LayoutAdminHeader />
         <LayoutAdminTabs />
 
-        <div class="content">
+        <div class=":uno: mt-27 px-4 pt-4 flex flex-col flex-1">
           <slot />
         </div>
       </div>
@@ -19,15 +19,15 @@
 
 <style lang="scss" scoped>
 .layout {
-  @apply min-h-100vh h-auto w-full flex shrink-0 bg-slate-100;
+  @apply min-h-100vh h-auto w-full bg-slate-100 relative;
   @apply dark:bg-black;
 
   .sidebar {
-    @apply md:w-1/6 lg:w-1/7 z-1 bg-white shadow-md;
+    @apply fixed left:0 h-100vh md:w-1/6 lg:w-1/7 z-2 bg-white shadow-md;
   }
 
   .main {
-    @apply flex-1;
+    @apply md:w-5/6 md:ml-1/6 lg:w-6/7 lg:ml-1/7 flex flex-col pb-4;
   }
 }
 </style>

@@ -13,6 +13,6 @@ definePageMeta({
 
 <style lang="scss" scoped>
 .admin {
-  @apply w-full min-h-full flex;
+  @apply w-full min-h-full flex flex-col flex-1;
 }
 </style>

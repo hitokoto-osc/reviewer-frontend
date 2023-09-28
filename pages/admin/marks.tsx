@@ -1,4 +1,6 @@
-import { Button as AButton, Table as ATable } from 'ant-design-vue'
+import { Button as AButton, Table as ATable, Popconfirm } from 'ant-design-vue'
+import AdminMarksModifyModal from '~/components/admin/marks/ModifyModal.vue'
+import AdminMarksCreateModal from '~/components/admin/marks/CreateModal.vue'
 import { TableColumnType } from 'ant-design-vue'
 
 // 标签相关
@@ -43,18 +45,50 @@ const formatMarkProperty = (property: number) => {
 
 export default defineComponent({
   setup() {
-    const { pending, data } = usePollMarks()
+    const { pending, data, execute } = usePollMarks()
     const dataSource = computed(() => {
       return data.value?.data || []
     })
     // Actions 相关
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const doDeprecated = async (record: PollMarkRes['0']) => {
-      // do deprecated
+    const tableRowLoadingState = ref<boolean[]>([])
+    const doOrUndoDeprecated = async (
+      record: PollMarkRes['0'],
+      index: number
+    ) => {
+      tableRowLoadingState.value[index] = true
+      try {
+        const params = {
+          ...record,
+          deprecated_at: record.deprecated_at ? null : new Date().toISOString()
+        }
+        const { error } = await doUpdateMark(record.id, params, {
+          immediate: true
+        })
+        if (error.value) {
+          throw error.value
+        }
+        message.success(
+          `标签 ${record.text} 已成功${
+            record.deprecated_at ? '恢复' : '弃用'
+          }！`
+        )
+        await execute()
+      } catch (error) {
+        console.error(error)
+      } finally {
+        tableRowLoadingState.value[index] = false
+      }
     }
 
+    const editMarkState = reactive({
+      visible: false,
+      record: null as PollMarkRes['0'] | null
+    })
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const editMark = async (record: PollMarkRes['0']) => {}
+    const editMark = async (record: PollMarkRes['0'], index: number) => {
+      editMarkState.visible = true
+      editMarkState.record = record
+    }
 
     const cols = [
       {
@@ -128,23 +162,35 @@ export default defineComponent({
         title: '操作',
         dataIndex: 'action',
         align: 'center',
-        customRender: ({ record }) => {
+        customRender: ({ record, index }) => {
           return h(
             <>
               <AButton
                 type="text"
                 size="small"
-                onClick={() => editMark(record)}
+                onClick={() => editMark(record, index)}
+                loading={tableRowLoadingState.value[index]}
+                disabled={tableRowLoadingState.value[index]}
               >
                 修改
               </AButton>
-              <AButton
-                type="text"
-                size="small"
-                onClick={() => doDeprecated(record)}
+              <Popconfirm
+                title={`你真的要 ${
+                  record.deprecated_at ? '恢复' : '弃用'
+                } 此标签吗？`}
+                ok-text="确定"
+                cancel-text="算了"
+                onConfirm={() => doOrUndoDeprecated(record, index)}
               >
-                弃用
-              </AButton>
+                <AButton
+                  type="text"
+                  size="small"
+                  loading={tableRowLoadingState.value[index]}
+                  disabled={tableRowLoadingState.value[index]}
+                >
+                  {record.deprecated_at ? '恢复' : '弃用'}
+                </AButton>
+              </Popconfirm>
             </>
           )
         }
@@ -152,14 +198,46 @@ export default defineComponent({
         // width: '20%'
       }
     ] as TableColumnType[]
+
+    // create new mark
+    const createMarkState = reactive({
+      visible: false
+    })
+
     return () => (
       <div class=":uno: bg-white px-8 py-6 rounded-xl">
+        <AdminMarksCreateModal
+          open={createMarkState.visible}
+          {...{
+            'onUpdate:open': (value: boolean) => {
+              createMarkState.visible = value
+            },
+            onUpdated: () => {
+              execute()
+            }
+          }}
+        />
+        <AdminMarksModifyModal
+          open={editMarkState.visible}
+          initialState={editMarkState.record as PollMarkRes['0']}
+          {...{
+            'onUpdate:open': (value: boolean) => {
+              editMarkState.visible = value
+            },
+            onUpdated: () => {
+              execute()
+            }
+          }}
+        />
         <h1 class="text-2xl pt-0 mt-0">标记管理</h1>
         <div class=":uno: py-2 mb-4 flex justify-end">
           <AButton
             type="primary"
             class=":uno: !inline-flex items-center justify-center"
             shape="round"
+            onClick={() => {
+              createMarkState.visible = true
+            }}
           >
             {{
               default: () => '新建标签',

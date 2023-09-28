@@ -28,6 +28,6 @@ const items: Item[] = reactive([
 
 <style lang="scss" scoped>
 header {
-  @apply fixed top-0 h-16 md:w-5/6 lg:w-6/7 bg-white dark:bg-dark-700 border-0 border-b-1 border-solid border-#f0f0f0 flex z-1;
+  @apply fixed top-0 h-16 md:w-5/6 lg:w-6/7 bg-white dark:bg-dark-700 border-0 border-b-1 border-solid border-#f0f0f0 flex z-2;
 }
 </style>

@@ -133,7 +133,7 @@ const refreshAll = async () => {
 
 <style lang="scss" scoped>
 .tabs {
-  @apply fixed top-0 mt-16 h-11 md:w-5/6 lg:w-6/7 flex  bg-white border-0 border-b-1 border-solid border-#f0f0f0 px-2 z-0 transition-all duration-300;
+  @apply fixed top-0 mt-16 h-11 md:w-5/6 lg:w-6/7 flex  bg-white border-0 border-b-1 border-solid border-#f0f0f0 px-2 z-1 transition-all duration-300;
   @apply dark:border-#303030 dark:bg-#141414;
 
   .refresh-action {

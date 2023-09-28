@@ -1,19 +1,19 @@
 import { snakeCase, camelCase } from 'lodash-es'
-import { PollStatus } from './../enums/poll'
-import { HitokotoType } from '@/enums/hitokoto'
+import { PollMethod, PollStatus } from './../enums/poll'
+import { HitokotoStatus, HitokotoType } from '@/enums/hitokoto'
 const HitokotoTypeMap = {
-  a: '动画',
-  b: '漫画',
-  c: '游戏',
-  d: '文学',
-  e: '原创',
-  f: '来自网络',
-  g: '其他',
-  h: '影视',
-  i: '诗词',
-  j: '网易云音乐',
-  k: '哲学',
-  l: '抖机灵（笑话，脑筋急转弯，段子等）'
+  [HitokotoType.Anime]: '动画',
+  [HitokotoType.Comic]: '漫画',
+  [HitokotoType.Game]: '游戏',
+  [HitokotoType.Novel]: '文学',
+  [HitokotoType.Original]: '原创',
+  [HitokotoType.Internet]: '来自网络',
+  [HitokotoType.Other]: '其他',
+  [HitokotoType.Movie]: '影视',
+  [HitokotoType.Poem]: '诗词',
+  [HitokotoType.NCM]: '网易云音乐',
+  [HitokotoType.Philosophy]: '哲学',
+  [HitokotoType.Joke]: '抖机灵（笑话，脑筋急转弯，段子等）'
 } as Record<string, string>
 
 export function convertHitokotoType(input: string | HitokotoType): string {
@@ -21,10 +21,10 @@ export function convertHitokotoType(input: string | HitokotoType): string {
 }
 
 const PollMethodMap = {
-  1: '赞同',
-  2: '驳回',
-  3: '需要修改',
-  4: '需要普通用户参与'
+  [PollMethod.Approve]: '赞同',
+  [PollMethod.Reject]: '驳回',
+  [PollMethod.NeedModify]: '需要修改',
+  [PollMethod.NeedCommonUserPoll]: '需要普通用户参与'
 } as Record<number, string>
 
 export function convertPollMethod(input: number): string {
@@ -32,15 +32,16 @@ export function convertPollMethod(input: number): string {
 }
 
 const PollStatusMap = {
-  0: '未开放',
-  1: '进行中',
-  2: '处理中',
-  100: '暂停',
-  101: '关闭',
-  102: '普通用户投票',
-  200: '通过',
-  201: '驳回',
-  202: '需要修改'
+  [PollStatus.Unknown]: '未知（或从未创建）',
+  [PollStatus.NotOpen]: '未开放',
+  [PollStatus.Open]: '进行中',
+  [PollStatus.Processing]: '处理中',
+  [PollStatus.Suspended]: '暂停',
+  [PollStatus.Closed]: '关闭',
+  [PollStatus.OpenForCommonUser]: '普通用户投票',
+  [PollStatus.Approved]: '通过',
+  [PollStatus.Rejected]: '驳回',
+  [PollStatus.NeedModify]: '需要修改'
 } as Record<PollStatus, string>
 
 export function convertPollStatus(input: PollStatus): string {
@@ -67,4 +68,14 @@ export function objToSnake<
     acc[snakeKey] = obj[key] as unknown as T[keyof T]
     return acc
   }, {} as T)
+}
+
+const hitokotoStatusMap = {
+  [HitokotoStatus.Pending]: '待审核',
+  [HitokotoStatus.Approved]: '已通过',
+  [HitokotoStatus.Rejected]: '已驳回'
+}
+
+export function convertHitokotoStatus(input: HitokotoStatus): string {
+  return hitokotoStatusMap[input] || '未知'
 }

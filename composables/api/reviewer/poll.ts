@@ -12,7 +12,7 @@ export type PollMarkRes = {
   text: string
   level: PollMarkLevel
   property: number
-  deprecated_at?: string
+  deprecated_at: string | null
   updated_at: string
   created_at: string
 }[]
@@ -163,4 +163,45 @@ export function usePollDetail(
     req,
     options
   )
+}
+
+// PollMarks
+
+export type UpdateMarkReq = {
+  text: string
+  level: PollMarkLevel
+  property: number
+  deprecated_at: string | null
+  updated_at: string
+  created_at: string
+}
+
+export type UpdateMarkRes = never
+
+export function doUpdateMark(
+  markID: number | Ref<number>,
+  req: UpdateMarkReq,
+  options: HTTPOption<UpdateMarkRes> = {}
+) {
+  return useHTTP.put<UpdateMarkRes>(
+    () =>
+      `/admin/poll/mark/${typeof markID === 'number' ? markID : markID.value}`,
+    req,
+    options
+  )
+}
+
+export type CreateMarkReq = {
+  text: string
+  level: PollMarkLevel
+  property: number
+}
+
+export type CreateMarkRes = never
+
+export function doCreateMark(
+  req: CreateMarkReq,
+  options: HTTPOption<CreateMarkRes> = {}
+) {
+  return useHTTP.post<CreateMarkRes>(() => `/admin/poll/mark`, req, options)
 }

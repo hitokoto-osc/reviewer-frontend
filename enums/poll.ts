@@ -13,6 +13,7 @@ export enum PolledFilter {
 }
 
 export enum PollStatus {
+  Unknown = -1,
   NotOpen = 0,
   Open = 1,
   Processing = 2,

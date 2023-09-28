@@ -1,4 +1,4 @@
-import { useUserStore } from '@/stores/useUserStore'
+import { useUserStore } from '@/stores/user'
 import { useUserInfoReq } from '@/composables/api'
 // import { message } from 'ant-design-vue'
 

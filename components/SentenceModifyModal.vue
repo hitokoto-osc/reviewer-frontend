@@ -45,7 +45,6 @@ watch(
   () => props.open,
   (val) => {
     if (!val) return
-    console.log(props.initialState)
     formState.uuid = props.initialState.uuid
     formState.hitokoto = props.initialState.hitokoto
     formState.type = props.initialState.type

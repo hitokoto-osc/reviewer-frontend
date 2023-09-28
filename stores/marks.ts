@@ -64,3 +64,7 @@ export const useMarksStore = defineStore('marks', {
     storage: persistedState.sessionStorage
   }
 })
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useMarksStore, import.meta.hot))
+}

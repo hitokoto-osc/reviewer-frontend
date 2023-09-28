@@ -61,3 +61,7 @@ export const useUserStore = defineStore('user', {
     serializer: getCookiesSerializer()
   }
 })
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useUserStore, import.meta.hot))
+}

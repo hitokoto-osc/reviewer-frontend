@@ -110,7 +110,7 @@ const doSwiftModify = (
             {{ props.sentence.fromWho }}
           </template>
           <template v-else>
-            <strike class="line-through decoration-1.5"> 未填写 </strike>
+            <del class="line-through decoration-1.5"> 未填写 </del>
             <a-tooltip>
               <template #title
                 ><b>未填写</b> 指

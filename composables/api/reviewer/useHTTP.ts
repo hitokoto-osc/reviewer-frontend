@@ -2,7 +2,7 @@ import { message } from 'ant-design-vue'
 import type { FetchResponse, SearchParameters } from 'ofetch'
 import type { Ref } from 'vue'
 import type { UseFetchOptions } from '#app'
-import { useUserStore } from '~/stores/useUserStore'
+import { useUserStore } from '~/stores/user'
 import IconEmoticonDead from '~icons/mdi/emoticon-dead'
 
 export interface R<T> {

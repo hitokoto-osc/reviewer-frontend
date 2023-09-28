@@ -1,3 +1,4 @@
+import svgLoader from 'vite-svg-loader'
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   // ssr: process.env.NODE_ENV !== 'development',
@@ -163,5 +164,8 @@ export default defineNuxtConfig({
         cookiesKey: process.env.COOKIES_ENCRYPT_KEY || ''
       }
     }
+  },
+  vite: {
+    plugins: [svgLoader()]
   }
 })

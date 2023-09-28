@@ -31,7 +31,7 @@ const userStore = useUserStore()
             <span class="role"> {{ userStore.role }} </span>
           </div>
         </div>
-        <LayoutMenu />
+        <slot />
       </div>
     </van-popup>
   </div>

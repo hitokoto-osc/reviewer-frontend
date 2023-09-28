@@ -3,7 +3,7 @@ const mobileMenuDrawerShow = ref(false)
 const userStore = useUserStore()
 </script>
 <template>
-  <MobileMenuHamburgerButton
+  <LayoutMobileMenuHamburgerButton
     v-if="!userStore.isExpired"
     @switch-drawer="mobileMenuDrawerShow = !mobileMenuDrawerShow"
   />
@@ -33,7 +33,9 @@ const userStore = useUserStore()
     </div>
     <LayoutHeaderAccountContainer />
   </div>
-  <MobileMenuDrawer v-model:show="mobileMenuDrawerShow" />
+  <LayoutMobileMenuDrawer v-model:show="mobileMenuDrawerShow">
+    <LayoutDashboardMenu />
+  </LayoutMobileMenuDrawer>
 </template>
 
 <style lang="scss" scoped>

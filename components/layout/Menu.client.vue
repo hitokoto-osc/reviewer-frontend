@@ -1,140 +1,80 @@
 <script setup lang="ts">
-import type { VueElement } from 'vue'
-import type { ItemType } from 'ant-design-vue/es'
-import IconDashboard from '~icons/solar/widget-linear'
-import IconDoReview from '~icons/solar/document-add-linear'
-import IconRules from '~icons/solar/bookmark-circle-linear'
-import IconMessage from '~icons/solar/chat-round-dots-linear'
-import IconPollRecords from '~icons/solar/documents-linear'
-import IconScore from '~icons/solar/bolt-circle-linear'
-import IconApply from '~icons/solar/crown-linear'
-import { UserRole } from '@/enums/user'
-const userStore = useUserStore()
+import type { ItemType } from 'ant-design-vue'
 
-function getItem(
-  label: VueElement | string,
-  key: string,
-  icon?: unknown,
-  children?: ItemType[],
-  type?: 'group',
-  role?: UserRole
-): ItemType {
-  return {
-    key,
-    icon,
-    children,
-    label,
-    type,
-    role
-  } as ItemType
+const route = useRoute()
+
+const props = withDefaults(
+  defineProps<{
+    items: ItemType[]
+    routesMap?: Map<string, string>
+    active?: string | null
+    defaultSelectedKeys?: string[]
+    defaultOpenKeys?: string[]
+  }>(),
+  {
+    active: undefined,
+    routesMap: undefined,
+    defaultSelectedKeys: () => [],
+    defaultOpenKeys: () => []
+  }
+)
+
+const emit = defineEmits<{
+  'update:active': [key: string] // Only if the routesMap is not set and active is set
+}>()
+
+const state = reactive({
+  selectedKeys: [] as string[],
+  openKeys: [] as string[]
+})
+state.selectedKeys = toRaw(props.defaultSelectedKeys)
+state.openKeys = toRaw(props.defaultOpenKeys)
+if (props.active !== undefined) {
+  state.selectedKeys = props.active ? [props.active] : []
 }
 
-const rawItems: ItemType[] = [
-  getItem('概览', 'dashboard', () => h(IconDashboard)),
+watch(
+  () => props.active,
+  (val) => {
+    if (val !== undefined) {
+      state.selectedKeys = val ? [val] : []
+    }
+  }
+)
 
-  getItem(
-    '句子审核',
-    'do_review',
-    () => h(IconDoReview),
-    undefined,
-    undefined,
-    UserRole.Reviewer
-  ),
-
-  getItem('审核准则', 'review_rules', () => h(IconRules)),
-  getItem('通知消息', 'messages', () => h(IconMessage)),
-  getItem('投票记录', 'poll_records', () => h(IconPollRecords)),
-  getItem('积分记录', 'score_records', () => h(IconScore)),
-  getItem(
-    '申请权限',
-    'apply_reviewer',
-    () => h(IconApply),
-    undefined,
-    undefined,
-    UserRole.User
-  )
-  // getItem('Navigation Two', 'sub2', () => h(AppstoreOutlined)),
-  // getItem('Navigation Two', 'sub2', () => h(AppstoreOutlined))
-  // getItem('Navigation Two', 'sub2', () => h(AppstoreOutlined), [
-  //   getItem('Option 5', '5'),
-  //   getItem('Option 6', '6'),
-  //   getItem('Submenu', 'sub3', null, [
-  //     getItem('Option 7', '7'),
-  //     getItem('Option 8', '8')
-  //   ])
-  // ]),
-
-  // { type: 'divider' },
-
-  // getItem('Navigation Three', 'sub4', () => h(SettingOutlined), [
-  //   getItem('Option 9', '9'),
-  //   getItem('Option 10', '10'),
-  //   getItem('Option 11', '11'),
-  //   getItem('Option 12', '12')
-  // ]),
-
-  // getItem(
-  //   'Group',
-  //   'grp',
-  //   null,
-  //   [getItem('Option 13', '13'), getItem('Option 14', '14')],
-  //   'group'
-  // )
-]
-const items = computed(() => {
-  const role = userStore.user?.role || UserRole.Guest
-  return rawItems.filter((item: ItemType) => {
-    const v = item as ItemType & { role: UserRole }
-    if (v.role === undefined) return true
-    return (
-      (v.role === UserRole.Reviewer &&
-        (role === UserRole.Reviewer || role === UserRole.Admin)) ||
-      (v.role === UserRole.User && role === UserRole.User)
-    )
-  })
-})
-
-// console.log(items)
-
-const selectedKeys = ref<string[]>(['1'])
-const openKeys = ref<string[]>(['messages'])
-
-// 路由部分
-const route = useRoute()
-const keyRouteMap = new Map<string, string>()
-keyRouteMap.set('dashboard', '/dashboard')
-keyRouteMap.set('do_review', '/dashboard/do_review')
-keyRouteMap.set('review_rules', 'https://www.yuque.com/freejishu/rfoxeq/xz3u2x')
-// keyRouteMap.set('messages', '/dashboard/messages')
-keyRouteMap.set('messages', '/dashboard/messages')
-keyRouteMap.set('poll_records', '/dashboard/records/review')
-keyRouteMap.set('score_records', '/dashboard/records/score')
-keyRouteMap.set('apply_reviewer', '/dashboard/apply_reviewer')
 const getKeyByRoute = (route: string) => {
-  for (const [key, value] of keyRouteMap) {
+  for (const [key, value] of props.routesMap!) {
     if (value === route) return key
   }
   return ''
 }
+
 watchEffect(() => {
+  if (!props.routesMap) return
   const key = getKeyByRoute(route.path)
   if (key) {
-    selectedKeys.value = [key]
+    state.selectedKeys = [key]
   }
 })
-watch(selectedKeys, (val, old) => {
-  const key = val[0]
-  if (key) {
-    const target = keyRouteMap.get(key)
-    if (target && target.startsWith('/')) {
-      if (target !== route.path) navigateTo(target)
+
+watch(
+  () => state.selectedKeys,
+  async (val, old) => {
+    const key = val[0]
+    if (key && props.routesMap) {
+      const target = props.routesMap.get(key)
+      if (target && target.startsWith('/')) {
+        if (target !== route.path) await navigateTo(target)
+      } else {
+        // reset selectedKeys
+        state.selectedKeys = old
+        window.open(target, '_blank')
+      }
     } else {
-      // reset selectedKeys
-      selectedKeys.value = old
-      window.open(target, '_blank')
+      emit('update:active', key)
     }
   }
-})
+)
 
 // watch(openKeys, (val) => {
 //   console.log('openKeys', val)
@@ -142,8 +82,8 @@ watch(selectedKeys, (val, old) => {
 </script>
 <template>
   <a-menu
-    v-model:openKeys="openKeys"
-    v-model:selectedKeys="selectedKeys"
+    v-model:openKeys="state.openKeys"
+    v-model:selectedKeys="state.selectedKeys"
     class="menu !border-e-0"
     mode="inline"
     :items="items"

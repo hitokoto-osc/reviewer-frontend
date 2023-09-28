@@ -8,7 +8,7 @@
     <main class="main">
       <div class="sidebar">
         <ClientOnly>
-          <LayoutMenu />
+          <LayoutDashboardMenu />
         </ClientOnly>
       </div>
       <div class="content">

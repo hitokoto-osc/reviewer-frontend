@@ -1,6 +1,7 @@
 import { defineConfig, presetUno, presetIcons, presetAttributify } from 'unocss'
 import transformerCompileClass from '@unocss/transformer-compile-class'
 import transformerDirectives from '@unocss/transformer-directives'
+import transformerVariantGroup from '@unocss/transformer-variant-group'
 export default defineConfig({
   presets: [
     presetUno({
@@ -40,6 +41,7 @@ export default defineConfig({
     transformerCompileClass({
       classPrefix: 'ouo-'
     }),
-    transformerDirectives()
+    transformerDirectives(),
+    transformerVariantGroup()
   ]
 })

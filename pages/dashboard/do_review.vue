@@ -382,11 +382,11 @@ const onModifySentenceFinished = (state: StructureComment) => {
 
     .button-group {
       .pc {
-        @apply display-none md:block;
+        @apply hidden md:block;
       }
 
       .mobile {
-        @apply display-block md:display-none;
+        @apply block md:hidden;
       }
     }
   }

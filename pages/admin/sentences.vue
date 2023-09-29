@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { HitokotoStatus } from '~/enums/hitokoto'
+import { PollStatus } from '~/enums/poll'
 import type { State } from '@/components/admin/sentence/SearchModal.vue'
 const initialSearchState: State = {}
 
@@ -84,7 +85,8 @@ const requestParams = computed<HitokotoAdminListReq>(() => ({
 const {
   data: hitokotoListRes,
   pending,
-  error
+  error,
+  refresh
 } = await useAdminHitokotoList(requestParams)
 const cardData = computed(() => hitokotoListRes.value?.data.collection ?? [])
 
@@ -129,6 +131,7 @@ const onSearchModalOk = (newState: State) => {
 
 // 句子多选管理
 const selectedSentences = reactive([] as HitokotoWithPoll[])
+const selectedSentencesOperationLoading = ref(false)
 const sentenceCheckedState = (sentence: HitokotoWithPoll) => ({
   value: selectedSentences.includes(sentence),
   set(val: boolean) {
@@ -146,7 +149,27 @@ const selectedSentencesOperations = reactive([
   },
   {
     text: '删除句子',
-    onClick: () => {}
+    onClick: async () => {
+      selectedSentencesOperationLoading.value = true
+      try {
+        const uuids = selectedSentences.reduce((acc, cur) => {
+          return [...acc, cur.uuid]
+        }, [] as string[])
+        const { error } = await doAdminDeleteHitokoto(
+          {
+            uuids
+          },
+          {
+            immediate: true
+          }
+        )
+        if (error.value) return
+        message.success('删除句子成功！')
+        await refresh()
+      } finally {
+        selectedSentencesOperationLoading.value = false
+      }
+    }
   }
 ])
 
@@ -168,6 +191,34 @@ const onModifySentenceFinished = async (sentence: HitokotoWithPoll) => {
     hitokotoListRes.value.data.collection[index] = data.value!.data
   }
 }
+
+// 查看句子投票
+const viewPollDetailState = reactive({
+  open: false,
+  pollId: 0,
+  loading: false
+})
+const openViewPollDetail = async (sentence: HitokotoWithPoll) => {
+  viewPollDetailState.loading = true
+  try {
+    const { data, error } = await usePollsBySentenceUUID(
+      sentence.uuid,
+      {},
+      {
+        immediate: true
+      }
+    )
+    if (error.value) return
+    if (data.value!.data.total === 0) {
+      message.info('该句子没有投票')
+      return
+    }
+    viewPollDetailState.pollId = data.value!.data.collection[0].id
+    viewPollDetailState.open = true
+  } finally {
+    viewPollDetailState.loading = false
+  }
+}
 </script>
 
 <template>
@@ -181,6 +232,10 @@ const onModifySentenceFinished = async (sentence: HitokotoWithPoll) => {
       v-model:open="searchModalState.open"
       :initial-state="state.searchParams"
       @ok="onSearchModalOk"
+    />
+    <PollDetailModal
+      v-model:open="viewPollDetailState.open"
+      :poll-id="viewPollDetailState.pollId"
     />
     <h1 class="text-2xl pt-0 mt-0">句子管理</h1>
     <div class="actions gap-3 flex">
@@ -203,7 +258,11 @@ const onModifySentenceFinished = async (sentence: HitokotoWithPoll) => {
           选中 {{ selectedSentences.length }} 条
         </span>
         <MenuContainer :items="selectedSentencesOperations">
-          <AButton class=":uno: !inline-flex items-center justify-center">
+          <AButton
+            class=":uno: !inline-flex items-center justify-center"
+            :loading="selectedSentencesOperationLoading"
+            :disabled="selectedSentencesOperationLoading"
+          >
             操作
             <div
               class=":uno: i-solar-menu-dots-bold inline-block ml-2 h-4 w-4"
@@ -270,7 +329,17 @@ const onModifySentenceFinished = async (sentence: HitokotoWithPoll) => {
                   </ul>
                 </div>
                 <div class="mt-8 flex gap-3">
-                  <a-button type="primary"> 查看投票 </a-button>
+                  <a-button
+                    type="primary"
+                    :loading="viewPollDetailState.loading"
+                    :disabled="
+                      card.poll_status === PollStatus.NotOpen ||
+                      viewPollDetailState.loading
+                    "
+                    @click="openViewPollDetail(card)"
+                  >
+                    查看投票
+                  </a-button>
                   <a-button @click="() => openModifySentenceModal(card)">
                     修改
                   </a-button>

@@ -70,3 +70,14 @@ export function doAdminUpdateHitokoto(
 ) {
   return useHTTP.put('/admin/hitokoto/' + toValue(uuid), params, options)
 }
+
+export type HitokotoAdminDeleteReq = {
+  uuids: string[]
+}
+export type HitokotoAdminDeleteRes = never
+export function doAdminDeleteHitokoto(
+  params: HitokotoAdminDeleteReq | Ref<HitokotoAdminDeleteReq>,
+  options: HTTPOption<HitokotoAdminDeleteRes> = {}
+) {
+  return useHTTP.delete('/admin/hitokoto', params, options)
+}

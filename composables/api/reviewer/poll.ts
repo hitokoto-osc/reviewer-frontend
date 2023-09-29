@@ -169,6 +169,22 @@ export function usePollDetail(
   )
 }
 
+export type GetPollsBySentenceUUID = {
+  with_polled_data?: boolean
+}
+export type GetPollsBySentenceUUIDRes = PollListRes
+export function usePollsBySentenceUUID(
+  uuid: string | Ref<string>,
+  req: GetPollsBySentenceUUID = {},
+  options: HTTPOption<GetPollsBySentenceUUIDRes> = {}
+) {
+  return useHTTP.get<GetPollsBySentenceUUIDRes>(
+    () => `/hitokoto/${toValue(uuid)}/polls`,
+    req,
+    options
+  )
+}
+
 // PollMarks
 
 export type UpdateMarkReq = {

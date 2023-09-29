@@ -108,7 +108,7 @@ const emit = defineEmits<{
     @apply flex flex-row;
 
     .comment-label {
-      @apply width-fit;
+      @apply w-fit;
     }
 
     .comment {

@@ -58,7 +58,7 @@ const userStore = useUserStore()
   }
 
   .menu {
-    @apply pl-5 flex-1 display-none md:flex h-full items-center;
+    @apply pl-5 flex-1 hidden md:flex h-full items-center;
   }
 
   .menu-item {

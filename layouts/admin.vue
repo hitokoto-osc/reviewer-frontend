@@ -23,7 +23,7 @@
   @apply dark:bg-black;
 
   .sidebar {
-    @apply fixed left:0 h-100vh md:w-1/6 lg:w-1/7 z-3 bg-white shadow-md;
+    @apply fixed left-0 h-100vh md:w-1/6 lg:w-1/7 z-3 bg-white shadow-md;
   }
 
   .main {

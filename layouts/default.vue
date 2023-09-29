@@ -42,7 +42,7 @@
     @apply flex-1 flex shrink-0;
 
     .sidebar {
-      @apply w-0 display-none md:block md:w-1/4 lg:w-1/5 rounded-l-4 border-0 border-r-1 border-solid border-#f0f0f0;
+      @apply w-0 hidden md:block md:w-1/4 lg:w-1/5 rounded-l-4 border-0 border-r-1 border-solid border-#f0f0f0;
       @apply dark:border-#303030;
     }
 

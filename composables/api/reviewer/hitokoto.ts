@@ -24,9 +24,7 @@ export type GetHitokotoRes = HitokotoWithPoll
 
 export function useHitokotoOne(
   uuid: string | Ref<string>,
-  options: HTTPOption<GetHitokotoRes> = {
-    key: `hitokoto-${toValue(uuid)}-${Date.now()}`
-  }
+  options: HTTPOption<GetHitokotoRes> = {}
 ) {
   return useHTTP.get('/hitokoto/' + toValue(uuid), {}, options)
 }
@@ -47,9 +45,7 @@ export type HitokotoAdminListReq = {
 
 export function useAdminHitokotoList(
   params: HitokotoAdminListReq | Ref<HitokotoAdminListReq>,
-  options: HTTPOption<HitokotoAdminListRes> = {
-    key: `hitokoto-list-${JSON.stringify(toValue(params))}-${Date.now()}`
-  }
+  options: HTTPOption<HitokotoAdminListRes> = {}
 ) {
   return useHTTP.get<HitokotoAdminListRes>('/admin/hitokoto', params, options)
 }
@@ -70,9 +66,7 @@ export type HitokotoAdminUpdateRes = never
 export function doAdminUpdateHitokoto(
   uuid: string | Ref<string>,
   params: HitokotoAdminUpdateReq | Ref<HitokotoAdminUpdateReq>,
-  options: HTTPOption<HitokotoAdminUpdateRes> = {
-    key: `hitokoto-update-${toValue(uuid)}-${Date.now()}`
-  }
+  options: HTTPOption<HitokotoAdminUpdateRes> = {}
 ) {
   return useHTTP.put('/admin/hitokoto/' + toValue(uuid), params, options)
 }

@@ -29,6 +29,11 @@ const onOK = async () => {
       delete params[key]
     }
   })
+  if (Object.keys(params).length === 0) {
+    message.info('未修改任何内容！')
+    emit('update:open', false)
+    return
+  }
   const { error } = await doAdminUpdateHitokoto(tmp.uuid, params, {
     immediate: true
   })

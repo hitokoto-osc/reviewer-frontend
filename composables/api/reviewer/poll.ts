@@ -131,11 +131,11 @@ export type PollReq = {
 export interface PollRes {}
 
 export function doPoll(
-  pollID: number,
+  pollID: number | Ref<number>,
   req: PollReq,
   options: HTTPOption<PollRes> = {}
 ) {
-  return useHTTP.put<PollRes>(`/poll/${pollID}`, req, options)
+  return useHTTP.put<PollRes>(`/poll/${toValue(pollID)}`, req, options)
 }
 
 export interface PollCancelRes {}
@@ -144,7 +144,11 @@ export function doCancelPoll(
   pollID: number,
   options: HTTPOption<PollCancelRes> = {}
 ) {
-  return useHTTP.delete<PollCancelRes>(`/poll/${pollID}/cancel`, {}, options)
+  return useHTTP.delete<PollCancelRes>(
+    `/poll/${toValue(pollID)}/cancel`,
+    {},
+    options
+  )
 }
 
 export type PollDetailReq = {
@@ -159,7 +163,7 @@ export function usePollDetail(
   options: HTTPOption<PollDetailRes> = {}
 ) {
   return useHTTP.get<PollDetailRes>(
-    () => `/poll/${typeof pollID === 'number' ? pollID : pollID.value}`,
+    () => `/poll/${toValue(pollID)}`,
     req,
     options
   )
@@ -184,8 +188,7 @@ export function doUpdateMark(
   options: HTTPOption<UpdateMarkRes> = {}
 ) {
   return useHTTP.put<UpdateMarkRes>(
-    () =>
-      `/admin/poll/mark/${typeof markID === 'number' ? markID : markID.value}`,
+    () => `/admin/poll/mark/${toValue(markID)}`,
     req,
     options
   )

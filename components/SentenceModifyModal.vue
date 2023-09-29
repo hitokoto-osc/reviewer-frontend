@@ -56,56 +56,14 @@ watch(
 
 const hitokotoTypeOptions = reactive<
   Exclude<SelectProps['options'], undefined>
->([
-  {
-    label: '动画',
-    value: HitokotoType.Anime
-  },
-  {
-    label: '漫画',
-    value: HitokotoType.Comic
-  },
-  {
-    label: '游戏',
-    value: HitokotoType.Game
-  },
-  {
-    label: '文学',
-    value: HitokotoType.Novel
-  },
-  {
-    label: '原创',
-    value: HitokotoType.Original
-  },
-  {
-    label: '网络',
-    value: HitokotoType.Internet
-  },
-  {
-    label: '其他',
-    value: HitokotoType.Other
-  },
-  {
-    label: '影视',
-    value: HitokotoType.Movie
-  },
-  {
-    label: '诗词',
-    value: HitokotoType.Poem
-  },
-  {
-    label: '网易云',
-    value: HitokotoType.NCM
-  },
-  {
-    label: '哲学',
-    value: HitokotoType.Philosophy
-  },
-  {
-    label: '抖机灵',
-    value: HitokotoType.Joke
-  }
-])
+>(
+  Object.keys(HitokotoType).reduce(
+    (acc, key) => {
+      return [...acc, { label: convertHitokotoType(key), value: key }]
+    },
+    [] as Array<{ label: string; value: string }>
+  )
+)
 
 const colorMode = useColorMode()
 </script>

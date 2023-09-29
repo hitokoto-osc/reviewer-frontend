@@ -1,13 +1,7 @@
 <script setup lang="ts">
-import { HitokotoStatus, HitokotoType } from '~/enums/hitokoto'
-
-const initialSearchState = {
-  uuid: undefined as string | undefined,
-  keywords: undefined as string | undefined,
-  type: undefined as HitokotoType | undefined,
-  from: undefined as string | undefined,
-  fromWho: undefined as string | undefined
-}
+import { HitokotoStatus } from '~/enums/hitokoto'
+import type { State } from '@/components/admin/sentence/SearchModal.vue'
+const initialSearchState: State = {}
 
 // Pagination
 const route = useRoute()
@@ -48,7 +42,16 @@ const state = reactive({
 const status = computed<HitokotoStatus | 'all'>({
   get: () => {
     const value = String(route.query.statusFilter)
-    return !!value ? (value as HitokotoStatus) : 'all'
+    switch (value) {
+      case HitokotoStatus.Approved:
+        return HitokotoStatus.Approved
+      case HitokotoStatus.Rejected:
+        return HitokotoStatus.Rejected
+      case HitokotoStatus.Pending:
+        return HitokotoStatus.Pending
+      default:
+        return 'all'
+    }
   },
   set: (val: string) => {
     navigateTo({
@@ -82,7 +85,7 @@ const { data, pending, error } = await useAdminHitokotoList(requestParams)
 const cardData = computed(() => data.value?.data.collection ?? [])
 
 // segments
-const segmentOptions = [
+const statusFilterOptions = [
   {
     title: '全部',
     value: 'all'
@@ -100,20 +103,91 @@ const segmentOptions = [
     value: HitokotoStatus.Pending
   }
 ]
+const orderFilterOptions = [
+  {
+    title: '从新到旧',
+    value: 'desc'
+  },
+  {
+    title: '从旧到新',
+    value: 'asc'
+  }
+]
+
+// search modal
+const searchModalState = reactive({
+  open: false
+})
+const onSearchModalOk = (newState: State) => {
+  state.searchParams = newState
+  searchModalState.open = false
+}
+
+// 句子多选管理
+const selectedSentences = reactive([] as HitokotoWithPoll[])
+const sentenceCheckedState = (sentence: HitokotoWithPoll) => ({
+  value: selectedSentences.includes(sentence),
+  set(val: boolean) {
+    if (val) {
+      selectedSentences.push(sentence)
+    } else {
+      selectedSentences.splice(selectedSentences.indexOf(sentence), 1)
+    }
+  }
+})
+const selectedSentencesOperations = reactive([
+  {
+    text: '移动句子',
+    onClick: () => {}
+  },
+  {
+    text: '删除句子',
+    onClick: () => {}
+  }
+])
 </script>
 
 <template>
   <div class=":uno: bg-white px-8 py-6 rounded-xl">
+    <AdminSentenceSearchModal
+      v-model:open="searchModalState.open"
+      :initial-state="state.searchParams"
+      @ok="onSearchModalOk"
+    />
     <h1 class="text-2xl pt-0 mt-0">句子管理</h1>
     <div class="actions gap-3 flex">
-      <ASegmented v-model:value="status" :options="segmentOptions">
+      <ASegmented v-model:value="status" :options="statusFilterOptions">
+        <template #label="props">
+          <span>{{ props.title }}</span>
+        </template>
+      </ASegmented>
+      <ASegmented v-model:value="state.order" :options="orderFilterOptions">
         <template #label="props">
           <span>{{ props.title }}</span>
         </template>
       </ASegmented>
       <div class="flex-1"></div>
-      <AButton type="primary">搜索模板</AButton>
+      <div
+        v-show="selectedSentences.length > 0"
+        class="inline-flex gap-3 items-center"
+      >
+        <span class="text-sm font-bold mr-5">
+          选中 {{ selectedSentences.length }} 条
+        </span>
+        <MenuContainer :items="selectedSentencesOperations">
+          <AButton class=":uno: !inline-flex items-center justify-center">
+            操作
+            <div
+              class=":uno: i-solar-menu-dots-bold inline-block ml-2 h-4 w-4"
+            />
+          </AButton>
+        </MenuContainer>
+      </div>
+
       <AButton>添加句子</AButton>
+      <AButton type="primary" @click="searchModalState.open = true">
+        搜索模板
+      </AButton>
     </div>
 
     <div class=":uno: mt-5">
@@ -131,7 +205,13 @@ const segmentOptions = [
             >
               <a-card>
                 <template #title>
-                  <span class="font-mono">{{ card.uuid }}</span>
+                  <span class="font-mono text-sm">{{ card.uuid }}</span>
+                </template>
+                <template #extra>
+                  <a-checkbox
+                    :checked="sentenceCheckedState(card).value"
+                    @update:checked="sentenceCheckedState(card).set($event)"
+                  />
                 </template>
                 <SentenceContainer
                   :sentence="{
@@ -161,12 +241,9 @@ const segmentOptions = [
                     </li>
                   </ul>
                 </div>
-                <div class="mt-5 flex gap-2">
-                  <a-button type="primary"> 删除 </a-button>
+                <div class="mt-8 flex gap-3">
+                  <a-button type="primary"> 查看投票 </a-button>
                   <a-button> 修改 </a-button>
-                  <a-button> 移动 </a-button>
-                  <div class="flex-1"></div>
-                  <a-button>工具</a-button>
                 </div>
               </a-card>
             </div>
@@ -179,9 +256,9 @@ const segmentOptions = [
 
       <div class=":uno: w-full flex justify-center mt-5">
         <a-pagination
+          v-show="data?.data && data.data.total > 0"
           v-model:current="page"
           v-model:page-size="pageSize"
-          class=""
           :total="data?.data.total ?? 0"
           :show-total="(total) => `共 ${total} 条`"
           show-quick-jumper

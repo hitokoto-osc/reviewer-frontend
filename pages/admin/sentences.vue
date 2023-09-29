@@ -130,48 +130,110 @@ const onSearchModalOk = (newState: State) => {
 }
 
 // 句子多选管理
-const selectedSentences = reactive([] as HitokotoWithPoll[])
-const selectedSentencesOperationLoading = ref(false)
+const selectedSentencesState = reactive({
+  sentences: reactive([] as HitokotoWithPoll[]),
+  moveSentencesModal: {
+    open: false,
+    initialState: {
+      status: HitokotoStatus.Rejected
+    }
+  },
+  operations: {
+    loading: false,
+    options: [
+      {
+        text: '移动句子',
+        onClick: () => {
+          selectedSentencesState.moveSentencesModal.open = true
+        }
+      },
+      {
+        text: '删除句子',
+        onClick: async () => {
+          selectedSentencesState.operations.loading = true
+          try {
+            const uuids = selectedSentencesState.sentences.reduce(
+              (acc, cur) => {
+                return [...acc, cur.uuid]
+              },
+              [] as string[]
+            )
+            const { error } = await doAdminDeleteHitokoto(
+              {
+                uuids
+              },
+              {
+                immediate: true
+              }
+            )
+            if (error.value) return
+            message.success('删除句子成功！')
+            await refresh()
+          } finally {
+            selectedSentencesState.operations.loading = false
+          }
+        }
+      }
+    ]
+  }
+})
 const sentenceCheckedState = (sentence: HitokotoWithPoll) => ({
-  value: selectedSentences.includes(sentence),
+  value: selectedSentencesState.sentences.includes(sentence),
   set(val: boolean) {
     if (val) {
-      selectedSentences.push(sentence)
+      selectedSentencesState.sentences.push(sentence)
     } else {
-      selectedSentences.splice(selectedSentences.indexOf(sentence), 1)
+      selectedSentencesState.sentences.splice(
+        selectedSentencesState.sentences.indexOf(sentence),
+        1
+      )
     }
   }
 })
-const selectedSentencesOperations = reactive([
-  {
-    text: '移动句子',
-    onClick: () => {}
-  },
-  {
-    text: '删除句子',
-    onClick: async () => {
-      selectedSentencesOperationLoading.value = true
-      try {
-        const uuids = selectedSentences.reduce((acc, cur) => {
-          return [...acc, cur.uuid]
-        }, [] as string[])
-        const { error } = await doAdminDeleteHitokoto(
-          {
-            uuids
-          },
-          {
-            immediate: true
-          }
-        )
-        if (error.value) return
-        message.success('删除句子成功！')
-        await refresh()
-      } finally {
-        selectedSentencesOperationLoading.value = false
+const onMoveSentencesModalOk = async (status: HitokotoStatus) => {
+  selectedSentencesState.moveSentencesModal.open = false
+  selectedSentencesState.operations.loading = true
+  try {
+    const uuids = selectedSentencesState.sentences.reduce((acc, cur) => {
+      return [...acc, cur.uuid]
+    }, [] as string[])
+    const { error, data } = await doAdminMoveHitokoto(
+      {
+        uuids,
+        target: status
+      },
+      {
+        immediate: true
       }
+    )
+    if (error.value) return
+
+    if (data.value?.data.is_success) {
+      message.success('移动句子成功！')
+      return
     }
+    Modal.error({
+      title: '移动句子没有完全成功！',
+      content: h('div', null, [
+        h('p', null, '以下句子移动失败：'),
+        h(
+          'ul',
+          null,
+          data.value?.data.failed_uuids.map((uuid: string) => {
+            return h(
+              'li',
+              null,
+              `${uuid}: ${data.value?.data.failed_desc[uuid]}`
+            )
+          })
+        )
+      ])
+    })
+  } finally {
+    await refresh()
+    selectedSentencesState.operations.loading = false
   }
-])
+}
 
 // 修改句子
 const modifySentenceModalState = reactive({
@@ -213,7 +275,7 @@ const openViewPollDetail = async (sentence: HitokotoWithPoll) => {
       message.info('该句子没有投票')
       return
     }
-    viewPollDetailState.pollId = data.value!.data.collection[0].id
+    viewPollDetailState.pollId = data.value!.data.collection[0].id // TODO: 有多个投票的情况
     viewPollDetailState.open = true
   } finally {
     viewPollDetailState.loading = false
@@ -223,6 +285,11 @@ const openViewPollDetail = async (sentence: HitokotoWithPoll) => {
 
 <template>
   <div class=":uno: bg-white px-8 py-6 rounded-xl">
+    <AdminSentenceConfirmTargetStatusModal
+      v-model:open="selectedSentencesState.moveSentencesModal.open"
+      :initial-state="selectedSentencesState.moveSentencesModal.initialState"
+      @finish="onMoveSentencesModalOk"
+    />
     <AdminSentenceModifySentenceModal
       v-model:open="modifySentenceModalState.open"
       :initial-state="modifySentenceModalState.initialState"
@@ -251,17 +318,17 @@ const openViewPollDetail = async (sentence: HitokotoWithPoll) => {
       </ASegmented>
       <div class="flex-1"></div>
       <div
-        v-show="selectedSentences.length > 0"
+        v-show="selectedSentencesState.sentences.length > 0"
         class="inline-flex gap-3 items-center"
       >
         <span class="text-sm font-bold mr-5">
-          选中 {{ selectedSentences.length }} 条
+          选中 {{ selectedSentencesState.sentences.length }} 条
         </span>
-        <MenuContainer :items="selectedSentencesOperations">
+        <MenuContainer :items="selectedSentencesState.operations.options">
           <AButton
             class=":uno: !inline-flex items-center justify-center"
-            :loading="selectedSentencesOperationLoading"
-            :disabled="selectedSentencesOperationLoading"
+            :loading="selectedSentencesState.operations.loading"
+            :disabled="selectedSentencesState.operations.loading"
           >
             操作
             <div

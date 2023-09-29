@@ -81,3 +81,20 @@ export function doAdminDeleteHitokoto(
 ) {
   return useHTTP.delete('/admin/hitokoto', params, options)
 }
+
+export type HitokotoAdminMoveReq = {
+  uuids: string[]
+  target: HitokotoStatus
+}
+export type HitokotoAdminMoveRes = {
+  is_success: boolean
+  total: number
+  failed_uuids: string[]
+  failed_desc: Record<string, string>
+}
+export function doAdminMoveHitokoto(
+  params: HitokotoAdminMoveReq | Ref<HitokotoAdminMoveReq>,
+  options: HTTPOption<HitokotoAdminMoveRes> = {}
+) {
+  return useHTTP.post('/admin/hitokoto/move', params, options)
+}

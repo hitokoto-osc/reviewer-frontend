@@ -72,7 +72,6 @@ const hitokotoTypeOptions = reactive<
 <template>
   <a-modal
     class="!w-98% !md:w-3/8"
-    width=""
     :open="props.open"
     :title="`修改句子`"
     @update:open="emit('update:open', $event)"
@@ -80,6 +79,7 @@ const hitokotoTypeOptions = reactive<
   >
     <a-form
       :model="formState"
+      layout="vertical"
       name="modify-sentence"
       class="modify-sentence-form"
     >

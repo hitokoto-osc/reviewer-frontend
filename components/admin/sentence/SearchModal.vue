@@ -84,12 +84,7 @@ const handleCancel = () => {
       <a-button key="back" @click="resetFormState">重置</a-button>
       <a-button key="submit" type="primary" @click="handleOk">确认</a-button>
     </template>
-    <a-form
-      ref="formRef"
-      :model="formState"
-      layout="vertical"
-      name="form_in_modal"
-    >
+    <a-form :model="formState" layout="vertical" name="search-sentences">
       <a-form-item name="uuid" label="UUID">
         <a-input v-model:value="formState.uuid" placeholder="单一 UUID" />
       </a-form-item>

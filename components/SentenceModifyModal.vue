@@ -59,7 +59,8 @@ const hitokotoTypeOptions = reactive<
 >(
   Object.keys(HitokotoType).reduce(
     (acc, key) => {
-      return [...acc, { label: convertHitokotoType(key), value: key }]
+      const type = HitokotoType[key as keyof typeof HitokotoType]
+      return [...acc, { label: convertHitokotoType(type), value: type }]
     },
     [] as Array<{ label: string; value: string }>
   )

@@ -81,8 +81,12 @@ const requestParams = computed<HitokotoAdminListReq>(() => ({
   ...state.searchParams
 }))
 
-const { data, pending, error } = await useAdminHitokotoList(requestParams)
-const cardData = computed(() => data.value?.data.collection ?? [])
+const {
+  data: hitokotoListRes,
+  pending,
+  error
+} = await useAdminHitokotoList(requestParams)
+const cardData = computed(() => hitokotoListRes.value?.data.collection ?? [])
 
 // segments
 const statusFilterOptions = [
@@ -145,10 +149,34 @@ const selectedSentencesOperations = reactive([
     onClick: () => {}
   }
 ])
+
+// 修改句子
+const modifySentenceModalState = reactive({
+  open: false,
+  initialState: {} as HitokotoWithPoll
+})
+const openModifySentenceModal = (sentence: HitokotoWithPoll) => {
+  modifySentenceModalState.initialState = sentence
+  modifySentenceModalState.open = true
+}
+const onModifySentenceFinished = async (sentence: HitokotoWithPoll) => {
+  const { data, error } = await useHitokotoOne(sentence.uuid, {
+    immediate: true
+  })
+  const index = cardData.value.findIndex((o) => o.uuid === sentence.uuid)
+  if (hitokotoListRes.value && !error.value) {
+    hitokotoListRes.value.data.collection[index] = data.value!.data
+  }
+}
 </script>
 
 <template>
   <div class=":uno: bg-white px-8 py-6 rounded-xl">
+    <AdminSentenceModifySentenceModal
+      v-model:open="modifySentenceModalState.open"
+      :initial-state="modifySentenceModalState.initialState"
+      @finish="onModifySentenceFinished"
+    />
     <AdminSentenceSearchModal
       v-model:open="searchModalState.open"
       :initial-state="state.searchParams"
@@ -243,7 +271,9 @@ const selectedSentencesOperations = reactive([
                 </div>
                 <div class="mt-8 flex gap-3">
                   <a-button type="primary"> 查看投票 </a-button>
-                  <a-button> 修改 </a-button>
+                  <a-button @click="() => openModifySentenceModal(card)">
+                    修改
+                  </a-button>
                 </div>
               </a-card>
             </div>
@@ -256,10 +286,10 @@ const selectedSentencesOperations = reactive([
 
       <div class=":uno: w-full flex justify-center mt-5">
         <a-pagination
-          v-show="data?.data && data.data.total > 0"
+          v-show="hitokotoListRes?.data && hitokotoListRes.data.total > 0"
           v-model:current="page"
           v-model:page-size="pageSize"
-          :total="data?.data.total ?? 0"
+          :total="hitokotoListRes?.data.total ?? 0"
           :show-total="(total) => `共 ${total} 条`"
           show-quick-jumper
         />

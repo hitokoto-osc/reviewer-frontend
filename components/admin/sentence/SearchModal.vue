@@ -8,6 +8,7 @@ export interface State {
   type?: HitokotoType
   from?: string
   fromWho?: string
+  creator?: string
   start?: string
   end?: string
 }
@@ -103,6 +104,12 @@ const handleCancel = () => {
       </a-form-item>
       <a-form-item name="from" label="作者">
         <a-input v-model:value="formState.fromWho" placeholder="作者" />
+      </a-form-item>
+      <a-form-item name="from" label="提交者">
+        <a-input
+          v-model:value="formState.creator"
+          placeholder="提交者（UID 或者名字）"
+        />
       </a-form-item>
       <a-form-item name="range" label="时间范围">
         <div class="flex gap-3">

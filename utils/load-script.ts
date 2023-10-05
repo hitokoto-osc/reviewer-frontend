@@ -1,6 +1,6 @@
 function createTag(src: string) {
   const script = document.createElement('script')
-  script.type = 'application/javascript'
+  script.type = 'text/javascript'
   // script.async = true
   script.src = src
   return script
@@ -42,7 +42,7 @@ export async function loadScript(src: string, e?: HTMLElement) {
   }
 
   script = createTag(src)
-  e ? e.appendChild(script) : document.body.appendChild(script)
+  e ? e.appendChild(script) : document.head.appendChild(script)
   const fn = await waitingLoaded(script)
   return fn
 }

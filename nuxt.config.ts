@@ -81,6 +81,7 @@ export default defineNuxtConfig({
   },
   antd: {},
   pwa: {
+    selfDestroying: true,
     registerType: 'autoUpdate',
     // registerWebManifestInRouteRules: true,
     manifest: {

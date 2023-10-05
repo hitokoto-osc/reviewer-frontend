@@ -14,6 +14,8 @@ if (!ctx) throw new Error('adminCtx is not provided')
 const navigateToByKey =
   inject<(key: string) => Promise<void>>('navigateToByKey')!
 
+const route = useRoute()
+
 const state = reactive({
   active: null as string | null,
   tabs: [] as Tab[]
@@ -54,6 +56,12 @@ watch(
 // watchEffect(() => console.log(state.tabs))
 
 const onClose = (tab: Tab) => {
+  if (state.tabs.length === 1) {
+    state.tabs = []
+    state.active = 'admin_dashboard'
+    return
+  }
+
   const index = state.tabs.findIndex((item) => item.key === tab.key)
   if (tab.key === state.active) {
     if (index > 0) {
@@ -87,7 +95,17 @@ const refreshing = ref(false)
 const refreshAll = async () => {
   refreshing.value = true
   try {
-    await refreshNuxtData()
+    console.log(route.fullPath)
+    await navigateTo(
+      {
+        path: route.path,
+        query: {
+          ...route.query,
+          refresh: Date.now()
+        }
+      },
+      { replace: true }
+    )
   } finally {
     refreshing.value = false
   }

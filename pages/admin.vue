@@ -3,11 +3,12 @@ definePageMeta({
   middleware: ['auth', 'is-admin'],
   layout: 'admin'
 })
+// const route = useRoute()
 </script>
 
 <template>
   <div class="admin">
-    <NuxtPage :page-key="(route) => route.fullPath" />
+    <NuxtPage :keepalive="{}" />
   </div>
 </template>
 

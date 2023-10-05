@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { AdminRouteItem } from '@/composables/routes/admin'
+import { cloneDeep } from 'lodash-es'
 const routes = useAdminRoutes()
 
 export interface AdminContext {
@@ -13,22 +14,30 @@ const adminCtx = reactive<AdminContext>({
   routes: routes
 })
 
+const cachedRoutes = useState<AdminRouteItem[]>('admin_routes', () =>
+  cloneDeep(routes)
+)
 provide('adminCtx', readonly(adminCtx))
 provide('navigateToByKey', async (key: string | null) => {
-  const item = routes.find((item) => item.key === key)
+  const item = cachedRoutes.value.find((item) => item.key === key)
+  // console.log(item)
   if (item) {
     await navigateTo(item.route)
   }
 })
 
 watch(
-  () => route.path,
+  () => route.fullPath,
   (val) => {
-    const item = routes.find(
-      (item) => trimEnd(item.route, '/') === trimEnd(val, '/')
+    // console.log(val, route.path)
+    const index = routes.findIndex(
+      (item) => trimEnd(item.route, '/') === trimEnd(route.path, '/')
     )
-    if (item) {
-      adminCtx.active = item.key
+    // console.log(index, routes)
+    if (index > -1) {
+      adminCtx.active = cachedRoutes.value[index].key
+      cachedRoutes.value[index].route = val // update route
+      // console.log(val)
     }
   },
   {

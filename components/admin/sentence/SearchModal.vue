@@ -3,7 +3,7 @@ import dayjs, { Dayjs } from 'dayjs'
 import { HitokotoType } from '~/enums/hitokoto'
 
 export interface State {
-  uuid?: string
+  uuids?: string[]
   keywords?: string
   type?: HitokotoType
   from?: string
@@ -42,6 +42,16 @@ const dateRange = reactive({
     }
   })
 })
+const uuid = computed({
+  get() {
+    return formState.value.uuids?.join('\n')
+  },
+  set(val) {
+    formState.value.uuids = val
+      ? val.split('\n').map((v) => v.replace(/\n|\t|\r/g, '').trim())
+      : undefined
+  }
+})
 
 const resetFormState = () => {
   formState.value = {}
@@ -49,7 +59,8 @@ const resetFormState = () => {
 
 const sentenceTypeOptions = Object.keys(HitokotoType).reduce(
   (acc, key) => {
-    return [...acc, { label: convertHitokotoType(key), value: key }]
+    const type = HitokotoType[key as keyof typeof HitokotoType]
+    return [...acc, { label: convertHitokotoType(type), value: type }]
   },
   [] as Array<{ label: string; value: string }>
 )
@@ -64,6 +75,7 @@ watch(
   }
 )
 const handleOk = async () => {
+  console.log(formState.value)
   emit('update:open', false)
   emit('ok', formState.value)
 }
@@ -86,8 +98,8 @@ const handleCancel = () => {
       <a-button key="submit" type="primary" @click="handleOk">确认</a-button>
     </template>
     <a-form :model="formState" layout="vertical" name="search-sentences">
-      <a-form-item name="uuid" label="UUID">
-        <a-input v-model:value="formState.uuid" placeholder="单一 UUID" />
+      <a-form-item name="uuids" label="UUIDs">
+        <a-textarea v-model:value="uuid" placeholder="UUIDs 用回车分割" />
       </a-form-item>
       <a-form-item name="keywords" label="关键字">
         <a-input v-model:value="formState.keywords" placeholder="句子关键字" />
@@ -111,19 +123,19 @@ const handleCancel = () => {
           placeholder="提交者（UID 或者名字）"
         />
       </a-form-item>
-      <a-form-item name="range" label="时间范围">
-        <div class="flex gap-3">
-          <a-date-picker
-            v-model:value="dateRange.start"
-            class="block w-1/2"
-            placeholder="开始时间"
-          />
-          <a-date-picker
-            v-model:value="dateRange.end"
-            class="block w-1/2"
-            placeholder="结束时间"
-          />
-        </div>
+      <a-form-item name="start_time" label="开始时间">
+        <a-date-picker
+          v-model:value="dateRange.start"
+          class="block w-full"
+          placeholder="开始时间"
+        />
+      </a-form-item>
+      <a-form-item name="end_time" label="结束时间">
+        <a-date-picker
+          v-model:value="dateRange.end"
+          class="block w-full"
+          placeholder="结束时间"
+        />
       </a-form-item>
     </a-form>
   </a-modal>

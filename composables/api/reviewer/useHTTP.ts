@@ -4,6 +4,7 @@ import type { Ref } from 'vue'
 import type { UseFetchOptions } from '#app'
 import { useUserStore } from '~/stores/user'
 import IconEmoticonDead from '~icons/mdi/emoticon-dead'
+import { cloneDeep } from 'lodash-es'
 
 export interface R<T> {
   code: number
@@ -55,7 +56,7 @@ const handleError = <T>(
 // get方法传递数组形式参数
 const paramsSerializer = (params?: SearchParameters) => {
   if (!params) return
-  const query = structuredClone({ ...params })
+  const query = cloneDeep({ ...params })
   Object.entries(query).forEach(([key, val]) => {
     if (typeof val === 'object' && Array.isArray(val) && val !== null) {
       query[`${key}[]`] = toRaw(val).map((v: unknown) => JSON.stringify(v))

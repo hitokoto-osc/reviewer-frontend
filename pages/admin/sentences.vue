@@ -90,6 +90,13 @@ const {
 } = await useAdminHitokotoList(requestParams)
 const cardData = computed(() => hitokotoListRes.value?.data.collection ?? [])
 
+watch(
+  () => error.value,
+  async () => {
+    console.log(error.value)
+  }
+)
+
 // segments
 const statusFilterOptions = [
   {

@@ -40,7 +40,7 @@ export type HitokotoAdminListReq = {
   from_who?: string
   creator?: string
   keywords?: string
-  uuid?: string
+  uuids?: string[]
 }
 
 export function useAdminHitokotoList(

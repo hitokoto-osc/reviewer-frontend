@@ -1,7 +1,7 @@
 import { HitokotoStatus, HitokotoType } from '~/enums/hitokoto'
 import { PollStatus } from '~/enums/poll'
-import { Page } from './types'
-import { HTTPOption, useHTTP } from './useHTTP'
+import type { Page } from './types'
+import { type HTTPOption, useHTTP } from './useHTTP'
 
 export type HitokotoWithPoll = {
   id: number

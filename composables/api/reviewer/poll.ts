@@ -1,4 +1,4 @@
-import { HTTPOption, useHTTP } from './useHTTP'
+import { type HTTPOption, useHTTP } from './useHTTP'
 import type { HitokotoStatus, HitokotoType } from '@/enums/hitokoto'
 import type {
   PollMethod,

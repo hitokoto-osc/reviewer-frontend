@@ -1,7 +1,7 @@
 import { Button as AButton, Table as ATable, Popconfirm } from 'ant-design-vue'
 import AdminMarksModifyModal from '~/components/admin/marks/ModifyModal.vue'
 import AdminMarksCreateModal from '~/components/admin/marks/CreateModal.vue'
-import { TableColumnType } from 'ant-design-vue'
+import { type TableColumnType } from 'ant-design-vue'
 
 // 标签相关
 const formatMarkColor = (level: string) => {

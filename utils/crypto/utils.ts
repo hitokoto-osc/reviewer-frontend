@@ -1,8 +1,8 @@
-export function arrayBufferToHex(ab: ArrayBuffer): string {
+export function arrayBufferToHex(ab: ArrayBufferLike): string {
   return uint8ArrayToHex(new Uint8Array(ab))
 }
 
-export function hexToArrayBuffer(hex: string): ArrayBuffer {
+export function hexToArrayBuffer(hex: string): ArrayBufferLike {
   return hexToUint8Array(hex).buffer
 }
 

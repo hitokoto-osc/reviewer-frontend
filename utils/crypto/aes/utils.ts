@@ -1,24 +1,19 @@
-import {
-  arrayBufferToHex,
-  uint8ArrayToHex,
-  hexToUint8Array,
-  hexToArrayBuffer
-} from '../utils'
+import { uint8ArrayToHex, hexToUint8Array } from '../utils'
 
 export interface Data {
   iv: Uint8Array
-  data: ArrayBuffer
+  data: Uint8Array
 }
 
 export function toHex(data: Data): string {
-  return `${uint8ArrayToHex(data.iv)}-${arrayBufferToHex(data.data)}`
+  return `${uint8ArrayToHex(data.iv)}-${uint8ArrayToHex(data.data)}`
 }
 
 export function toData(hex: string): Data {
   const [iv, data] = hex.split('-')
   return {
     iv: hexToUint8Array(iv),
-    data: hexToArrayBuffer(data)
+    data: hexToUint8Array(data)
   }
 }
 

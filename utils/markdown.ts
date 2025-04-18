@@ -1,7 +1,7 @@
 // Markdown
 import MD from 'markdown-it'
-import MDEmoji from 'markdown-it-emoji'
-import type Token from 'markdown-it/lib/token'
+import { full as MDEmoji } from 'markdown-it-emoji'
+import type Token from 'markdown-it/lib/token.mjs'
 export const renderMarkdown = (markdown: string) => {
   const md = new MD({
     html: true,

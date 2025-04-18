@@ -10,11 +10,11 @@ export function importKey(keyStr: string) {
 
 export async function encrypt(
   key: CryptoKey,
-  data: ArrayBuffer
+  data: BufferSource
 ): Promise<Data> {
   const iv = crypto.getRandomValues(new Uint8Array(12))
   const result = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, data)
-  return { iv, data: result }
+  return { iv, data: new Uint8Array(result) }
 }
 
 export async function decrypt(

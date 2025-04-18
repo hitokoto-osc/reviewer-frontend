@@ -1,10 +1,9 @@
-import { VNode } from 'nuxt/dist/app/compat/capi'
 import IconUsers from '~icons/solar/users-group-two-rounded-bold'
 import IconDashboard from '~icons/solar/pie-chart-2-bold'
 import IconTag from '~icons/solar/tag-bold'
 import IconPoll from '~icons/solar/ticket-bold'
 import IconSentence from '~icons/solar/hashtag-circle-bold'
-import { ItemType } from 'ant-design-vue'
+import type { ItemType } from 'ant-design-vue'
 
 export interface AdminRouteItem {
   name: string

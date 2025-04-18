@@ -128,7 +128,7 @@ export type PollReq = {
   comment?: string
 }
 
-export interface PollRes {}
+export type PollRes = never
 
 export function doPoll(
   pollID: number | Ref<number>,
@@ -138,7 +138,7 @@ export function doPoll(
   return useHTTP.put<PollRes>(`/poll/${toValue(pollID)}`, req, options)
 }
 
-export interface PollCancelRes {}
+export type PollCancelRes = never
 
 export function doCancelPoll(
   pollID: number,

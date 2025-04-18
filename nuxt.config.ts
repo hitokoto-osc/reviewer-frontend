@@ -3,13 +3,13 @@ import svgLoader from 'vite-svg-loader'
 export default defineNuxtConfig({
   // ssr: process.env.NODE_ENV !== 'development',
   ssr: false,
+
   app: {
     head: {
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         {
-          hid: 'description',
           name: 'description',
           content: process.env.npm_package_description || ''
         }
@@ -34,10 +34,12 @@ export default defineNuxtConfig({
     pageTransition: { name: 'page', mode: 'out-in' },
     layoutTransition: { name: 'layout', mode: 'out-in' }
   },
+
   css: [
     '~/node_modules/modern-normalize/modern-normalize.css', // CSS reset
     '~/assets/scss/main.scss'
   ],
+
   modules: [
     '@nuxt/image',
     '@unocss/nuxt',
@@ -79,7 +81,9 @@ export default defineNuxtConfig({
     fallback: 'light', // fallback value if not system preference found
     storageKey: 'color-mode'
   },
+
   antd: {},
+
   pwa: {
     selfDestroying: true,
     registerType: 'autoUpdate',
@@ -126,9 +130,11 @@ export default defineNuxtConfig({
       type: 'module'
     }
   },
+
   gtag: {
     id: 'G-86GDBEXXNZ'
   },
+
   build: {
     transpile: [/echarts/, 'vue-countup-v3']
   },
@@ -137,9 +143,7 @@ export default defineNuxtConfig({
     dirs: ['./stores']
   },
 
-  pinia: {
-    autoImports: ['defineStore', 'acceptHMRUpdate']
-  },
+  pinia: {},
 
   devtools: {
     enabled: true,
@@ -148,9 +152,11 @@ export default defineNuxtConfig({
       enabled: true
     }
   },
+
   components: {
     dirs: ['~/components']
   },
+
   runtimeConfig: {
     public: {
       endpoint: {
@@ -166,7 +172,10 @@ export default defineNuxtConfig({
       }
     }
   },
+
   vite: {
     plugins: [svgLoader()]
-  }
+  },
+
+  compatibilityDate: '2025-04-18'
 })

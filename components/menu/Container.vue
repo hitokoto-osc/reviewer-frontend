@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Item } from './'
+import type { Item } from './'
 const props = defineProps<{
   items: Item[]
   menuPcClass?: unknown

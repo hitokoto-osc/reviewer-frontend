@@ -108,8 +108,8 @@ provide('toggle-appearance', async ({ clientX: x, clientY: y }: MouseEvent) => {
 
 .page-enter-from,
 .page-leave-to {
-  filter: blur(1rem);
   opacity: 0;
+  filter: blur(1rem);
 }
 
 .layout-enter-active,

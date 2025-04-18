@@ -1,6 +1,6 @@
 <script setup lang="ts">
 definePageMeta({
-  layout: 'index'
+  layout: 'home'
 })
 useHead({
   title: '一言审核员中心'
